@@ -1,0 +1,20 @@
+turn based, 2d, top down
+- tick based
+
+open map / world
+- collectable resources with a system of progression
+- in-game player trading
+- medieval setting with fantasy elements
+
+combat progression
+- players can unlock new spells by finding scrolls, or finding npc's that will teach you
+- each scroll acts as a "card" with a certain requirement to cast.
+
+
+player progression
+- players can unlock new armour by killing monsters, doing quests, trading, or crafting
+
+questing
+- various mini "quests" given along the way by npcs you will find in the world, or interferring in certain events
+
+
