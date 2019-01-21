@@ -50,8 +50,8 @@ public class Screen extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setWidth(1024);
+        settings.setHeight(860);
         settings.setTitle("Basic Game App");
     }
 
