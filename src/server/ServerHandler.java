@@ -32,6 +32,7 @@ public class ServerHandler {
         Network.register(server);
 
         server.addListener(new LoginListener(this));
+        server.addListener(new CharacterCommandListener(this));
 
 //            private boolean isValid (String value) {
 //                if (value == null) return false;
@@ -73,13 +74,20 @@ public class ServerHandler {
 
         Network.AddCharacter addC = new Network.AddCharacter();
         addC.character = character;
-        server.sendToAllTCP(character);
+        server.sendToAllExceptTCP(c.getID(), addC); // Don't add the client's own player to his "other player" stack
 
-        System.out.println(loggedIn.toString());
+        for (CharacterPacket packet : loggedIn) {
+            System.out.println("Client " + packet.id);
+        }
     }
+
 
     private void sendAll(Object o) {
         server.sendToAllTCP(o);
+    }
+
+    protected Server getServer() {
+        return server;
     }
 
 

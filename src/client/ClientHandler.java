@@ -54,6 +54,14 @@ public class ClientHandler {
 
     }
 
+    protected void removePlayer(int id) {
+        for (CharacterPacket packet : otherPlayers) {
+            if (packet.id == id) {
+                otherPlayers.remove(packet);
+            }
+        }
+    }
+
 
     public void connectServer() {
         try {
@@ -77,5 +85,15 @@ public class ClientHandler {
 
     public void onLoggedIn() {
         screen.initGamee();
+    }
+
+    protected void quit(int id) {
+        Network.RemoveCharacter msg = new Network.RemoveCharacter();
+        msg.id = id;
+        client.sendTCP(msg);
+    }
+
+    protected Screen getScreen() {
+        return screen;
     }
 }

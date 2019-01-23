@@ -19,6 +19,7 @@ public class LoginListener extends Listener {
         ServerHandler.CharacterConnection connection = (ServerHandler.CharacterConnection)c;
         CharacterPacket character = connection.character;
 
+
         if (object instanceof Network.Login) {
             // Ignore if already logged in.
 
@@ -41,8 +42,11 @@ public class LoginListener extends Listener {
 
 
             // This code should retrieve relevant info from the db and check the strings
-            //
+            // This is where the db fills all of the information about the character
             character = new CharacterPacket();
+            character.x = 500;
+            character.y = 200;
+            character.id = connection.getID();
             handler.logIn(connection, character);
             System.out.println(c.getRemoteAddressTCP() + " logged in");
 //            if (((Network.Login) object).name.equals("hello") && ((Network.Login) object).pass.equals("pass")) {
