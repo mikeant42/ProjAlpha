@@ -52,5 +52,6 @@ public class Network {
 
     static public class LoginSuccess {
         public boolean success;
+        public int id;
     }
 }

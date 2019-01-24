@@ -21,7 +21,7 @@ public class CharacterCommandListener extends Listener {
 
         if (object instanceof Network.RemoveCharacter) {
             // Remove the character from the server's list
-            handler.getLoggedIn().remove(character);
+            handler.removeClient(c.getID());
 
             // Broadcast to all to remove the character
             Network.RemoveCharacter msg = new Network.RemoveCharacter();
@@ -29,6 +29,16 @@ public class CharacterCommandListener extends Listener {
             System.out.println("Server recieved, client " + msg.id + " is quitting.");
 
             handler.getServer().sendToAllExceptTCP(c.getID(), msg);
+        }
+
+
+        if (object instanceof Network.UpdateCharacter) {
+            Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
+            updateCharacter.id = ((Network.UpdateCharacter) object).id;
+            updateCharacter.x = ((Network.UpdateCharacter) object).x;
+            updateCharacter.y = ((Network.UpdateCharacter) object).y;
+
+            handler.getServer().sendToAllExceptTCP(c.getID(), updateCharacter);
         }
     }
 }

@@ -58,6 +58,15 @@ public class ServerHandler {
 //    }
     }
 
+    protected void removeClient(int id) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.id == id) {
+                loggedIn.remove(packet);
+                return;
+            }
+        }
+    }
+
 
     protected void logIn (CharacterConnection c, CharacterPacket character) {
         // Add existing characters to new logged in connection.
@@ -69,6 +78,7 @@ public class ServerHandler {
 
         LoginSuccess success = new LoginSuccess();
         success.success = true;
+        success.id = c.getID();
         c.sendTCP(success);
         loggedIn.add(character);
 
@@ -80,6 +90,20 @@ public class ServerHandler {
             System.out.println("Client " + packet.id);
         }
     }
+
+
+    /*
+    For each type of object there is an id prefix. Probably should put in a globals class in shared
+     */
+//    public int assignID(Object o,  Connection c) {
+//        int id = 0;
+//        if (o.getClass().equals(Network.Login.class)) {
+//            id = 00 + c.getID();
+//            System.out.println(id);
+//        }
+//
+//        return id;
+//    }
 
 
     private void sendAll(Object o) {

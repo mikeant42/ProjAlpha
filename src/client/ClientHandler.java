@@ -1,8 +1,10 @@
 package client;
 
+import com.almasb.fxgl.entity.Entity;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import javafx.event.EventHandler;
 import shared.CharacterPacket;
 import shared.Network;
 import shared.Network.*;
@@ -26,6 +28,8 @@ public class ClientHandler {
     private HashSet<CharacterPacket> otherPlayers = new HashSet<>();
 
     private Screen screen;
+
+    private int id; // This is the id the server assigned to us
 
     public ClientHandler(Screen screen) {
         client = new Client();
@@ -54,7 +58,18 @@ public class ClientHandler {
 
     }
 
-    protected void removePlayer(int id) {
+    public void updatePlayerLocal(int x, int y, int id) {
+        for (Entity entity : screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class)) {
+            if (id == entity.getComponent(NetworkedComponent.class).getId()) {
+                // We found the dude we need to update
+                entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
+                entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
+                System.out.println("Updated char " + id);
+            }
+        }
+    }
+
+    protected void removePlayerLocal(int id) {
         for (CharacterPacket packet : otherPlayers) {
             if (packet.id == id) {
                 otherPlayers.remove(packet);
@@ -79,11 +94,21 @@ public class ClientHandler {
         client.sendTCP(login);
     }
 
+    public void sendMovement(int x, int y, int id) {
+        Network.UpdateCharacter update = new Network.UpdateCharacter();
+        update.x = x;
+        update.y = y;
+        update.id = id;
+        System.out.println("id " + id);
+        client.sendTCP(update); // I'd like movement to be udp
+    }
+
     public HashSet<CharacterPacket> getOtherPlayers() {
         return otherPlayers;
     }
 
-    public void onLoggedIn() {
+    public void onLoggedIn(int id) {
+        this.id = id;
         screen.initGamee();
     }
 
@@ -95,5 +120,10 @@ public class ClientHandler {
 
     protected Screen getScreen() {
         return screen;
+    }
+
+
+    public int getId() {
+        return id;
     }
 }

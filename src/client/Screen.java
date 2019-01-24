@@ -62,10 +62,10 @@ public class Screen extends GameApplication {
             @Override
             public void run() {
                 getGameScene().removeUI(loginScreen);
-                getGameWorld().addEntityFactory(new BaseFactory());
+                getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
 
                 SpawnData data = new SpawnData(0,0);
-                data.put("ID", 100);
+                data.put("ID", clientHandler.getId());
 
                 player = getGameWorld().spawn("player", data);
 

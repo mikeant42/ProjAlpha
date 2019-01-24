@@ -13,3 +13,4 @@ All in a prototype state
 
 Network
 - Can handle logins(no db yet) and disconnects
+- Syncs player movement

@@ -1,8 +1,10 @@
 package client;
 
 import client.ClientHandler;
+import com.almasb.fxgl.app.FXGL;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import javafx.event.Event;
 import shared.CharacterPacket;
 import shared.Network;
 
@@ -22,12 +24,6 @@ public class CharacterResponseListener extends Listener {
             System.out.println(handler.getOtherPlayers().toString());
         }
 
-//        if (object instanceof Network.UpdateCharacter) {
-//            ui.updateCharacter((Network.UpdateCharacter)object);
-//            return;
-//        }
-//
-
         // IF we get the command to remove from the server all we do is remove it from the game world
         if (object instanceof Network.RemoveCharacter) {
             Network.RemoveCharacter msg = (Network.RemoveCharacter) object;
@@ -36,6 +32,13 @@ public class CharacterResponseListener extends Listener {
             return;
         }
 
+
+        if (object instanceof Network.UpdateCharacter) {
+            Network.UpdateCharacter update = (Network.UpdateCharacter)object;
+            handler.updatePlayerLocal(update.x, update.y, update.id);
+            //FXGL.getEventBus().fireEvent(new MoveEvent(MoveEvent.CHARACTER, update)); // This could need to be run in the main thread ;(
         }
+
+    }
 }
 
