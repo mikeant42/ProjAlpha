@@ -12,6 +12,13 @@ import shared.CharacterPacket;
 import shared.Network;
 import shared.Network.*;
 
+/**
+ * Suggestion: make it more oop by creating a CharacterManager class that will eventually extend to NPCManager, etc.
+ * Alternative to networking
+ * - Don't have the client draw itself on the screen. Instead just treat the client like another player, and have the server send back
+ *   the movement information.
+ */
+
 public class ServerHandler {
 
     private Server server;
@@ -33,26 +40,8 @@ public class ServerHandler {
 
         server.addListener(new LoginListener(this));
         server.addListener(new CharacterCommandListener(this));
+        server.addListener(new WorldListener(this));
 
-//            private boolean isValid (String value) {
-//                if (value == null) return false;
-//                value = value.trim();
-//                if (value.length() == 0) return false;
-//                return true;
-//            }
-//
-//            public void disconnected (Connection c) {
-//                CharacterConnection connection = (CharacterConnection)c;
-//                if (connection.character != null) {
-//                    loggedIn.remove(connection.character);
-//                    System.out.println("Removed char");
-//
-//                    RemoveCharacter removeCharacter = new RemoveCharacter();
-//                    removeCharacter.id = connection.character.id;
-//                    server.sendToAllTCP(removeCharacter);
-//                }
-//            }
-//        });
         server.bind(Network.port);
         server.start();
 //    }
@@ -63,6 +52,15 @@ public class ServerHandler {
             if (packet.id == id) {
                 loggedIn.remove(packet);
                 return;
+            }
+        }
+    }
+
+    protected void updateClient(int id, int x, int y) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.id == id) {
+                packet.x = x;
+                packet.y = y;
             }
         }
     }

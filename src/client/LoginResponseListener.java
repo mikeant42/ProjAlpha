@@ -18,7 +18,10 @@ public class LoginResponseListener extends Listener {
         if (object instanceof Network.LoginSuccess) {
             Network.LoginSuccess s = (Network.LoginSuccess)object;
             ClientHandler.LOGIN_STATUS = s.success;
-            handler.onLoggedIn(s.id);
+            if (s.success == true) {
+                handler.onLoggedIn(s.id);
+                System.out.println("Login success");
+            }
         }
     }
 

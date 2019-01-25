@@ -4,6 +4,12 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
 // This class is a convenient place to keep things common to both the client and server.
+
+/**
+ * There are two different types of ids
+ * - The connection id
+ * - The npc id assigned to a non Connection networtk entity
+ */
 public class Network {
     static public final int port = 54555;
 
@@ -19,6 +25,7 @@ public class Network {
         kryo.register(CharacterPacket.class);
         kryo.register(MoveCharacter.class);
         kryo.register(LoginSuccess.class);
+        kryo.register(WorldQuery.class);
     }
 
     static public class Login {
@@ -53,5 +60,11 @@ public class Network {
     static public class LoginSuccess {
         public boolean success;
         public int id;
+    }
+
+
+    static public class WorldQuery {
+        public int map;
+        public int cid; // With this we can grab the info of the character connected
     }
 }

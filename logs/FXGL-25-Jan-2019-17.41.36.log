@@ -1,0 +1,272 @@
+17:41:06.315 [JavaFX Application Thread] DEBUG GameApplication      - Logger initialized
+17:41:06.321 [JavaFX Application Thread] DEBUG MainWindow           - Creating a JavaFX scene
+17:41:06.454 [JavaFX Application Thread] DEBUG MainWindow           - Target settings size: 1024.0 x 860.0
+17:41:06.454 [JavaFX Application Thread] DEBUG MainWindow           - Scaled scene size:    1024.0 x 860.0
+17:41:06.454 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+17:41:06.460 [JavaFX Application Thread] DEBUG GameApplication      - Starting FXGL
+17:41:06.465 [JavaFX Application Thread] INFO  FXGL                 - FXGL-0.5.3 on DESKTOP
+17:41:06.465 [JavaFX Application Thread] INFO  FXGL                 - Source code and latest versions at: https://github.com/AlmasB/FXGL
+17:41:06.465 [JavaFX Application Thread] INFO  FXGL                 -              Join the FXGL chat at: https://gitter.im/AlmasB/FXGL
+17:41:06.474 [JavaFX Application Thread] DEBUG FS                   - Loaded DesktopFSService
+17:41:06.475 [JavaFX Application Thread] DEBUG FXGL                 - Loading FXGL system data
+17:41:06.482 [JavaFX Application Thread] DEBUG DesktopFSService     - Reading from: system/fxgl.bundle
+17:41:06.495 [JavaFX Application Thread] DEBUG Bundle               - Logging bundle: FXGL
+17:41:06.496 [JavaFX Application Thread] DEBUG Bundle               - FXGL.offline.timer.version.check=2019-01-23T12:24:56.214
+17:41:06.520 [JavaFX Application Thread] DEBUG GameApplication      - FXGL started
+17:41:06.520 [JavaFX Application Thread] DEBUG GameApplication      - Logging game settings
+Title: Basic Game App
+Version: 0.0
+Width: 1024
+Height: 860
+Fullscreen: false
+Intro: false
+Menus: false
+Profiling: false
+Single step:false
+App Mode: DEVELOPER
+Menu Key: ESCAPE
+Stage Style: DECORATED
+Scene Factory: class com.almasb.fxgl.scene.SceneFactory
+Dialog Factory: class com.almasb.fxgl.ui.FXGLDialogFactory
+UI Factory: class com.almasb.fxgl.ui.FXGLUIFactory
+Notification Service: class com.almasb.fxgl.gameplay.notification.XboxNotificationView
+Exception Handler: class com.almasb.fxgl.app.FXGLExceptionHandler
+17:41:06.521 [JavaFX Application Thread] DEBUG GameApplication      - Configuring GameApplication
+17:41:06.521 [JavaFX Application Thread] DEBUG GameApplication      - Initializing state machine and application states
+17:41:06.543 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+17:41:06.565 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+17:41:06.596 [JavaFX Application Thread] DEBUG FXGLAssets           - Loading FXGLAssets
+17:41:06.619 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/VarelaRound-Regular.ttf
+17:41:06.632 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/lucida_console.ttf
+17:41:06.635 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/Courier-Prime.ttf
+17:41:06.637 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/fonts/Abel-Regular.ttf
+17:41:06.639 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/css/fxgl_dark.css
+17:41:06.668 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+17:41:06.703 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/ui/cursors/fxgl_default.png
+17:41:06.723 [JavaFX Application Thread] DEBUG GameScene            - Game scene initialized: 1024x860
+17:41:06.726 [JavaFX Application Thread] DEBUG GameWorld            - Game world initialized
+17:41:06.764 [JavaFX Application Thread] DEBUG PhysicsWorld         - Physics world initialized: appHeight=860, physics.ppm=50.0
+17:41:06.781 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Pause - Esc
+17:41:06.797 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+17:41:06.843 [JavaFX Application Thread] DEBUG AppStateMachine      - StartupState -> StartupState
+17:41:06.847 [JavaFX Application Thread] INFO  GameApplication      - Game configuration took:  0.326 sec
+17:41:06.849 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/textures/fxgl_icon.png
+17:41:06.864 [JavaFX Application Thread] DEBUG MainWindow           - Opening main window
+17:41:06.934 [JavaFX Application Thread] DEBUG MainWindow           - Window border size: (0.0, 0.0)
+17:41:06.935 [JavaFX Application Thread] DEBUG MainWindow           - Scaled size: 1024.0 x 860.0
+17:41:06.935 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+17:41:06.935 [JavaFX Application Thread] DEBUG MainWindow           - Scene size: 1024.0 x 860.0
+17:41:06.935 [JavaFX Application Thread] DEBUG MainWindow           - Stage size: 1024.0 x 860.0
+17:41:06.935 [JavaFX Application Thread] DEBUG GameApplication      - Running preInit()
+17:41:06.937 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Screenshot - P
+17:41:06.937 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Dev Options - CTRL+0
+17:41:06.938 [JavaFX Application Thread] DEBUG Input                - Registered new binding: System info dump - CTRL+9
+17:41:06.938 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Restart - CTRL+R
+17:41:06.939 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Up 1 - W
+17:41:06.939 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Down 1 - S
+17:41:06.939 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Right 1 - D
+17:41:06.939 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Left 1 - A
+17:41:06.966 [JavaFX Application Thread] DEBUG GameApplication      - Starting main loop
+17:41:06.975 [JavaFX Application Thread] DEBUG StartupState         - STARTUP
+17:41:06.975 [JavaFX Application Thread] DEBUG GameApplication      - Starting new game
+17:41:06.976 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+17:41:06.982 [JavaFX Application Thread] DEBUG AppStateMachine      - StartupState -> LoadingState
+17:41:06.987 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Clearing previous game
+17:41:06.987 [FXGL Background Thread 1 ] DEBUG GameWorld            - Clearing game world
+17:41:06.987 [FXGL Background Thread 1 ] DEBUG PhysicsWorld         - Clearing physics world
+17:41:06.987 [FXGL Background Thread 1 ] DEBUG GameScene            - Clearing game scene
+17:41:06.988 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Game
+17:41:06.992 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing Physics
+17:41:06.993 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initializing UI
+17:41:06.993 [FXGL Background Thread 1 ] DEBUG AssetLoader          - Loading from disk: /assets/ui/login.fxml
+17:41:07.065 [FXGL Background Thread 1 ] DEBUG InitAppTask          - Initialization Complete
+17:41:07.066 [FXGL Background Thread 1 ] INFO  InitAppTask          - Game initialization took: 0.079 sec
+17:41:07.092 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+17:41:07.106 [JavaFX Application Thread] DEBUG AppStateMachine      - LoadingState -> PlayState
+17:41:27.368 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/tmx/ult.tmx
+17:41:27.376 [JavaFX Application Thread] WARN  TMXParser            - TiledMap generated from 1.2.1. Supported version: 1.1.2. Some features may not be parsed fully.
+17:41:27.390 [JavaFX Application Thread] DEBUG GameWorld            - Clearing removable entities
+17:41:27.390 [JavaFX Application Thread] DEBUG GameWorld            - Setting level from map
+17:41:27.406 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from disk: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.413 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.414 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.415 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.416 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.417 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.418 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.419 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.420 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.421 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.422 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.423 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.424 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.425 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.426 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.427 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.428 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.429 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.429 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.429 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.429 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.429 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.430 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.431 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.432 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.433 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.434 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.434 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.434 [JavaFX Application Thread] DEBUG AssetLoader          - Loading from cache: /assets/textures/grass-tiles-2-small-1.png
+17:41:27.436 [JavaFX Application Thread] DEBUG GameScene            - Creating render group for layer: BACKGROUND(1000)
+17:41:27.440 [JavaFX Application Thread] FATAL GameApplication      - Uncaught Exception:
+
+Fatal exception occurred: java.lang.IllegalStateException : No EntityFactory was added! Call gameWorld.addEntityFactory()
+E: com.almasb.fxgl.entity.GameWorld.create(GameWorld.kt:427)
+E: com.almasb.fxgl.entity.GameWorld.spawn(GameWorld.kt:413)
+E: client.Screen$3.run(Screen.java:111)
+E: com.sun.javafx.application.PlatformImpl.lambda$null$5(PlatformImpl.java:295)
+E: java.security.AccessController.doPrivileged(Native Method)
+E: com.sun.javafx.application.PlatformImpl.lambda$runLater$6(PlatformImpl.java:294)
+E: com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+E: com.sun.glass.ui.gtk.GtkApplication._runLoop(Native Method)
+E: com.sun.glass.ui.gtk.GtkApplication.lambda$null$5(GtkApplication.java:139)
+E: java.lang.Thread.run(Thread.java:748)
+
+17:41:27.440 [JavaFX Application Thread] FATAL GameApplication      - Application will now exit
+17:41:27.440 [JavaFX Application Thread] DEBUG GameApplication      - Stopping main loop
+17:41:36.222 [JavaFX Application Thread] DEBUG GameApplication      - Exiting game application
+17:41:36.223 [JavaFX Application Thread] DEBUG GameApplication      - Shutting down background threads
+17:41:36.223 [JavaFX Application Thread] DEBUG GameApplication      - Exiting FXGL
+17:41:36.223 [JavaFX Application Thread] DEBUG FXGL                 - Saving FXGL system data
+17:41:36.230 [JavaFX Application Thread] DEBUG DesktopFSService     - Writing to: system/fxgl.bundle
+17:41:36.234 [JavaFX Application Thread] DEBUG GameApplication      - Closing logger and exiting JavaFX

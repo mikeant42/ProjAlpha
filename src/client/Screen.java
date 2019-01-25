@@ -35,6 +35,8 @@ public class Screen extends GameApplication {
 
     private Stage stage;
 
+    private boolean hasMap = false;
+
     public Screen() {
         clientHandler = new ClientHandler(this);
         clientHandler.connectServer();
@@ -50,7 +52,6 @@ public class Screen extends GameApplication {
         getGameScene().addUI(loginScreen);
 
 
-
     }
 
     /*
@@ -58,32 +59,58 @@ public class Screen extends GameApplication {
      */
     public void initGamee() {
         loggedIn = true;
+        ClientHandler.LOGIN_STATUS = true;
+
+        // Make sure we disconnect at the end of the game
+        stage = (Stage) getGameScene().getRoot().getScene().getWindow();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                System.out.println("Bye!");
+                clientHandler.quit(player.getComponent(NetworkedComponent.class).getId());
+                clientHandler.getClient().close();
+                System.exit(0);
+            }
+        });
+
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
                 getGameScene().removeUI(loginScreen);
                 getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
-
-                SpawnData data = new SpawnData(0,0);
-                data.put("ID", clientHandler.getId());
-
-                player = getGameWorld().spawn("player", data);
+                clientHandler.requestMap();
 
 
-                // Make sure we disconnect at the end of the game
-                stage = (Stage) getGameScene().getRoot().getScene().getWindow();
-                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                    @Override
-                    public void handle(WindowEvent t) {
-                        System.out.println("Bye!");
-                        clientHandler.quit(player.getComponent(NetworkedComponent.class).getId());
-                    }
-                });
+
+//                SpawnData data = new SpawnData(0,0);
+//                data.put("ID", clientHandler.getId());
+//                player = getGameWorld().spawn("player", data);
+
+
 
             }
 
         });
 
+    }
+
+    public void setMap(int id) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (id == 1) {
+                    getGameWorld().setLevelFromMap("ult.tmx");
+
+                }
+
+                hasMap = true;
+
+
+                SpawnData data = new SpawnData(0, 0);
+                data.put("ID", clientHandler.getId());
+                player = getGameWorld().spawn("player", data);
+            }
+        });
     }
 
 
@@ -137,7 +164,7 @@ public class Screen extends GameApplication {
 
     @Override
     protected void onUpdate(double dtf) {
-        if (loggedIn) {
+        if (loggedIn && hasMap) {
             // 1. Have the server send us the world.
             // 2. Draw and update all visible players
             //    - All of the networked npcs/players should update within their own loop

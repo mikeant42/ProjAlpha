@@ -23,7 +23,7 @@ public class LoginListener extends Listener {
         if (object instanceof Network.Login) {
             // Ignore if already logged in.
 
-            if (character != null) return;
+            //if (character != null) return;
 
             // Reject if the name is invalid.
             String name = ((Network.Login)object).name;
@@ -31,14 +31,6 @@ public class LoginListener extends Listener {
                 c.close();
                 return;
             }
-
-            // Reject if already logged in.
-//            for (CharacterPacket other : handler.getLoggedIn()) {
-//                if (other.name == null || other.name.equals(name)) {
-//                    c.close();
-//                    return;
-//                }
-//            }
 
 
             // This code should retrieve relevant info from the db and check the strings
@@ -48,20 +40,6 @@ public class LoginListener extends Listener {
             character.y = 200;
             character.id = connection.getID();
             handler.logIn(connection, character);
-            System.out.println(c.getRemoteAddressTCP() + " logged in");
-//            if (((Network.Login) object).name.equals("hello") && ((Network.Login) object).pass.equals("pass")) {
-//                character = new CharacterPacket();
-//                handler.logIn(connection, character);
-//                System.out.println(c.getRemoteAddressTCP() + " logged in");
-//
-//
-//
-//            } else {
-//                System.out.println("Failed login attempt");
-//                Network.LoginSuccess success = new Network.LoginSuccess();
-//                success.success = false;
-//                c.sendTCP(success);
-//            }
 
 
 

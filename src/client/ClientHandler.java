@@ -5,12 +5,14 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import javafx.event.EventHandler;
+import server.LoginListener;
 import shared.CharacterPacket;
 import shared.Network;
 import shared.Network.*;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 /*
 This class needs to handle all incoming and outcoming data from the server, and assign different listeners to
@@ -19,7 +21,7 @@ different types of packets.
 
 
 public class ClientHandler {
-    Client client;
+    private Client client;
 
     private String host = "localhost";
 
@@ -31,9 +33,17 @@ public class ClientHandler {
 
     private int id; // This is the id the server assigned to us
 
+    private LoginResponseListener loginResponseListener;
+    private CharacterResponseListener characterResponseListener;
+    private WorldResponseListener worldResponseListener;
+
     public ClientHandler(Screen screen) {
         client = new Client();
         client.start();
+
+        loginResponseListener = new LoginResponseListener(this);
+        characterResponseListener = new CharacterResponseListener(this);
+        worldResponseListener = new WorldResponseListener(this);
 
         this.screen = screen;
 
@@ -41,8 +51,8 @@ public class ClientHandler {
 
         // ThreadedListener runs the listener methods on a different thread.
 
-        client.addListener(new Listener.ThreadedListener(new LoginResponseListener(this)));
-        client.addListener(new Listener.ThreadedListener(new CharacterResponseListener(this)));
+        client.addListener(new Listener.ThreadedListener(loginResponseListener));
+        addMainListeners();
 
         client.addListener(new Listener.ThreadedListener(new Listener() {
             public void connected(Connection connection) {
@@ -59,7 +69,8 @@ public class ClientHandler {
     }
 
     public void updatePlayerLocal(int x, int y, int id) {
-        for (Entity entity : screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class)) {
+        List<Entity> ents = screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
+        for (Entity entity : ents) {
             if (id == entity.getComponent(NetworkedComponent.class).getId()) {
                 // We found the dude we need to update
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
@@ -75,6 +86,10 @@ public class ClientHandler {
                 otherPlayers.remove(packet);
             }
         }
+    }
+
+    public void setMap(int id) {
+        screen.setMap(id);
     }
 
 
@@ -94,12 +109,18 @@ public class ClientHandler {
         client.sendTCP(login);
     }
 
+    public void requestMap() {
+        Network.WorldQuery query = new Network.WorldQuery();
+        query.cid = id;
+        client.sendTCP(query);
+    }
+
     public void sendMovement(int x, int y, int id) {
         Network.UpdateCharacter update = new Network.UpdateCharacter();
         update.x = x;
         update.y = y;
         update.id = id;
-        System.out.println("id " + id);
+        //System.out.println("id " + id);
         client.sendTCP(update); // I'd like movement to be udp
     }
 
@@ -110,6 +131,7 @@ public class ClientHandler {
     public void onLoggedIn(int id) {
         this.id = id;
         screen.initGamee();
+        //client.removeListener(loginResponseListener);
     }
 
     protected void quit(int id) {
@@ -125,5 +147,15 @@ public class ClientHandler {
 
     public int getId() {
         return id;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    // This gets called when the player is logged, and we know he's ready to recieve it.
+    private void addMainListeners() {
+        client.addListener(characterResponseListener);
+        client.addListener(worldResponseListener);
     }
 }

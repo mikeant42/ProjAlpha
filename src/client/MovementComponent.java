@@ -35,4 +35,7 @@ public class MovementComponent extends Component {
         moving = true;
     }
 
+    public boolean isMoving() {
+        return moving;
+    }
 }
