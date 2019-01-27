@@ -7,11 +7,14 @@ import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -19,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import shared.CharacterPacket;
+import shared.Network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,12 +98,43 @@ public class Screen extends GameApplication {
 
     }
 
+    /**
+     * This physics handler only handles local data, like handling map collisions such as trees, water, etc
+     * The server will handle the more sensisitive collisions
+     */
+    @Override
+    protected void initPhysics() {
+        //getPhysicsWorld().setGravity(1,1);
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PLAYER, EntityType.HUT) {
+
+            // order of types is the same as passed into the constructor
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                System.out.println("hitt");
+                if (player.getPosition().getX() == hut.getPosition().getX()) {
+                    player.getComponent(MovementComponent.class).setCollidingX(true);
+                } else if (player.getPosition().getY() == hut.getPosition().getY()) {
+                    player.getComponent(MovementComponent.class).setCollidingY(true);
+                }
+
+            }
+
+            @Override
+            protected void onCollisionEnd(Entity player, Entity hut) {
+                player.getComponent(MovementComponent.class).setCollidingX(false);
+                player.getComponent(MovementComponent.class).setCollidingY(false);
+            }
+        });
+
+    }
+
+
     public void setMap(int id) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 if (id == 1) {
-                    getGameWorld().setLevelFromMap("ult.tmx");
+                    getGameWorld().setLevelFromMap("ult.json");
 
                 }
 
@@ -181,6 +216,35 @@ public class Screen extends GameApplication {
 
 
                 }
+
+//                if (!clientHandler.getUpdatePlayerList().isEmpty()) {
+//                    for (int i = 0; i < clientHandler.getUpdatePlayerList().size(); i++) {
+//                        Network.UpdateCharacter2 data = clientHandler.getUpdatePlayerList().get(i);
+//                        Entity entity = new Entity();
+//                        for (Entity c : getGameWorld().getEntitiesByComponent(NetworkedComponent.class)) {
+//                            if (c.getComponent(NetworkedComponent.class).getId() == data.id) {
+//                                entity = c;
+//                                System.out.println("assigngi entity");
+//                            }
+//                        }
+//
+//                        if (data.input.LEFT) {
+//                            entity.getComponent(MovementComponent.class).left();
+//                        } else  if (data.input.RIGHT) {
+//                            entity.getComponent(MovementComponent.class).right();
+//                        } else if (data.input.UP) {
+//                            entity.getComponent(MovementComponent.class).up();
+//                        } else if (data.input.DOWN) {
+//                            entity.getComponent(MovementComponent.class).down();
+//                        } else {
+//                            if (!getPhysicsWorld().getJBox2DWorld().isLocked()) {
+//                                entity.getComponent(PhysicsComponent.class).reposition(new Point2D(data.x, data.y));
+//                            }
+//                        }
+//
+//                        clientHandler.getUpdatePlayerList().remove(i);
+//                    }
+//                }
             }
         }
 

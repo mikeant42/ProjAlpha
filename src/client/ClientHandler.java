@@ -1,16 +1,21 @@
 package client;
 
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import server.LoginListener;
 import shared.CharacterPacket;
+import shared.Data;
 import shared.Network;
 import shared.Network.*;
+import shared.Data.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,6 +33,8 @@ public class ClientHandler {
     public static boolean LOGIN_STATUS = false;
 
     private HashSet<CharacterPacket> otherPlayers = new HashSet<>();
+
+    private List<Network.UpdateCharacter2> updatePlayerList = new ArrayList<>();
 
     private Screen screen;
 
@@ -68,16 +75,20 @@ public class ClientHandler {
 
     }
 
-    public void updatePlayerLocal(int x, int y, int id) {
+    public void updatePlayerLocal(double x, double y, int id) {
         List<Entity> ents = screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
         for (Entity entity : ents) {
             if (id == entity.getComponent(NetworkedComponent.class).getId()) {
                 // We found the dude we need to update
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
+//                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
+//                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
+
                 System.out.println("Updated char " + id);
             }
         }
+
     }
 
     protected void removePlayerLocal(int id) {
@@ -86,6 +97,10 @@ public class ClientHandler {
                 otherPlayers.remove(packet);
             }
         }
+    }
+
+    public List<UpdateCharacter2> getUpdatePlayerList() {
+        return updatePlayerList;
     }
 
     public void setMap(int id) {
@@ -115,13 +130,23 @@ public class ClientHandler {
         client.sendTCP(query);
     }
 
-    public void sendMovement(int x, int y, int id) {
+    public void sendMovement(double x, double y, int id) {
         Network.UpdateCharacter update = new Network.UpdateCharacter();
         update.x = x;
         update.y = y;
         update.id = id;
         //System.out.println("id " + id);
         client.sendTCP(update); // I'd like movement to be udp
+    }
+
+    public void sendClientMoveUpdate(double posX, double posY, double velX, double velY, Data.Input input) {
+        Network.UpdateCharacter2 updateCharacter2 = new Network.UpdateCharacter2();
+        updateCharacter2.id = id;
+        updateCharacter2.velX = velX;
+        updateCharacter2.velY = velY;
+        updateCharacter2.input = input;
+        client.sendTCP(updateCharacter2);
+
     }
 
     public HashSet<CharacterPacket> getOtherPlayers() {

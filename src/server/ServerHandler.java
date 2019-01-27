@@ -56,7 +56,7 @@ public class ServerHandler {
         }
     }
 
-    protected void updateClient(int id, int x, int y) {
+    protected void updateClient(int id, double x, double y) {
         for (CharacterPacket packet : loggedIn) {
             if (packet.id == id) {
                 packet.x = x;

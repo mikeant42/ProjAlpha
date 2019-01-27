@@ -32,6 +32,14 @@ public class CharacterResponseListener extends Listener {
             return;
         }
 
+//        if (ClientHandler.LOGIN_STATUS) {
+//            if (object instanceof Network.UpdateCharacter2) {
+//                Network.UpdateCharacter2 update = (Network.UpdateCharacter2)object;
+//                handler.updatePlayerLocal(update.x, update.y, update.input, update.velX,
+//                        update.velY, update.id);
+//            }
+//        }
+
 
         if (ClientHandler.LOGIN_STATUS) {
             if (object instanceof Network.UpdateCharacter) {

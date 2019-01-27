@@ -1,41 +1,85 @@
 package client;
 
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import shared.Data;
 
 public class MovementComponent extends Component {
     // note that this component is injected automatically
 
     private double speed;
     private int moveFactor = 1;
-    private boolean moving = false;
+    private boolean collidingX = false;
+    private boolean collidingY = false;
+
+    private Data.Input input;
+
+    public MovementComponent(int moveFactor) {
+        this.moveFactor = moveFactor;
+        input = new Data.Input();
+
+    }
+
+    //private PhysicsComponent physics;
 
     @Override
     public void onUpdate(double tpf) {
         speed = tpf * 60;
-        moving = false;
+
+
+        input.UP = false;
+        input.DOWN = false;
+        input.RIGHT = false;
+        input.LEFT = false;
     }
 
     public void up() {
-        getEntity().setY(getEntity().getY()-moveFactor);
-        moving = true;
+        //physics.setVelocityY(-moveFactor);
+        if (!collidingY) {
+            getEntity().setY(getEntity().getY() - moveFactor);
+        }
+        input.UP = true;
     }
 
     public void down() {
-        getEntity().setY(getEntity().getY()+moveFactor);
-        moving = true;
+        if (!collidingY) {
+            getEntity().setY(getEntity().getY() + moveFactor);
+        }
+        input.DOWN = true;
     }
 
     public void left() {
-        getEntity().setX(getEntity().getX()-moveFactor);
-        moving = true;
+        if (!collidingX) {
+            getEntity().setX(getEntity().getX() - moveFactor);
+        }
+        input.LEFT = true;
     }
 
     public void right() {
-        getEntity().setX(getEntity().getX()+moveFactor);
-        moving = true;
+        if (!collidingX) {
+            getEntity().setX(getEntity().getX() + moveFactor);
+        }
+        input.RIGHT = true;
     }
 
-    public boolean isMoving() {
-        return moving;
+    public void setCollidingX(boolean collsi) {
+        collidingX = collsi;
     }
+
+    public boolean isCollidingX() {
+        return collidingX;
+    }
+
+    public boolean isCollidingY() {
+        return collidingY;
+    }
+
+    public void setCollidingY(boolean collidingY) {
+        this.collidingY = collidingY;
+    }
+
+    public Data.Input getInput() {
+        return input;
+    }
+
 }

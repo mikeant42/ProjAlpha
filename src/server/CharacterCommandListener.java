@@ -35,6 +35,10 @@ public class CharacterCommandListener extends Listener {
         /*
         Create a bounds for character updates
         We only want to update visible characters
+
+        This shouldn't be used to respond!!!!
+        Just update the server's characters internally, then in a main loop the server will update all of the clients
+        at a fixed time.
          */
         if (object instanceof Network.UpdateCharacter) {
             Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
@@ -45,5 +49,17 @@ public class CharacterCommandListener extends Listener {
             handler.updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             handler.getServer().sendToAllExceptTCP(c.getID(), updateCharacter);
         }
+
+
+        // In this case we are given an input Input and must produce the output of x,y
+        // Or we could just send the inputs to the clients, and let them simulate. This would be simpler but it would make client cheating easy
+//        if (object instanceof Network.UpdateCharacter2) {
+//            Network.UpdateCharacter2 attempt = (Network.UpdateCharacter2)object;
+//            System.out.println("Char " + attempt.id + " moved " + attempt.input.UP);
+//
+//            handler.updateClient(attempt.id, attempt.x, attempt.y);
+//            handler.getServer().sendToAllExceptTCP(c.getID(), attempt);
+//
+//        }
     }
 }
