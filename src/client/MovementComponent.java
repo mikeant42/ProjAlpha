@@ -26,40 +26,42 @@ public class MovementComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        speed = tpf * 60;
+        speed = (int)(tpf * moveFactor);
 
 
         input.UP = false;
         input.DOWN = false;
         input.RIGHT = false;
         input.LEFT = false;
+
+
     }
 
     public void up() {
         //physics.setVelocityY(-moveFactor);
         if (move != INVALID_MOVE.UP) {
-            getEntity().setY(getEntity().getY() - moveFactor);
+            getEntity().setY(getEntity().getY() - speed);
         }
         input.UP = true;
     }
 
     public void down() {
         if (move != INVALID_MOVE.DOWN) {
-            getEntity().setY(getEntity().getY() + moveFactor);
+            getEntity().setY(getEntity().getY() + speed);
         }
         input.DOWN = true;
     }
 
     public void left() {
         if (move != INVALID_MOVE.LEFT) {
-            getEntity().setX(getEntity().getX() - moveFactor);
+            getEntity().setX(getEntity().getX() - speed);
         }
         input.LEFT = true;
     }
 
     public void right() {
         if (move != INVALID_MOVE.RIGHT) {
-            getEntity().setX(getEntity().getX() + moveFactor);
+            getEntity().setX(getEntity().getX() + speed);
         }
         input.RIGHT = true;
     }

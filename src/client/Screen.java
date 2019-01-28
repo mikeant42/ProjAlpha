@@ -32,8 +32,6 @@ public class Screen extends GameApplication {
 
     private boolean hasMap = false;
 
-    private double lastPosX, lastPosY;
-
     public Screen() {
         clientHandler = new ClientHandler(this);
         clientHandler.connectServer();
@@ -79,6 +77,7 @@ public class Screen extends GameApplication {
 
 
 
+
 //                SpawnData data = new SpawnData(0,0);
 //                data.put("ID", clientHandler.getId());
 //                player = getGameWorld().spawn("player", data);
@@ -99,11 +98,11 @@ public class Screen extends GameApplication {
     @Override
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PLAYER, EntityType.HUT) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.HUT) {
 
             /*
             This is sort of a home cooked collision system. There are issues with corners of aabbs, but since it's used for non essential map objects it should be fine
-            for now.
+            for now. It definetely cannot stay this bugged but i need to move on
             This collision system is only meant for map entities that are static on all clients.
              */
             @Override
@@ -116,13 +115,17 @@ public class Screen extends GameApplication {
                     player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.LEFT);
                 } else if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
                     player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.RIGHT);
+                } else {
+                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.NONE);
                 }
             }
 
+
             @Override
-            protected void onCollisionEnd(Entity player, Entity hut) {
+            public void onCollisionEnd(Entity player, Entity hut) {
                 player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.NONE);
             }
+
         });
 
     }
@@ -140,9 +143,13 @@ public class Screen extends GameApplication {
                 hasMap = true;
 
 
-                SpawnData data = new SpawnData(0, 0);
+                SpawnData data = new SpawnData(50, 50);
                 data.put("ID", clientHandler.getId());
-                player = getGameWorld().spawn("player", data);
+                player = getGameWorld().spawn("localplayer", data);
+
+                getGameScene().getViewport().bindToEntity(player, 350, 350);;
+                getGameScene().getViewport().setZoom(1);
+
             }
         });
     }
@@ -216,38 +223,9 @@ public class Screen extends GameApplication {
 
                 }
 
-                lastPosX = player.getX();
-                lastPosY = player.getY();
-
-//                if (!clientHandler.getUpdatePlayerList().isEmpty()) {
-//                    for (int i = 0; i < clientHandler.getUpdatePlayerList().size(); i++) {
-//                        Network.UpdateCharacter2 data = clientHandler.getUpdatePlayerList().get(i);
-//                        Entity entity = new Entity();
-//                        for (Entity c : getGameWorld().getEntitiesByComponent(NetworkedComponent.class)) {
-//                            if (c.getComponent(NetworkedComponent.class).getId() == data.id) {
-//                                entity = c;
-//                                System.out.println("assigngi entity");
-//                            }
-//                        }
-//
-//                        if (data.input.LEFT) {
-//                            entity.getComponent(MovementComponent.class).left();
-//                        } else  if (data.input.RIGHT) {
-//                            entity.getComponent(MovementComponent.class).right();
-//                        } else if (data.input.UP) {
-//                            entity.getComponent(MovementComponent.class).up();
-//                        } else if (data.input.DOWN) {
-//                            entity.getComponent(MovementComponent.class).down();
-//                        } else {
-//                            if (!getPhysicsWorld().getJBox2DWorld().isLocked()) {
-//                                entity.getComponent(PhysicsComponent.class).reposition(new Point2D(data.x, data.y));
-//                            }
-//                        }
-//
-//                        clientHandler.getUpdatePlayerList().remove(i);
-//                    }
-//                }
             }
+
+
         }
 
 

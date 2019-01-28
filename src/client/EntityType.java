@@ -1,5 +1,5 @@
 package client;
 
 public enum EntityType {
-    PLAYER, HUT
+    PLAYER, HUT, LOCAL_PLAYER
 }
