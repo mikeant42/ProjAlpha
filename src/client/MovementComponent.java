@@ -11,12 +11,12 @@ public class MovementComponent extends Component {
     // note that this component is injected automatically
 
     private double speed;
-    private int moveFactor = 1;
+    private int moveFactor = 245;
     private INVALID_MOVE move = INVALID_MOVE.NONE;
 
     private Data.Input input;
 
-    public MovementComponent(int moveFactor) {
+    public MovementComponent() {
         this.moveFactor = moveFactor;
         input = new Data.Input();
 
@@ -41,29 +41,33 @@ public class MovementComponent extends Component {
         //physics.setVelocityY(-moveFactor);
         if (move != INVALID_MOVE.UP) {
             getEntity().setY(getEntity().getY() - speed);
+            input.UP = true;
         }
-        input.UP = true;
+
     }
 
     public void down() {
         if (move != INVALID_MOVE.DOWN) {
             getEntity().setY(getEntity().getY() + speed);
+            input.DOWN = true;
         }
-        input.DOWN = true;
+
     }
 
     public void left() {
         if (move != INVALID_MOVE.LEFT) {
             getEntity().setX(getEntity().getX() - speed);
+            input.LEFT = true;
+
         }
-        input.LEFT = true;
     }
 
     public void right() {
         if (move != INVALID_MOVE.RIGHT) {
             getEntity().setX(getEntity().getX() + speed);
+            input.RIGHT = true;
         }
-        input.RIGHT = true;
+
     }
 
     public INVALID_MOVE getMove() {

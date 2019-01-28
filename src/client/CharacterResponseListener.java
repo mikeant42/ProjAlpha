@@ -44,7 +44,7 @@ public class CharacterResponseListener extends Listener {
         if (ClientHandler.LOGIN_STATUS) {
             if (object instanceof Network.UpdateCharacter) {
                 Network.UpdateCharacter update = (Network.UpdateCharacter) object;
-                handler.updatePlayerLocal(update.x, update.y, update.id);
+                handler.updatePlayerLocal(update.input, update.x, update.y, update.id);
                 //FXGL.getEventBus().fireEvent(new MoveEvent(MoveEvent.CHARACTER, update)); // This could need to be run in the main thread ;(
             }
         }

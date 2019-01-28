@@ -75,13 +75,25 @@ public class ClientHandler {
 
     }
 
-    public void updatePlayerLocal(double x, double y, int id) {
+    public void updatePlayerLocal(Data.Input input, double x, double y, int id) {
         List<Entity> ents = screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
         for (Entity entity : ents) {
             if (id == entity.getComponent(NetworkedComponent.class).getId()) {
                 // We found the dude we need to update
+
+                if (input.UP) {
+                    //entity.getComponent(AnimatedMovementComponent.class).up();
+                } else if (input.DOWN) {
+                    //entity.getComponent(AnimatedMovementComponent.class).down();
+                } else if (input.LEFT) {
+                    System.out.println("legt");
+                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+                } else if (input.RIGHT) {
+                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+                }
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
+
 //                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
 //                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
 
@@ -130,11 +142,12 @@ public class ClientHandler {
         client.sendTCP(query);
     }
 
-    public void sendMovement(double x, double y, int id) {
+    public void sendMovement(Input input, double x, double y, int id) {
         Network.UpdateCharacter update = new Network.UpdateCharacter();
+        update.input = input;
+        update.id = id;
         update.x = x;
         update.y = y;
-        update.id = id;
         //System.out.println("id " + id);
         client.sendTCP(update); // I'd like movement to be udp
     }

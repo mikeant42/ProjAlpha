@@ -43,10 +43,8 @@ public class CharacterCommandListener extends Listener {
         if (object instanceof Network.UpdateCharacter) {
             Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
             updateCharacter.id = ((Network.UpdateCharacter) object).id;
-            updateCharacter.x = ((Network.UpdateCharacter) object).x;
-            updateCharacter.y = ((Network.UpdateCharacter) object).y;
 
-            handler.updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
+            //handler.updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             handler.getServer().sendToAllExceptTCP(c.getID(), updateCharacter);
         }
 

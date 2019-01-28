@@ -8,7 +8,7 @@ public class NetworkedComponent extends Component {
     private int id;
     private ClientHandler handler;
     private boolean moveFlag = true;
-    private MovementComponent movementComponent;
+    private AnimatedMovementComponent movementComponent;
     private boolean syncMovement = true;
 
     public NetworkedComponent(int id, ClientHandler handler) {
@@ -43,13 +43,14 @@ public class NetworkedComponent extends Component {
 
     @Override
     public void onUpdate(double dtf) {
-        if (syncMovement) {
+        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER) || getEntity().getType().equals(EntityType.PLAYER)) {
 
             // This value is null if there is no physics component
 
             // This is null unless we have a movement component
-            movementComponent = entity.getComponent(MovementComponent.class);
-            handler.sendMovement(getEntity().getX(), getEntity().getY(), this.id);
+            movementComponent = entity.getComponent(AnimatedMovementComponent.class);
+            handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getInput(), getEntity().getX(),
+                    getEntity().getY(), this.id);
 
         }
 //        handler.sendMovement((int) getEntity().getX(), (int) getEntity().getY(), this.id);

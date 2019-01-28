@@ -108,22 +108,22 @@ public class Screen extends GameApplication {
             @Override
             protected void onCollision(Entity playerCollision, Entity hut) {
                 if (!(hut.getBoundingBoxComponent().getMinYWorld() < playerCollision.getBoundingBoxComponent().getMinYWorld())) {
-                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.DOWN);
+                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.DOWN);
                 } else if (!(hut.getBoundingBoxComponent().getMaxYWorld() > playerCollision.getBoundingBoxComponent().getMaxYWorld())) {
-                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.UP);
+                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.UP);
                 } else if (!(hut.getBoundingBoxComponent().getMaxXWorld() > playerCollision.getBoundingBoxComponent().getMaxXWorld())) {
-                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.LEFT);
+                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.LEFT);
                 } else if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
-                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.RIGHT);
+                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.RIGHT);
                 } else {
-                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.NONE);
+                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.NONE);
                 }
             }
 
 
             @Override
             public void onCollisionEnd(Entity player, Entity hut) {
-                player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.NONE);
+                player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.NONE);
             }
 
         });
@@ -176,28 +176,30 @@ public class Screen extends GameApplication {
         getInput().addAction(new UserAction("Up 1") {
             @Override
             protected void onAction() {
-                player.getComponent(MovementComponent.class).up();
+                player.getComponent(AnimatedMovementComponent.class).up();
             }
         }, KeyCode.W);
 
         getInput().addAction(new UserAction("Down 1") {
             @Override
             protected void onAction() {
-                player.getComponent(MovementComponent.class).down();
+                player.getComponent(AnimatedMovementComponent.class).down();
             }
         }, KeyCode.S);
 
         getInput().addAction(new UserAction("Right 1") {
             @Override
             protected void onAction() {
-                player.getComponent(MovementComponent.class).right();
+                player.getComponent(AnimatedMovementComponent.class).right();
+                player.getComponent(AnimatedMovementComponent.class).animRight();
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Left 1") {
             @Override
             protected void onAction() {
-                player.getComponent(MovementComponent.class).left();
+                player.getComponent(AnimatedMovementComponent.class).left();
+                player.getComponent(AnimatedMovementComponent.class).animLeft();
             }
         }, KeyCode.A);
     }
