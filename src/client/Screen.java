@@ -1,28 +1,19 @@
 package client;
 
 import client.menu.LoginController;
-import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
-import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import shared.CharacterPacket;
-import shared.Network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +31,8 @@ public class Screen extends GameApplication {
     private Stage stage;
 
     private boolean hasMap = false;
+
+    private double lastPosX, lastPosY;
 
     public Screen() {
         clientHandler = new ClientHandler(this);
@@ -96,6 +89,7 @@ public class Screen extends GameApplication {
 
         });
 
+
     }
 
     /**
@@ -107,22 +101,27 @@ public class Screen extends GameApplication {
         //getPhysicsWorld().setGravity(1,1);
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.PLAYER, EntityType.HUT) {
 
-            // order of types is the same as passed into the constructor
+            /*
+            This is sort of a home cooked collision system. There are issues with corners of aabbs, but since it's used for non essential map objects it should be fine
+            for now.
+            This collision system is only meant for map entities that are static on all clients.
+             */
             @Override
-            protected void onCollision(Entity player, Entity hut) {
-                System.out.println("hitt");
-                if (player.getPosition().getX() == hut.getPosition().getX()) {
-                    player.getComponent(MovementComponent.class).setCollidingX(true);
-                } else if (player.getPosition().getY() == hut.getPosition().getY()) {
-                    player.getComponent(MovementComponent.class).setCollidingY(true);
+            protected void onCollision(Entity playerCollision, Entity hut) {
+                if (!(hut.getBoundingBoxComponent().getMinYWorld() < playerCollision.getBoundingBoxComponent().getMinYWorld())) {
+                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.DOWN);
+                } else if (!(hut.getBoundingBoxComponent().getMaxYWorld() > playerCollision.getBoundingBoxComponent().getMaxYWorld())) {
+                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.UP);
+                } else if (!(hut.getBoundingBoxComponent().getMaxXWorld() > playerCollision.getBoundingBoxComponent().getMaxXWorld())) {
+                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.LEFT);
+                } else if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
+                    player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.RIGHT);
                 }
-
             }
 
             @Override
             protected void onCollisionEnd(Entity player, Entity hut) {
-                player.getComponent(MovementComponent.class).setCollidingX(false);
-                player.getComponent(MovementComponent.class).setCollidingY(false);
+                player.getComponent(MovementComponent.class).setMove(INVALID_MOVE.NONE);
             }
         });
 
@@ -216,6 +215,9 @@ public class Screen extends GameApplication {
 
 
                 }
+
+                lastPosX = player.getX();
+                lastPosY = player.getY();
 
 //                if (!clientHandler.getUpdatePlayerList().isEmpty()) {
 //                    for (int i = 0; i < clientHandler.getUpdatePlayerList().size(); i++) {

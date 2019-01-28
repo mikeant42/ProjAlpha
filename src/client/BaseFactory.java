@@ -30,6 +30,7 @@ public class BaseFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                        .build();
         player.setType(EntityType.PLAYER);
+        player.setProperty("Colliding", false);
 
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
