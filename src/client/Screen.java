@@ -23,12 +23,11 @@ public class Screen extends GameApplication {
 
     private ClientHandler clientHandler;
     private UI loginScreen;
+    private LoginController loginController;
     private List<CharacterPacket> playersHere = new ArrayList<>();
     private boolean loggedIn = false;
 
     private Entity player;
-
-    private Stage stage;
 
     private boolean hasMap = false;
 
@@ -40,9 +39,18 @@ public class Screen extends GameApplication {
 
     @Override
     public void initUI() {
-        LoginController controller = new LoginController(clientHandler);
+        loginController = new LoginController(clientHandler, getGameScene());
 
-        loginScreen = getAssetLoader().loadUI("login.fxml", controller);
+        loginScreen = getAssetLoader().loadUI("login.fxml", loginController);
+//        loginController.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+//            @Override
+//            public void handle(WindowEvent t) {
+//                System.out.println("Bye!");
+//                clientHandler.quit(clientHandler.getId());
+//                clientHandler.getClient().close();
+//                System.exit(0);
+//            }
+//        });
 
         getGameScene().addUI(loginScreen);
 
@@ -56,21 +64,12 @@ public class Screen extends GameApplication {
         loggedIn = true;
         ClientHandler.LOGIN_STATUS = true;
 
-        // Make sure we disconnect at the end of the game
-        stage = (Stage) getGameScene().getRoot().getScene().getWindow();
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                System.out.println("Bye!");
-                clientHandler.quit(player.getComponent(NetworkedComponent.class).getId());
-                clientHandler.getClient().close();
-                System.exit(0);
-            }
-        });
-
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
+                // Make sure we disconnect at the end of the game
+                iniInput();
+
                 getGameScene().removeUI(loginScreen);
                 getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
                 clientHandler.requestMap();
@@ -91,6 +90,40 @@ public class Screen extends GameApplication {
 
     }
 
+    private void iniInput() {
+        getInput().addAction(new UserAction("Up 1") {
+            @Override
+            protected void onAction() {
+                player.getComponent(AnimatedMovementComponent.class).up();
+                player.getComponent(AnimatedMovementComponent.class).animUp();
+            }
+        }, KeyCode.W);
+
+        getInput().addAction(new UserAction("Down 1") {
+            @Override
+            protected void onAction() {
+                player.getComponent(AnimatedMovementComponent.class).down();
+                player.getComponent(AnimatedMovementComponent.class).animDown();
+            }
+        }, KeyCode.S);
+
+        getInput().addAction(new UserAction("Right 1") {
+            @Override
+            protected void onAction() {
+                player.getComponent(AnimatedMovementComponent.class).right();
+                player.getComponent(AnimatedMovementComponent.class).animRight();
+            }
+        }, KeyCode.D);
+
+        getInput().addAction(new UserAction("Left 1") {
+            @Override
+            protected void onAction() {
+                player.getComponent(AnimatedMovementComponent.class).left();
+                player.getComponent(AnimatedMovementComponent.class).animLeft();
+            }
+        }, KeyCode.A);
+    }
+
     /**
      * This physics handler only handles local data, like handling map collisions such as trees, water, etc
      * The server will handle the more sensisitive collisions
@@ -102,7 +135,7 @@ public class Screen extends GameApplication {
 
             /*
             This is sort of a home cooked collision system. There are issues with corners of aabbs, but since it's used for non essential map objects it should be fine
-            for now. It definetely cannot stay this bugged but i need to move on
+            for now. It definetely cannot stay this bugged but i need to move on. The bigger the hitbox the less noticible it is
             This collision system is only meant for map entities that are static on all clients.
              */
             @Override
@@ -173,35 +206,7 @@ public class Screen extends GameApplication {
 
     @Override
     protected void initInput() {
-        getInput().addAction(new UserAction("Up 1") {
-            @Override
-            protected void onAction() {
-                player.getComponent(AnimatedMovementComponent.class).up();
-            }
-        }, KeyCode.W);
 
-        getInput().addAction(new UserAction("Down 1") {
-            @Override
-            protected void onAction() {
-                player.getComponent(AnimatedMovementComponent.class).down();
-            }
-        }, KeyCode.S);
-
-        getInput().addAction(new UserAction("Right 1") {
-            @Override
-            protected void onAction() {
-                player.getComponent(AnimatedMovementComponent.class).right();
-                player.getComponent(AnimatedMovementComponent.class).animRight();
-            }
-        }, KeyCode.D);
-
-        getInput().addAction(new UserAction("Left 1") {
-            @Override
-            protected void onAction() {
-                player.getComponent(AnimatedMovementComponent.class).left();
-                player.getComponent(AnimatedMovementComponent.class).animLeft();
-            }
-        }, KeyCode.A);
     }
 
 

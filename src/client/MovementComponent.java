@@ -82,4 +82,11 @@ public class MovementComponent extends Component {
         return input;
     }
 
+    public void setInput(Data.Input input) {
+        this.input = input;
+    }
+
+    public boolean isMoving() {
+        return !(!getInput().LEFT && !getInput().RIGHT && !getInput().UP && !getInput().DOWN);
+    }
 }

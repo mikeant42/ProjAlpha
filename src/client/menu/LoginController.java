@@ -1,21 +1,17 @@
 package client.menu;
 
 import client.ClientHandler;
+import client.NetworkedComponent;
+import com.almasb.fxgl.scene.GameScene;
 import com.almasb.fxgl.ui.UIController;
-import com.esotericsoftware.kryonet.Client;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import javafx.stage.WindowEvent;
 
 public class LoginController implements UIController {
     @FXML
@@ -27,11 +23,14 @@ public class LoginController implements UIController {
     @FXML
     private Label loginMsg;
 
-    ClientHandler handler;
+    private ClientHandler handler;
+    private GameScene gameScene;
+    private Stage stage;
 
-
-    public LoginController(ClientHandler handler){
+    public LoginController(ClientHandler handler, GameScene world){
         this.handler = handler;
+        this.gameScene = world;
+
     }
 
     @Override
@@ -41,6 +40,10 @@ public class LoginController implements UIController {
 
     public void loginError(String text) {
         loginMsg.setText(text);
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     @FXML

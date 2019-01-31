@@ -25,11 +25,11 @@ public class BaseFactory implements EntityFactory {
     @Spawns("player")
     public Entity spawnPlayer(SpawnData data) {
 
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("newdude.png");
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png");
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(30,30)))
+                .bbox(new HitBox(BoundingShape.box(40,50)))
                 .with(new CollidableComponent(true))
                        .build();
         player.setType(EntityType.PLAYER);
@@ -45,11 +45,11 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("localplayer")
     public Entity spawnLocalPlayer(SpawnData data) {
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("newdude.png");
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png");
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(30,30)))
+                .bbox(new HitBox(BoundingShape.box(40,50)))
                 .with(new CollidableComponent(true))
                 .build();
         player.setType(EntityType.LOCAL_PLAYER);

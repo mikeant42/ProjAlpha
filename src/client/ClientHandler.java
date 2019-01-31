@@ -81,16 +81,17 @@ public class ClientHandler {
             if (id == entity.getComponent(NetworkedComponent.class).getId()) {
                 // We found the dude we need to update
 
-                if (input.UP) {
-                    //entity.getComponent(AnimatedMovementComponent.class).up();
-                } else if (input.DOWN) {
-                    //entity.getComponent(AnimatedMovementComponent.class).down();
-                } else if (input.LEFT) {
-                    System.out.println("legt");
-                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-                } else if (input.RIGHT) {
-                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-                }
+                entity.getComponent(AnimatedMovementComponent.class).setInput(input);
+//                if (input.UP) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animUp();
+//                } else if (input.DOWN) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animDown();
+//                } else if (input.LEFT) {
+//                    System.out.println("legt");
+//                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+//                } else if (input.RIGHT) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+                //}
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
 
@@ -172,7 +173,7 @@ public class ClientHandler {
         //client.removeListener(loginResponseListener);
     }
 
-    protected void quit(int id) {
+    public void quit(int id) {
         Network.RemoveCharacter msg = new Network.RemoveCharacter();
         msg.id = id;
         client.sendTCP(msg);

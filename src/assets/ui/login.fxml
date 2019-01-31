@@ -4,11 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200" prefWidth="980" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200" prefWidth="980" xmlns="http://javafqd.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="300.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
       <TextField fx:id="username" layoutX="396.0" layoutY="79.0" />
@@ -21,5 +23,6 @@
       <Button layoutX="302.0" layoutY="171.0" mnemonicParsing="false" onAction="#Login" text="Login" />
       <Label fx:id="loginMsg" layoutX="396.0" layoutY="220.0" text=" " textFill="#eb0808" />
       <PasswordField fx:id="password" layoutX="396.0" layoutY="133.0" />
+
    </children>
 </Pane>

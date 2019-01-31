@@ -48,22 +48,14 @@ public class NetworkedComponent extends Component {
             // This value is null if there is no physics component
 
             // This is null unless we have a movement component
-            movementComponent = entity.getComponent(AnimatedMovementComponent.class);
-            handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getInput(), getEntity().getX(),
-                    getEntity().getY(), this.id);
+            //if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
+                movementComponent = entity.getComponent(AnimatedMovementComponent.class);
+                handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getInput(), getEntity().getX(),
+                        getEntity().getY(), this.id);
+            //}
 
         }
-//        handler.sendMovement((int) getEntity().getX(), (int) getEntity().getY(), this.id);
-//        if (getEntity().getType().equals(EntityType.PLAYER)) {
-//            boolean moving = getEntity().getComponent(MovementComponent.class).isMoving();
-//            if (moving) {
-//                handler.sendMovement((int) getEntity().getX(), (int) getEntity().getY(), this.id);
-//            }
-//        } else {
-//            if (moveFlag) {
-//                handler.sendMovement((int) getEntity().getX(), (int) getEntity().getY(), this.id);
-//            }
-//        }
+
     }
 
 }
