@@ -36,8 +36,8 @@ public class LoginListener extends Listener {
             // This code should retrieve relevant info from the db and check the strings
             // This is where the db fills all of the information about the character
             character = new CharacterPacket();
-            character.x = 50;
-            character.y = 50;
+            character.x = 0;
+            character.y = 0;
             character.id = connection.getID();
             handler.logIn(connection, character);
 

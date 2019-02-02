@@ -220,7 +220,7 @@ public class Screen extends GameApplication {
 
             if (!clientHandler.getOtherPlayers().isEmpty()) {
                 for (CharacterPacket packet : clientHandler.getOtherPlayers()) {
-                    if (!playersHere.contains(packet)) {
+                    if (!playersHere.contains(packet) && packet.id != clientHandler.getId()) {
                         SpawnData data = new SpawnData(packet.x, packet.y);
                         data.put("ID", packet.id);
                         getGameWorld().spawn("player", data);
@@ -231,6 +231,8 @@ public class Screen extends GameApplication {
                 }
 
             }
+
+            System.out.println(clientHandler.getOtherPlayers().size());
 
 
         }

@@ -63,7 +63,17 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("hut")
     public Entity newHut(SpawnData data) {
-        System.err.println("spawned a hut");
+        return Entities.builder()
+                .from(data)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .type(EntityType.HUT)
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("")
+    public Entity newNothing(SpawnData data) {
+        System.err.println("WARNING: an object with no spawn type has spawned.");
         return Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))

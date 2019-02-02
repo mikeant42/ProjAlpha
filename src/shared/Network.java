@@ -46,6 +46,7 @@ public class Network {
     static public class UpdateCharacter {
         public int id;
         public double x, y;
+        public int hor, vert;
         public Data.Input input;
     }
 

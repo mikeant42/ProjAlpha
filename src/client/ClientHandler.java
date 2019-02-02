@@ -75,23 +75,23 @@ public class ClientHandler {
 
     }
 
-    public void updatePlayerLocal(Data.Input input, double x, double y, int id) {
+    public void updatePlayerLocal(Data.Input input, double x, double y, int idd) {
         List<Entity> ents = screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
         for (Entity entity : ents) {
-            if (id == entity.getComponent(NetworkedComponent.class).getId()) {
+            if (idd == entity.getComponent(NetworkedComponent.class).getId() && idd != id) { // We do not want to update ourselves here
                 // We found the dude we need to update
 
                 entity.getComponent(AnimatedMovementComponent.class).setInput(input);
-//                if (input.UP) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animUp();
-//                } else if (input.DOWN) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animDown();
-//                } else if (input.LEFT) {
-//                    System.out.println("legt");
-//                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-//                } else if (input.RIGHT) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-                //}
+
+                if (input.UP) {
+                    entity.getComponent(AnimatedMovementComponent.class).animUp();
+                } else if (input.DOWN) {
+                    entity.getComponent(AnimatedMovementComponent.class).animDown();
+                } else if (input.LEFT) {
+                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+                } else if (input.RIGHT) {
+                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+                }
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
 
@@ -151,16 +151,6 @@ public class ClientHandler {
         update.y = y;
         //System.out.println("id " + id);
         client.sendTCP(update); // I'd like movement to be udp
-    }
-
-    public void sendClientMoveUpdate(double posX, double posY, double velX, double velY, Data.Input input) {
-        Network.UpdateCharacter2 updateCharacter2 = new Network.UpdateCharacter2();
-        updateCharacter2.id = id;
-        updateCharacter2.velX = velX;
-        updateCharacter2.velY = velY;
-        updateCharacter2.input = input;
-        client.sendTCP(updateCharacter2);
-
     }
 
     public HashSet<CharacterPacket> getOtherPlayers() {
