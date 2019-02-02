@@ -68,11 +68,13 @@ public class ServerHandler {
 
     protected void logIn (CharacterConnection c, CharacterPacket character) {
         // Add existing characters to new logged in connection.
-//        for (CharacterPacket other : loggedIn) {
-//            AddCharacter addCharacter = new AddCharacter();
-//            addCharacter.character = other;
-//            c.sendTCP(addCharacter);
-//        }
+        for (CharacterPacket other : loggedIn) {
+            if (other.id != c.getID()) {
+                AddCharacter addCharacter = new AddCharacter();
+                addCharacter.character = other;
+                c.sendTCP(addCharacter);
+            }
+        }
 
         LoginSuccess success = new LoginSuccess();
         success.success = true;

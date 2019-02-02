@@ -95,7 +95,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).up();
-                player.getComponent(AnimatedMovementComponent.class).animUp();
+                //player.getComponent(AnimatedMovementComponent.class).animUp();
             }
         }, KeyCode.W);
 
@@ -103,7 +103,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).down();
-                player.getComponent(AnimatedMovementComponent.class).animDown();
+               // player.getComponent(AnimatedMovementComponent.class).animDown();
             }
         }, KeyCode.S);
 
@@ -111,7 +111,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).right();
-                player.getComponent(AnimatedMovementComponent.class).animRight();
+                //player.getComponent(AnimatedMovementComponent.class).animRight();
             }
         }, KeyCode.D);
 
@@ -119,7 +119,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).left();
-                player.getComponent(AnimatedMovementComponent.class).animLeft();
+                //player.getComponent(AnimatedMovementComponent.class).animLeft();
             }
         }, KeyCode.A);
     }
@@ -243,8 +243,8 @@ public class Screen extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(1024);
-        settings.setHeight(860);
+        settings.setWidth(860);
+        settings.setHeight(600);
         settings.setTitle("Basic Game App");
     }
 

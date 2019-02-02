@@ -83,22 +83,21 @@ public class ClientHandler {
 
                 entity.getComponent(AnimatedMovementComponent.class).setInput(input);
 
-                if (input.UP) {
-                    entity.getComponent(AnimatedMovementComponent.class).animUp();
-                } else if (input.DOWN) {
-                    entity.getComponent(AnimatedMovementComponent.class).animDown();
-                } else if (input.LEFT) {
-                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-                } else if (input.RIGHT) {
-                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-                }
+//                if (input.UP) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animUp();
+//                } else if (input.DOWN) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animDown();
+//                } else if (input.LEFT) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+//                } else if (input.RIGHT) {
+//                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+//                }
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
 
 //                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
 //                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
 
-                System.out.println("Updated char " + id);
             }
         }
 
