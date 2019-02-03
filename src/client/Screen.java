@@ -141,22 +141,23 @@ public class Screen extends GameApplication {
             @Override
             protected void onCollision(Entity playerCollision, Entity hut) {
                 if (!(hut.getBoundingBoxComponent().getMinYWorld() < playerCollision.getBoundingBoxComponent().getMinYWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.DOWN);
-                } else if (!(hut.getBoundingBoxComponent().getMaxYWorld() > playerCollision.getBoundingBoxComponent().getMaxYWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.UP);
-                } else if (!(hut.getBoundingBoxComponent().getMaxXWorld() > playerCollision.getBoundingBoxComponent().getMaxXWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.LEFT);
-                } else if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.RIGHT);
-                } else {
-                    player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.NONE);
+                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.DOWN);
+                }
+                if (!(hut.getBoundingBoxComponent().getMaxYWorld() > playerCollision.getBoundingBoxComponent().getMaxYWorld())) {
+                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.UP);
+                }
+                if (!(hut.getBoundingBoxComponent().getMaxXWorld() > playerCollision.getBoundingBoxComponent().getMaxXWorld())) {
+                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.LEFT);
+                }
+                if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
+                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.RIGHT);
                 }
             }
 
 
             @Override
             public void onCollisionEnd(Entity player, Entity hut) {
-                player.getComponent(AnimatedMovementComponent.class).setMove(INVALID_MOVE.NONE);
+                player.getComponent(AnimatedMovementComponent.class).resetMoves();
             }
 
         });

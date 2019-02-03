@@ -3,6 +3,9 @@ package client;
 import com.almasb.fxgl.entity.component.Component;
 import shared.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 enum INVALID_MOVE {
     RIGHT, LEFT, UP, DOWN, NONE
 }
@@ -12,7 +15,8 @@ public class MovementComponent extends Component {
 
     private double speed;
     private int moveFactor = 245;
-    private INVALID_MOVE move = INVALID_MOVE.NONE;
+    //private INVALID_MOVE move = INVALID_MOVE.NONE;
+    private List<INVALID_MOVE> invalidMoves = new ArrayList<>();
 
     private Data.Input input;
 
@@ -39,7 +43,7 @@ public class MovementComponent extends Component {
 
     public void up() {
         //physics.setVelocityY(-moveFactor);
-        if (move != INVALID_MOVE.UP) {
+        if (!invalidMoves.contains(INVALID_MOVE.UP)) {
             getEntity().setY(getEntity().getY() - speed);
             input.UP = true;
         }
@@ -47,7 +51,7 @@ public class MovementComponent extends Component {
     }
 
     public void down() {
-        if (move != INVALID_MOVE.DOWN) {
+        if (!invalidMoves.contains(INVALID_MOVE.DOWN)) {
             getEntity().setY(getEntity().getY() + speed);
             input.DOWN = true;
         }
@@ -55,7 +59,7 @@ public class MovementComponent extends Component {
     }
 
     public void left() {
-        if (move != INVALID_MOVE.LEFT) {
+        if (!invalidMoves.contains(INVALID_MOVE.LEFT)) {
             getEntity().setX(getEntity().getX() - speed);
             input.LEFT = true;
 
@@ -63,19 +67,23 @@ public class MovementComponent extends Component {
     }
 
     public void right() {
-        if (move != INVALID_MOVE.RIGHT) {
+        if (!invalidMoves.contains(INVALID_MOVE.RIGHT)) {
             getEntity().setX(getEntity().getX() + speed);
             input.RIGHT = true;
         }
 
     }
+//
+//    public INVALID_MOVE getMove() {
+//        return move;
+//    }
 
-    public INVALID_MOVE getMove() {
-        return move;
+    public void addMove(INVALID_MOVE move) {
+        invalidMoves.add(move);
     }
 
-    public void setMove(INVALID_MOVE move) {
-        this.move = move;
+    public void resetMoves() {
+        invalidMoves.removeAll(invalidMoves);
     }
 
     public Data.Input getInput() {
