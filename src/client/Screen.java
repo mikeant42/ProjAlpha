@@ -95,7 +95,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).up();
-                //player.getComponent(AnimatedMovementComponent.class).animUp();
+                player.getComponent(AnimatedMovementComponent.class).animUp();
             }
         }, KeyCode.W);
 
@@ -103,7 +103,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).down();
-               // player.getComponent(AnimatedMovementComponent.class).animDown();
+                player.getComponent(AnimatedMovementComponent.class).animDown();
             }
         }, KeyCode.S);
 
@@ -111,7 +111,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).right();
-                //player.getComponent(AnimatedMovementComponent.class).animRight();
+                player.getComponent(AnimatedMovementComponent.class).animRight();
             }
         }, KeyCode.D);
 
@@ -119,7 +119,7 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).left();
-                //player.getComponent(AnimatedMovementComponent.class).animLeft();
+                player.getComponent(AnimatedMovementComponent.class).animLeft();
             }
         }, KeyCode.A);
     }
@@ -210,6 +210,15 @@ public class Screen extends GameApplication {
 
     }
 
+    private boolean isPlayerHere(int id) {
+        for (CharacterPacket packet : playersHere) {
+            if (packet.id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     protected void onUpdate(double dtf) {
@@ -221,7 +230,8 @@ public class Screen extends GameApplication {
 
             if (!clientHandler.getOtherPlayers().isEmpty()) {
                 for (CharacterPacket packet : clientHandler.getOtherPlayers()) {
-                    if (!playersHere.contains(packet) && packet.id != clientHandler.getId()) {
+                    if (!isPlayerHere(packet.id) && packet.id != clientHandler.getId()) {
+                        System.out.println("Adding player " + packet.id);
                         SpawnData data = new SpawnData(packet.x, packet.y);
                         data.put("ID", packet.id);
                         getGameWorld().spawn("player", data);
@@ -232,8 +242,6 @@ public class Screen extends GameApplication {
                 }
 
             }
-
-            System.out.println(clientHandler.getOtherPlayers().size());
 
 
         }

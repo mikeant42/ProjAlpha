@@ -81,17 +81,17 @@ public class ClientHandler {
             if (idd == entity.getComponent(NetworkedComponent.class).getId() && idd != id) { // We do not want to update ourselves here
                 // We found the dude we need to update
 
-                entity.getComponent(AnimatedMovementComponent.class).setInput(input);
+                //entity.getComponent(AnimatedMovementComponent.class).setInput(input);
 
-//                if (input.UP) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animUp();
-//                } else if (input.DOWN) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animDown();
-//                } else if (input.LEFT) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-//                } else if (input.RIGHT) {
-//                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-//                }
+                if (input.UP) {
+                    entity.getComponent(AnimatedMovementComponent.class).animUp();
+                } else if (input.DOWN) {
+                    entity.getComponent(AnimatedMovementComponent.class).animDown();
+                } else if (input.LEFT) {
+                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+                } else if (input.RIGHT) {
+                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+                }
                 entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
                 entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
 
@@ -154,6 +154,17 @@ public class ClientHandler {
 
     public HashSet<CharacterPacket> getOtherPlayers() {
         return otherPlayers;
+    }
+
+    public boolean isPlayerHere(int id) {
+        for (CharacterPacket packet : otherPlayers) {
+            if (packet.id  == id) {
+                System.out.println("Player " + id + " is here");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void onLoggedIn(int id) {

@@ -15,7 +15,6 @@ public class MovementComponent extends Component {
 
     private double speed;
     private int moveFactor = 245;
-    //private INVALID_MOVE move = INVALID_MOVE.NONE;
     private List<INVALID_MOVE> invalidMoves = new ArrayList<>();
 
     private Data.Input input;
@@ -73,10 +72,7 @@ public class MovementComponent extends Component {
         }
 
     }
-//
-//    public INVALID_MOVE getMove() {
-//        return move;
-//    }
+
 
     public void addMove(INVALID_MOVE move) {
         invalidMoves.add(move);

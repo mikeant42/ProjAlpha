@@ -14,3 +14,8 @@ All in a prototype state
 Network
 - Can handle logins(no db yet) and disconnects
 - Syncs player movement
+
+
+Mobile
+----
+There is a thought that I might want to port this to android. If so, the game will have to be built on the pc first then ported to android.

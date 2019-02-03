@@ -44,6 +44,9 @@ public class ServerHandler {
 
         server.bind(Network.port);
         server.start();
+
+        Log.NONE();
+
 //    }
     }
 
@@ -67,12 +70,13 @@ public class ServerHandler {
 
 
     protected void logIn (CharacterConnection c, CharacterPacket character) {
-        // Add existing characters to new logged in connection.
+// Add existing characters to new logged in connection.
         for (CharacterPacket other : loggedIn) {
             if (other.id != c.getID()) {
                 AddCharacter addCharacter = new AddCharacter();
                 addCharacter.character = other;
                 c.sendTCP(addCharacter);
+                System.out.println("Client " + other.id + " added to client " + c.getID());
             }
         }
 

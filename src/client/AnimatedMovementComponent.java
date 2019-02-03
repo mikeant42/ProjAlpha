@@ -77,10 +77,10 @@ public class AnimatedMovementComponent extends MovementComponent {
 //            }
 
             // If no inputs are registering, its safe to move idle
-//            if (!isMoving()) {
-//                texture.loopAnimationChannel(animIdle);
-//                animationSpeed = 0;
-//            }
+            if (!isMoving()) {
+                texture.loopAnimationChannel(animIdle);
+                animationSpeed = 0;
+            }
 
        // }
 
@@ -89,35 +89,35 @@ public class AnimatedMovementComponent extends MovementComponent {
 
     }
 
-//    public void animRight() {
-//        animationSpeed = 400;
-//        if (texture.getAnimationChannel() == animIdle)
-//            texture.loopAnimationChannel(animRight);
-//        getInput().RIGHT = true;
-//        //getEntity().setScaleX(1);
-//    }
-//
-//    public void animLeft() {
-//        animationSpeed = -400;
-//        if (texture.getAnimationChannel() == animIdle)
-//            texture.loopAnimationChannel(animLeft);
-//        getInput().LEFT = true;
-//        //getEntity().setScaleX(-1);
-//    }
-//
-//    public void animUp() {
-//        animationSpeed = 400;
-//        if (texture.getAnimationChannel() == animIdle)
-//            texture.loopAnimationChannel(animWalkUp);
-//        getInput().UP = true;
-//    }
-//
-//    public void animDown() {
-//        animationSpeed = -400;
-//        if (texture.getAnimationChannel() == animIdle)
-//            texture.loopAnimationChannel(animWalkDown);
-//        getInput().DOWN = true;
-//    }
+    public void animRight() {
+        animationSpeed = 400;
+        if (texture.getAnimationChannel() != animRight)
+            texture.loopAnimationChannel(animRight);
+        getInput().RIGHT = true;
+        //getEntity().setScaleX(1);
+    }
+
+    public void animLeft() {
+        animationSpeed = -400;
+        if (texture.getAnimationChannel() != animLeft)
+            texture.loopAnimationChannel(animLeft);
+        getInput().LEFT = true;
+        //getEntity().setScaleX(-1);
+    }
+
+    public void animUp() {
+        animationSpeed = 400;
+        if (texture.getAnimationChannel() != animWalkUp)
+            texture.loopAnimationChannel(animWalkUp);
+        getInput().UP = true;
+    }
+
+    public void animDown() {
+        animationSpeed = -400;
+        if (texture.getAnimationChannel() != animWalkDown)
+            texture.loopAnimationChannel(animWalkDown);
+        getInput().DOWN = true;
+    }
 
     public double getWidth() {
         return texture.getWidth();
