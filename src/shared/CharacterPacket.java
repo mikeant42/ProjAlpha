@@ -9,4 +9,5 @@ public class CharacterPacket {
     public String otherStuff;
     public int id;
     public double x, y;
+    public Data.Input input;
 }

@@ -9,11 +9,11 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import shared.CharacterPacket;
+import shared.Data;
+import shared.EntityType;
+import shared.Network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class Screen extends GameApplication {
     private UI loginScreen;
     private LoginController loginController;
     private List<CharacterPacket> playersHere = new ArrayList<>();
+    private List<Network.NPCPacket> npcsHere = new ArrayList<>();
     private boolean loggedIn = false;
 
     private Entity player;
@@ -219,6 +220,15 @@ public class Screen extends GameApplication {
         return false;
     }
 
+    private boolean isNPCHere(int id) {
+        for (Network.NPCPacket packet : npcsHere) {
+            if (packet.id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     protected void onUpdate(double dtf) {
@@ -239,14 +249,55 @@ public class Screen extends GameApplication {
                     }
 
 
+                    // Update the other players
+                    List<Entity> entities = getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
+                    for (Entity entity : entities) {
+                        if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
+                            // We found the dude we need to update
+
+                            //entity.getComponent(AnimatedMovementComponent.class).setInput(input);
+                            Data.Input input = packet.input;
+                            if (input != null) {
+                                if (input.UP) {
+                                    entity.getComponent(AnimatedMovementComponent.class).animUp();
+                                } else if (input.DOWN) {
+                                    entity.getComponent(AnimatedMovementComponent.class).animDown();
+                                } else if (input.LEFT) {
+                                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
+                                } else if (input.RIGHT) {
+                                    entity.getComponent(AnimatedMovementComponent.class).animRight();
+                                }
+                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
+                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                            }
+
+//                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
+//                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
+
+                        }
+
+
+                    }
+
+
                 }
+
 
             }
 
 
+            for (Network.NPCPacket packet : clientHandler.getNpcs()) {
+                if (!isNPCHere(packet.id)) {
+                    System.out.println("Spawning npc " + packet.id);
+                    SpawnData data = new SpawnData(packet.x, packet.y);
+                    data.put("ID", packet.id);
+                    getGameWorld().spawn("Roaming NPC", data);
+                    npcsHere.add(packet);
+                }
+            }
+
+
         }
-
-
     }
 
 

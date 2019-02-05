@@ -1,5 +1,6 @@
-package client;
+package client.listener;
 
+import client.ClientHandler;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.Network;

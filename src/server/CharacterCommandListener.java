@@ -21,7 +21,7 @@ public class CharacterCommandListener extends Listener {
 
         if (object instanceof Network.RemoveCharacter) {
             // Remove the character from the server's list
-            handler.removeClient(c.getID());
+            handler.getServer().removeClient(c.getID());
 
             // Broadcast to all to remove the character
             Network.RemoveCharacter msg = new Network.RemoveCharacter();

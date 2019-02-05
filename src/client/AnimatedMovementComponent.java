@@ -16,12 +16,12 @@ public class AnimatedMovementComponent extends MovementComponent {
     private AnimationChannel animIdle, animWalkUp, animWalkDown, animRight, animLeft;
 
     private int animationSpeed = 0;
-    private int frameWidth = 48, frameHeight = 64; // These numbers are the x,y of the image / number of rows/columns
+    //private int frameWidth = 48, frameHeight = 64; // These numbers are the x,y of the image / number of rows/columns
     private int framesPerRow = 3;
 
     // TODO - make this more configurable for when we need to rotate objetcts for the animations, and when we don't
 
-    public AnimatedMovementComponent(String file) {
+    public AnimatedMovementComponent(String file, int frameWidth, int frameHeight, int framesPerRow) {
         super();
 
         animIdle = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), 8, 9);
@@ -62,7 +62,7 @@ public class AnimatedMovementComponent extends MovementComponent {
 
     @Override
     public void onUpdate(double tpf) {
-//        if (animationSpeed != 0) {
+        if (animationSpeed != 0) {
 //            if (texture.getAnimationChannel() == animIdle) {
 //                if (getInput().UP) {
 //                    texture.loopAnimationChannel(animWalkUp);
@@ -82,7 +82,7 @@ public class AnimatedMovementComponent extends MovementComponent {
                 animationSpeed = 0;
             }
 
-       // }
+       }
 
 
         super.onUpdate(tpf);

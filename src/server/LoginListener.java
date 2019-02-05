@@ -39,7 +39,7 @@ public class LoginListener extends Listener {
             character.x = 0;
             character.y = 0;
             character.id = connection.getID();
-            handler.logIn(connection, character);
+            handler.getServer().logIn(connection, character);
 
 
 

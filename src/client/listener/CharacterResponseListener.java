@@ -1,4 +1,4 @@
-package client;
+package client.listener;
 
 import client.ClientHandler;
 import com.almasb.fxgl.app.FXGL;

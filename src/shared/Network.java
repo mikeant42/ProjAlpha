@@ -26,8 +26,10 @@ public class Network {
         kryo.register(MoveCharacter.class);
         kryo.register(LoginSuccess.class);
         kryo.register(WorldQuery.class);
-        kryo.register(UpdateCharacter2.class);
         kryo.register(Data.Input.class);
+        kryo.register(EntityType.class);
+        kryo.register(NPCPacket.class);
+        kryo.register(UpdateNPC.class);
     }
 
     static public class Login {
@@ -46,7 +48,6 @@ public class Network {
     static public class UpdateCharacter {
         public int id;
         public double x, y;
-        public int hor, vert;
         public Data.Input input;
     }
 
@@ -67,15 +68,18 @@ public class Network {
         public int id;
     }
 
-    // Instead of sending the x and ys send the input to the server, let the server simulate and then send back to the client
-    // The server will fill these x,y values
-    static public class UpdateCharacter2 {
+    static public class NPCPacket {
+        public int x;
+        public int y;
         public int id;
-        public Data.Input input;
-        public double velX, velY;
-        public double x,y;
+        public EntityType type;
     }
 
+    static public class UpdateNPC {
+        public int x;
+        public int y;
+        public int id;
+    }
 
     static public class WorldQuery {
         public int map;

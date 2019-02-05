@@ -1,7 +1,7 @@
 package client;
 
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.PhysicsComponent;
+import shared.EntityType;
 
 public class NetworkedComponent extends Component {
 

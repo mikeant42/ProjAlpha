@@ -1,13 +1,12 @@
 package client;
 
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.PhysicsComponent;
+import client.listener.CharacterResponseListener;
+import client.listener.LoginResponseListener;
+import client.listener.NPCResponseListener;
+import client.listener.WorldResponseListener;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import server.LoginListener;
 import shared.CharacterPacket;
 import shared.Data;
 import shared.Network;
@@ -33,8 +32,8 @@ public class ClientHandler {
     public static boolean LOGIN_STATUS = false;
 
     private HashSet<CharacterPacket> otherPlayers = new HashSet<>();
+    private List<NPCPacket> npcs = new ArrayList<>();
 
-    private List<Network.UpdateCharacter2> updatePlayerList = new ArrayList<>();
 
     private Screen screen;
 
@@ -43,6 +42,7 @@ public class ClientHandler {
     private LoginResponseListener loginResponseListener;
     private CharacterResponseListener characterResponseListener;
     private WorldResponseListener worldResponseListener;
+    private NPCResponseListener npcResponseListener;
 
     public ClientHandler(Screen screen) {
         client = new Client();
@@ -51,6 +51,7 @@ public class ClientHandler {
         loginResponseListener = new LoginResponseListener(this);
         characterResponseListener = new CharacterResponseListener(this);
         worldResponseListener = new WorldResponseListener(this);
+        npcResponseListener = new NPCResponseListener(this);
 
         this.screen = screen;
 
@@ -59,6 +60,8 @@ public class ClientHandler {
         // ThreadedListener runs the listener methods on a different thread.
 
         client.addListener(new Listener.ThreadedListener(loginResponseListener));
+        client.addListener(new Listener.ThreadedListener(npcResponseListener));
+
         addMainListeners();
 
         client.addListener(new Listener.ThreadedListener(new Listener() {
@@ -76,28 +79,11 @@ public class ClientHandler {
     }
 
     public void updatePlayerLocal(Data.Input input, double x, double y, int idd) {
-        List<Entity> ents = screen.getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
-        for (Entity entity : ents) {
-            if (idd == entity.getComponent(NetworkedComponent.class).getId() && idd != id) { // We do not want to update ourselves here
-                // We found the dude we need to update
-
-                //entity.getComponent(AnimatedMovementComponent.class).setInput(input);
-
-                if (input.UP) {
-                    entity.getComponent(AnimatedMovementComponent.class).animUp();
-                } else if (input.DOWN) {
-                    entity.getComponent(AnimatedMovementComponent.class).animDown();
-                } else if (input.LEFT) {
-                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-                } else if (input.RIGHT) {
-                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-                }
-                entity.getComponent(NetworkedComponent.class).getEntity().setX(x);
-                entity.getComponent(NetworkedComponent.class).getEntity().setY(y);
-
-//                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
-//                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
-
+        for (CharacterPacket packet : otherPlayers) {
+            if (idd == packet.id && idd != id) {
+                packet.x = x;
+                packet.y = y;
+                packet.input = input;
             }
         }
 
@@ -111,14 +97,18 @@ public class ClientHandler {
         }
     }
 
-    public List<UpdateCharacter2> getUpdatePlayerList() {
-        return updatePlayerList;
-    }
-
     public void setMap(int id) {
         screen.setMap(id);
     }
 
+    public boolean hasNPC(int id) {
+        for (NPCPacket packet : npcs) {
+            if (packet.id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void connectServer() {
         try {
@@ -179,7 +169,7 @@ public class ClientHandler {
         client.sendTCP(msg);
     }
 
-    protected Screen getScreen() {
+    public Screen getScreen() {
         return screen;
     }
 
@@ -196,5 +186,9 @@ public class ClientHandler {
     private void addMainListeners() {
         client.addListener(characterResponseListener);
         client.addListener(worldResponseListener);
+    }
+
+    public List<NPCPacket> getNpcs() {
+        return npcs;
     }
 }

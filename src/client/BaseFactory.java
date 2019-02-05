@@ -1,16 +1,12 @@
 package client;
 
 import com.almasb.fxgl.entity.*;
-import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import shared.CharacterPacket;
+import shared.EntityType;
 
 public class BaseFactory implements EntityFactory {
 
@@ -25,7 +21,7 @@ public class BaseFactory implements EntityFactory {
     @Spawns("player")
     public Entity spawnPlayer(SpawnData data) {
 
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png");
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png", 48, 64, 3);
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
@@ -45,7 +41,7 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("localplayer")
     public Entity spawnLocalPlayer(SpawnData data) {
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png");
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png", 48, 64, 3);
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
@@ -59,6 +55,21 @@ public class BaseFactory implements EntityFactory {
         player.addComponent(movementComponent);
 
         return player;
+    }
+
+    @Spawns("Roaming NPC")
+    public Entity spawnRoamingNPC(SpawnData data) {
+        Entity npc = Entities.builder()
+                .at(data.getX(), data.getY())
+                .viewFromNode(new Rectangle(25, 25, Color.BLUE))
+                //.build()
+                //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
+                //.bbox(new HitBox(BoundingShape.box(25, 25)))
+                .with(new CollidableComponent(true))
+                .build();
+        npc.setType(EntityType.ROAMING_NPC);
+
+        return npc;
     }
 
     @Spawns("hut")

@@ -21,11 +21,11 @@ import shared.Network.*;
 
 public class ServerHandler {
 
-    private Server server;
-    private HashSet<CharacterPacket> loggedIn = new HashSet();
+    private AlphaServer server;
+
 
     public ServerHandler() throws IOException {
-        server = new Server() {
+        server = new AlphaServer() {
             protected Connection newConnection() {
                 // By providing our own connection implementation, we can store per
                 // connection state without a connection ID to state look up.
@@ -45,53 +45,18 @@ public class ServerHandler {
         server.bind(Network.port);
         server.start();
 
+
         Log.NONE();
 
 //    }
     }
 
-    protected void removeClient(int id) {
-        for (CharacterPacket packet : loggedIn) {
-            if (packet.id == id) {
-                loggedIn.remove(packet);
-                return;
-            }
-        }
-    }
-
     protected void updateClient(int id, double x, double y) {
-        for (CharacterPacket packet : loggedIn) {
+        for (CharacterPacket packet : server.getLoggedIn()) {
             if (packet.id == id) {
                 packet.x = x;
                 packet.y = y;
             }
-        }
-    }
-
-
-    protected void logIn (CharacterConnection c, CharacterPacket character) {
-// Add existing characters to new logged in connection.
-        for (CharacterPacket other : loggedIn) {
-            if (other.id != c.getID()) {
-                AddCharacter addCharacter = new AddCharacter();
-                addCharacter.character = other;
-                c.sendTCP(addCharacter);
-                System.out.println("Client " + other.id + " added to client " + c.getID());
-            }
-        }
-
-        LoginSuccess success = new LoginSuccess();
-        success.success = true;
-        success.id = c.getID();
-        server.sendToTCP(c.getID(), success);
-        loggedIn.add(character);
-
-        Network.AddCharacter addC = new Network.AddCharacter();
-        addC.character = character;
-        server.sendToAllExceptTCP(c.getID(), addC); // Don't add the client's own player to his "other player" stack
-
-        for (CharacterPacket packet : loggedIn) {
-            System.out.println("Client " + packet.id);
         }
     }
 
@@ -114,7 +79,7 @@ public class ServerHandler {
         server.sendToAllTCP(o);
     }
 
-    protected Server getServer() {
+    protected AlphaServer getServer() {
         return server;
     }
 
@@ -132,6 +97,6 @@ public class ServerHandler {
     }
 
     public HashSet<CharacterPacket> getLoggedIn() {
-        return loggedIn;
+        return server.getLoggedIn();
     }
 }
