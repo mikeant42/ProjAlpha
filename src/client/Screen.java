@@ -250,7 +250,7 @@ public class Screen extends GameApplication {
 
 
                     // Update the other players
-                    List<Entity> entities = getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
+                    List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.PLAYER);
                     for (Entity entity : entities) {
                         if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                             // We found the dude we need to update
@@ -294,6 +294,16 @@ public class Screen extends GameApplication {
                     getGameWorld().spawn("Roaming NPC", data);
                     npcsHere.add(packet);
                 }
+
+                List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.ROAMING_NPC);
+                for (Entity entity : entities) {
+                    if (packet.id == entity.getInt("ID")) {
+                        entity.setX(packet.x);
+                        entity.setY(packet.y);
+                    }
+                }
+
+
             }
 
 

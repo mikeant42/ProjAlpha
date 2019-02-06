@@ -13,10 +13,13 @@ import java.util.List;
 public class AlphaServer extends Server {
 
     private HashSet<CharacterPacket> loggedIn = new HashSet();
-    private NPCHandler npcHandler = new NPCHandler();
+    private NPCHandler npcHandler;
 
     public AlphaServer() {
+        npcHandler = new NPCHandler();
 
+        RoamingBehavior behavior = new RoamingBehavior(200, 200);
+        npcHandler.addNPC(behavior);
     }
 
     @Override
@@ -25,7 +28,9 @@ public class AlphaServer extends Server {
 
         npcHandler.update();
 
-
+        for (NPCBehavior behavior : npcHandler.getNPCs()) {
+            sendToAllTCP(behavior.formUpdate());
+        }
 
     }
 
@@ -55,7 +60,9 @@ public class AlphaServer extends Server {
         }
 
         // We also have to spawn all the npcs in his level
-        c.sendTCP(npcHandler.getNPCs().get(0));
+        for (NPCBehavior npcBehavior : npcHandler.getNPCs()) {
+            c.sendTCP(npcBehavior.getData());
+        }
     }
 
 

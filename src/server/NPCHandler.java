@@ -7,34 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NPCHandler {
-    private List<Network.NPCPacket> npcs = new ArrayList<>();
+    private List<NPCBehavior> npcs = new ArrayList<>();
 
     public NPCHandler() {
-        Network.NPCPacket npcPacket = new Network.NPCPacket();
-        npcPacket.id = 500;
-        npcPacket.type = EntityType.ROAMING_NPC;
-        npcPacket.x = 50;
-        npcPacket.y = 50;
-        npcs.add(npcPacket);
     }
 
     public void update() {
-
+        for (NPCBehavior behavior : npcs) {
+            behavior.update();
+        }
     }
 
-    protected void addNPC(Network.NPCPacket npc) {
+    protected void addNPC(NPCBehavior npc) {
         npcs.add(npc);
     }
 
     protected void removeNPC(int id) {
-        for (Network.NPCPacket packet : npcs) {
-            if (packet.id == id) {
-                npcs.remove(packet);
+        for (NPCBehavior npc : npcs) {
+            if (npc.getData().id == id) {
+                npcs.remove(npc);
             }
         }
     }
 
-    protected List<Network.NPCPacket> getNPCs() {
+    public List<NPCBehavior> getNPCs() {
         return npcs;
     }
+
 }

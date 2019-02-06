@@ -89,6 +89,15 @@ public class ClientHandler {
 
     }
 
+    public void updateNPC(int x, int y, int id) {
+        for (NPCPacket packet : npcs) {
+            if (id == packet.id) {
+                packet.x = x;
+                packet.y = y;
+            }
+        }
+    }
+
     protected void removePlayerLocal(int id) {
         for (CharacterPacket packet : otherPlayers) {
             if (packet.id == id) {

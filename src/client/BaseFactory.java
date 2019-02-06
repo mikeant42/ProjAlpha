@@ -69,6 +69,8 @@ public class BaseFactory implements EntityFactory {
                 .build();
         npc.setType(EntityType.ROAMING_NPC);
 
+        npc.setProperty("ID", data.get("ID"));
+
         return npc;
     }
 
