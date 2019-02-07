@@ -20,6 +20,7 @@ public class AlphaServer extends Server {
 
         RoamingBehavior behavior = new RoamingBehavior(200, 200);
         npcHandler.addNPC(behavior);
+
     }
 
     @Override

@@ -25,7 +25,7 @@ public class BaseFactory implements EntityFactory {
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(40,50)))
+                .bbox(new HitBox(BoundingShape.box(40,40)))
                 .with(new CollidableComponent(true))
                        .build();
         player.setType(EntityType.PLAYER);
@@ -45,7 +45,7 @@ public class BaseFactory implements EntityFactory {
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(40,50)))
+                .bbox(new HitBox(BoundingShape.box(40,40)))
                 .with(new CollidableComponent(true))
                 .build();
         player.setType(EntityType.LOCAL_PLAYER);

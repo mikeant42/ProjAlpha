@@ -14,7 +14,7 @@ public class MovementComponent extends Component {
     // note that this component is injected automatically
 
     private double speed;
-    private int moveFactor = 245;
+    private int moveFactor = 210;
     private List<INVALID_MOVE> invalidMoves = new ArrayList<>();
 
     private Data.Input input;

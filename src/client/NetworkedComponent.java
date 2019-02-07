@@ -43,7 +43,7 @@ public class NetworkedComponent extends Component {
 
     @Override
     public void onUpdate(double dtf) {
-        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER) || getEntity().getType().equals(EntityType.PLAYER)) {
+        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
 
             // This value is null if there is no physics component
 

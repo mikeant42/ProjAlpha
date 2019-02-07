@@ -9,12 +9,17 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import shared.CharacterPacket;
 import shared.Data;
 import shared.EntityType;
 import shared.Network;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +46,6 @@ public class Screen extends GameApplication {
     @Override
     public void initUI() {
         loginController = new LoginController(clientHandler, getGameScene());
-
         loginScreen = getAssetLoader().loadUI("login.fxml", loginController);
 //        loginController.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 //            @Override

@@ -1,5 +1,6 @@
 package server;
 
+import shared.CharacterPacket;
 import shared.EntityType;
 import shared.Network;
 
@@ -29,7 +30,7 @@ public class NPCBehavior {
     }
 
     public void update() {
-        float speed = 0.06f;
+        float speed = 0.5f * 0.015f;
         switch (state) {
             case 1:
                 data.y += speed;
@@ -60,7 +61,7 @@ public class NPCBehavior {
         return data;
     }
 
-    public void onCollisionWithPlayer() {
+    public void onCollisionWithPlayer(CharacterPacket packet) {
     }
 
     public Network.UpdateNPC formUpdate() {
