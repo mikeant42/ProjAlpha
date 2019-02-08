@@ -1,6 +1,7 @@
 package client;
 
 import client.menu.LoginController;
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -36,6 +37,8 @@ public class Screen extends GameApplication {
     private Entity player;
 
     private boolean hasMap = false;
+
+    public static int TILESIZE = 256;
 
     public Screen() {
         clientHandler = new ClientHandler(this);
@@ -139,8 +142,8 @@ public class Screen extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.HUT) {
 
             /*
-            This is sort of a home cooked collision system. There are issues with corners of aabbs, but since it's used for non essential map objects it should be fine
-            for now. It definetely cannot stay this bugged but i need to move on. The bigger the hitbox the less noticible it is
+            This is sort of a home cooked collision system. There is a bug with this system that causes the player to sometimes get stuck if they are colliding to the right or left, but
+            they cannot move up or down.
             This collision system is only meant for map entities that are static on all clients.
              */
             @Override
@@ -186,8 +189,8 @@ public class Screen extends GameApplication {
                 data.put("ID", clientHandler.getId());
                 player = getGameWorld().spawn("localplayer", data);
 
-                getGameScene().getViewport().bindToEntity(player, 350, 350);;
-                getGameScene().getViewport().setZoom(1);
+                getGameScene().getViewport().bindToEntity(player, FXGL.getAppWidth()/2 - TILESIZE/2, FXGL.getAppHeight()/2 - TILESIZE/2);
+                getGameScene().getViewport().setZoom(1.2);
 
             }
         });
@@ -243,6 +246,9 @@ public class Screen extends GameApplication {
 
 
             if (!clientHandler.getOtherPlayers().isEmpty()) {
+
+                player.getComponent(NetworkedComponent.class).update();
+
                 for (CharacterPacket packet : clientHandler.getOtherPlayers()) {
                     if (!isPlayerHere(packet.id) && packet.id != clientHandler.getId()) {
                         System.out.println("Adding player " + packet.id);
@@ -256,6 +262,7 @@ public class Screen extends GameApplication {
                     // Update the other players
                     List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.PLAYER);
                     for (Entity entity : entities) {
+
                         if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                             // We found the dude we need to update
 

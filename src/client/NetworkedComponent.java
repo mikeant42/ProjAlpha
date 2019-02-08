@@ -41,8 +41,8 @@ public class NetworkedComponent extends Component {
         this.moveFlag = moveFlag;
     }
 
-    @Override
-    public void onUpdate(double dtf) {
+
+    public void update() {
         if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
 
             // This value is null if there is no physics component

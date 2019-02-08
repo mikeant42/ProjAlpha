@@ -45,6 +45,25 @@ public class ServerHandler {
         server.bind(Network.port);
         server.start();
 
+        // lets run the npc update method in its own thread
+        Thread npcThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.NONE();
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        for (NPCBehavior behavior : server.getNpcHandler().getNPCs()) {
+                            behavior.update();
+                        }
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        });
+        npcThread.run();
+
 
         Log.NONE();
 

@@ -21,7 +21,7 @@ public class RoamingBehavior extends NPCBehavior {
 
 
         lastTime = (float)getTime();
-        timeToDecide = 3;
+        timeToDecide = 3f;
         directionTime = 1.5f;
 
     }
@@ -29,16 +29,18 @@ public class RoamingBehavior extends NPCBehavior {
     private int chooseRandomDirection() {
         Random r = new Random();
 
-        int[] randDir = new int[5];
-        randDir[0] = NPCState.STANDING;
-        randDir[1] = NPCState.RUNNING_FORWARD;
-        randDir[2] = NPCState.RUNNING_BACK;
-        randDir[3] = NPCState.RUNNING_LEFT;
-        randDir[4] = NPCState.RUNNING_RIGHT;
+//        int[] randDir = new int[5];
+//        randDir[0] = NPCState.STANDING;
+//        randDir[1] = NPCState.RUNNING_FORWARD;
+//        randDir[2] = NPCState.RUNNING_BACK;
+//        randDir[3] = NPCState.RUNNING_LEFT;
+//        randDir[4] = NPCState.RUNNING_RIGHT;
 
         int choice = r.nextInt(5);
 
-        return randDir[choice];
+        System.out.println(choice);
+
+        return choice;
     }
 
 
@@ -50,7 +52,11 @@ public class RoamingBehavior extends NPCBehavior {
         elapsedTime += currentTime - lastTime;
 
         if (elapsedTime >= timeToDecide) {
-            setState(chooseRandomDirection());
+
+            int choice = chooseRandomDirection();
+
+
+            setState(choice);
             elapsedTime = 0;
         } else if (elapsedTime >= directionTime) {
             setState(NPCState.STANDING);
@@ -58,7 +64,10 @@ public class RoamingBehavior extends NPCBehavior {
 
         lastTime = currentTime;
 
+
     }
+
+
 
 }
 

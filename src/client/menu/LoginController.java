@@ -55,26 +55,25 @@ public class LoginController implements UIController {
 
     @FXML
     public void Login(ActionEvent event) {
-        if (username.getText().equals("") || password.getText().equals("")) {
-            loginMsg.setText("You have to fill everything out");
-        } else {
-            handler.login(username.getText(), password.getText());
-        }
+        if (!ClientHandler.LOGIN_STATUS) {
+            if (username.getText().equals("") || password.getText().equals("")) {
+                loginMsg.setText("You have to fill everything out");
+            } else {
+                handler.login(username.getText(), password.getText());
+            }
 
-        /**
-         * This is truly not a good way to do this. This is only a workaround for finding a better method
-         * Need to wait for the variable to update
-         */
-        try
-        {
-            Thread.sleep(500);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
+            /**
+             * This is truly not a good way to do this. This is only a workaround for finding a better method
+             * Need to wait for the variable to update
+             */
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
 
-        loginMsg.setText("Your login status: " + ClientHandler.LOGIN_STATUS);
+            loginMsg.setText("Your login status: " + ClientHandler.LOGIN_STATUS);
+        }
 
     }
 }

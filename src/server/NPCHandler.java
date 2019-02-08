@@ -9,13 +9,14 @@ import java.util.List;
 public class NPCHandler {
     private List<NPCBehavior> npcs = new ArrayList<>();
 
+    private Thread npcThread;
+
     public NPCHandler() {
+
     }
 
     public void update() {
-        for (NPCBehavior behavior : npcs) {
-            behavior.update();
-        }
+
     }
 
     protected void addNPC(NPCBehavior npc) {

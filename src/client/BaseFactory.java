@@ -14,6 +14,8 @@ public class BaseFactory implements EntityFactory {
     // We need this for networked comps
     private ClientHandler handler;
 
+    private float playerScale = 0.8f;
+
     public BaseFactory(ClientHandler handler) {
         this.handler = handler;
     }
@@ -25,7 +27,7 @@ public class BaseFactory implements EntityFactory {
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(40,40)))
+                .bbox(new HitBox(BoundingShape.box(35,40)))
                 .with(new CollidableComponent(true))
                        .build();
         player.setType(EntityType.PLAYER);
@@ -35,6 +37,8 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(movementComponent);
+        player.setScaleX(playerScale);
+        player.setScaleY(playerScale);
 
         return player;
     }
@@ -45,7 +49,7 @@ public class BaseFactory implements EntityFactory {
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(40,40)))
+                .bbox(new HitBox(BoundingShape.box(35,40)))
                 .with(new CollidableComponent(true))
                 .build();
         player.setType(EntityType.LOCAL_PLAYER);
@@ -53,6 +57,8 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(movementComponent);
+        player.setScaleX(playerScale);
+        player.setScaleY(playerScale);
 
         return player;
     }

@@ -16,18 +16,17 @@ public class AlphaServer extends Server {
     private NPCHandler npcHandler;
 
     public AlphaServer() {
-        npcHandler = new NPCHandler();
+        RoamingBehavior behavior = new RoamingBehavior(500, 500);
 
-        RoamingBehavior behavior = new RoamingBehavior(200, 200);
+        npcHandler = new NPCHandler();
         npcHandler.addNPC(behavior);
+
 
     }
 
     @Override
     public void update(int i) throws IOException {
         super.update(i);
-
-        npcHandler.update();
 
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
             sendToAllTCP(behavior.formUpdate());
@@ -82,5 +81,9 @@ public class AlphaServer extends Server {
 
     public void addLoggedIn(CharacterPacket packet) {
         loggedIn.add(packet);
+    }
+
+    public NPCHandler getNpcHandler() {
+        return npcHandler;
     }
 }
