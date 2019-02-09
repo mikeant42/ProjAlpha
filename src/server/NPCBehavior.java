@@ -13,17 +13,19 @@ public class NPCBehavior {
     private Network.UpdateNPC updateNPC;
 
     private int bounds; // We need this so the npc doesn't wander far from where he was spawned
-    private int spawnX, spawnY;
+    private float x,y;
 
 
     public NPCBehavior(EntityType entityType, int x, int y) {
         data = new Network.NPCPacket();
         data.type = entityType;
+
+        // data.x, data.y are our spawn coords
         data.x = x;
         data.y = y;
 
-        spawnX = x;
-        spawnY = y;
+        this.x = x;
+        this.y = y;
 
         updateNPC = new Network.UpdateNPC();
 
@@ -37,7 +39,8 @@ public class NPCBehavior {
     }
 
     public void update() {
-        float speed = 20f * 0.015f;
+        float speed = 0.9f;
+
 
         switch (state) {
             case 1:
@@ -57,27 +60,27 @@ public class NPCBehavior {
     }
 
     public void moveRight(float speed) {
-        //int x = data.x + (int)speed;
-        //if (Math.abs(x - spawnX) <= bounds)
-            data.x -= -speed;
+        float xr = x + speed;
+        if (Math.abs(x - data.x) <= bounds)
+            x = xr;
     }
 
     public void moveLeft(float speed) {
-       // int x = data.x - (int)speed;
-        //if (Math.abs(x - spawnX) <= bounds)
-            data.x -= speed;
+        float xr = x - speed;
+        if (Math.abs(x - data.x) <= bounds)
+            x = xr;
     }
 
     public void moveUp(float speed) {
-        //nt y = data.y + (int)speed;
-        //if (Math.abs(y - spawnY) <= bounds)
-            data.y -= speed;
+        float yr = y - speed;
+        if (Math.abs(y - data.y) <= bounds)
+            y = yr;
     }
 
     public void moveDown(float speed) {
-       // int y = data.y - (int)speed;
-       // if (Math.abs(y - spawnY) <= bounds)
-            data.y -= speed;
+        float yr = y + speed;
+        if (Math.abs(y - data.y) <= bounds)
+            y = yr;
     }
 
 
@@ -98,8 +101,8 @@ public class NPCBehavior {
     }
 
     public Network.UpdateNPC formUpdate() {
-        updateNPC.x =  data.x;
-        updateNPC.y =  data.y;
+        updateNPC.x =  x;
+        updateNPC.y =  y;
         updateNPC.id = data.id;
 
         return updateNPC;
@@ -113,11 +116,4 @@ public class NPCBehavior {
         this.bounds = bounds;
     }
 
-    public int getSpawnX() {
-        return spawnX;
-    }
-
-    public int getSpawnY() {
-        return spawnY;
-    }
 }

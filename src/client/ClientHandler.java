@@ -89,7 +89,7 @@ public class ClientHandler {
 
     }
 
-    public void updateNPC(int x, int y, int id) {
+    public void updateNPC(float x, float y, int id) {
         for (NPCPacket packet : npcs) {
             if (id == packet.id) {
                 packet.x = x;

@@ -48,6 +48,7 @@ public class RoamingBehavior extends NPCBehavior {
     public void update() {
         super.update();
 
+
         currentTime = (float)getTime();
         elapsedTime += currentTime - lastTime;
 

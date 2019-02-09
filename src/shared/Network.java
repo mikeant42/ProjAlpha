@@ -69,15 +69,15 @@ public class Network {
     }
 
     static public class NPCPacket {
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public int id;
         public EntityType type;
     }
 
     static public class UpdateNPC {
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public int id;
     }
 
