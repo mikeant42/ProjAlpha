@@ -16,6 +16,7 @@ public class AnimatedMovementComponent extends MovementComponent {
     private AnimationChannel animIdle, animWalkUp, animWalkDown, animRight, animLeft;
 
     private int animationSpeed = 0;
+    private int speed = 700;
     //private int frameWidth = 48, frameHeight = 64; // These numbers are the x,y of the image / number of rows/columns
     private int framesPerRow = 3;
 
@@ -90,7 +91,7 @@ public class AnimatedMovementComponent extends MovementComponent {
     }
 
     public void animRight() {
-        animationSpeed = 400;
+        animationSpeed = speed;
         if (texture.getAnimationChannel() != animRight)
             texture.loopAnimationChannel(animRight);
         getInput().RIGHT = true;
@@ -98,7 +99,7 @@ public class AnimatedMovementComponent extends MovementComponent {
     }
 
     public void animLeft() {
-        animationSpeed = -400;
+        animationSpeed = -speed;
         if (texture.getAnimationChannel() != animLeft)
             texture.loopAnimationChannel(animLeft);
         getInput().LEFT = true;
@@ -106,14 +107,14 @@ public class AnimatedMovementComponent extends MovementComponent {
     }
 
     public void animUp() {
-        animationSpeed = 400;
+        animationSpeed = speed;
         if (texture.getAnimationChannel() != animWalkUp)
             texture.loopAnimationChannel(animWalkUp);
         getInput().UP = true;
     }
 
     public void animDown() {
-        animationSpeed = -400;
+        animationSpeed = -speed;
         if (texture.getAnimationChannel() != animWalkDown)
             texture.loopAnimationChannel(animWalkDown);
         getInput().DOWN = true;

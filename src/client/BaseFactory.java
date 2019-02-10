@@ -1,12 +1,18 @@
 package client;
 
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.parser.tiled.Layer;
+import com.almasb.fxgl.parser.tiled.TMXParser;
+import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import shared.EntityType;
+
+import java.io.*;
 
 public class BaseFactory implements EntityFactory {
 
@@ -100,4 +106,6 @@ public class BaseFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+
+
 }

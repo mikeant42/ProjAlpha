@@ -4,8 +4,10 @@ import client.menu.LoginController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.RenderLayer;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
@@ -21,6 +23,9 @@ import shared.EntityType;
 import shared.Network;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,7 +183,11 @@ public class Screen extends GameApplication {
             @Override
             public void run() {
                 if (id == 1) {
-                    getGameWorld().setLevelFromMap("ult.json");
+                    try {
+                        parseWorld("src/assets/json/testing3.xml");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
                 }
 
@@ -194,6 +203,18 @@ public class Screen extends GameApplication {
 
             }
         });
+    }
+
+    private void parseWorld(String file) throws FileNotFoundException{
+        File initialFile = new File(file);
+        InputStream targetStream = new FileInputStream(initialFile);
+
+
+        TMXParser parser = new TMXParser();
+        TiledMap map = parser.parse(targetStream);
+        map.getLayerByName("Treetop").setDraworder("topdown");
+
+        getGameWorld().setLevelFromMap(map);
     }
 
 

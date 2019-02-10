@@ -52,7 +52,7 @@ public class ServerHandler {
                 Log.NONE();
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        for (NPCBehavior behavior : server.getNpcHandler().getNPCs()) {
+                        for (NPCBehavior behavior : server.getMap().getNPCHandler().getNPCs()) {
                             behavior.update();
                         }
                         Thread.sleep(50);

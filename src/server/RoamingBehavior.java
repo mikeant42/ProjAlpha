@@ -38,8 +38,6 @@ public class RoamingBehavior extends NPCBehavior {
 
         int choice = r.nextInt(5);
 
-        System.out.println(choice);
-
         return choice;
     }
 

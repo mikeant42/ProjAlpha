@@ -59,7 +59,7 @@ public class ClientHandler {
 
         // ThreadedListener runs the listener methods on a different thread.
 
-        client.addListener(new Listener.ThreadedListener(loginResponseListener));
+        client.addListener(loginResponseListener);
         client.addListener(new Listener.ThreadedListener(npcResponseListener));
 
         addMainListeners();

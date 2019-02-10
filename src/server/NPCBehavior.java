@@ -15,6 +15,8 @@ public class NPCBehavior {
     private int bounds; // We need this so the npc doesn't wander far from where he was spawned
     private float x,y;
 
+    float speed = 0.9f;
+
 
     public NPCBehavior(EntityType entityType, int x, int y) {
         data = new Network.NPCPacket();
@@ -39,8 +41,6 @@ public class NPCBehavior {
     }
 
     public void update() {
-        float speed = 0.9f;
-
 
         switch (state) {
             case 1:
@@ -61,25 +61,25 @@ public class NPCBehavior {
 
     public void moveRight(float speed) {
         float xr = x + speed;
-        if (Math.abs(x - data.x) <= bounds)
+        if (Math.abs(xr - data.x) <= bounds)
             x = xr;
     }
 
     public void moveLeft(float speed) {
         float xr = x - speed;
-        if (Math.abs(x - data.x) <= bounds)
+        if (Math.abs(xr - data.x) <= bounds)
             x = xr;
     }
 
     public void moveUp(float speed) {
         float yr = y - speed;
-        if (Math.abs(y - data.y) <= bounds)
+        if (Math.abs(yr - data.y) <= bounds)
             y = yr;
     }
 
     public void moveDown(float speed) {
         float yr = y + speed;
-        if (Math.abs(y - data.y) <= bounds)
+        if (Math.abs(yr - data.y) <= bounds)
             y = yr;
     }
 
@@ -116,4 +116,11 @@ public class NPCBehavior {
         this.bounds = bounds;
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
 }

@@ -13,25 +13,17 @@ import java.util.List;
 public class AlphaServer extends Server {
 
     private HashSet<CharacterPacket> loggedIn = new HashSet();
-    private NPCHandler npcHandler;
+    private GameMap map; // List<GameMap>
 
     public AlphaServer() {
-        RoamingBehavior behavior = new RoamingBehavior(500, 500);
-
-        npcHandler = new NPCHandler();
-        npcHandler.addNPC(behavior);
-
-
+        map = new GameMap(this);
     }
 
     @Override
     public void update(int i) throws IOException {
         super.update(i);
 
-        for (NPCBehavior behavior : npcHandler.getNPCs()) {
-            sendToAllTCP(behavior.formUpdate());
-        }
-
+        map.update();
     }
 
     public void logIn (ServerHandler.CharacterConnection c, CharacterPacket character) {
@@ -60,7 +52,7 @@ public class AlphaServer extends Server {
         }
 
         // We also have to spawn all the npcs in his level
-        for (NPCBehavior npcBehavior : npcHandler.getNPCs()) {
+        for (NPCBehavior npcBehavior : map.getNPCHandler().getNPCs()) {
             c.sendTCP(npcBehavior.getData());
         }
     }
@@ -83,7 +75,8 @@ public class AlphaServer extends Server {
         loggedIn.add(packet);
     }
 
-    public NPCHandler getNpcHandler() {
-        return npcHandler;
+
+    public GameMap getMap() {
+        return map;
     }
 }
