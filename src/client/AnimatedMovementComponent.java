@@ -128,4 +128,8 @@ public class AnimatedMovementComponent extends MovementComponent {
         return texture.getHeight();
     }
 
+    public AnimatedTexture getActiveAnimation() {
+        return texture;
+    }
+
 }

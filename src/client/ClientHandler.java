@@ -38,6 +38,7 @@ public class ClientHandler {
     private Screen screen;
 
     private int id; // This is the id the server assigned to us
+    private String username;
 
     private LoginResponseListener loginResponseListener;
     private CharacterResponseListener characterResponseListener;
@@ -133,6 +134,8 @@ public class ClientHandler {
         login.name = username;
         login.pass = password;
         client.sendTCP(login);
+
+        this.username = username;
     }
 
     public void requestMap() {
@@ -199,5 +202,9 @@ public class ClientHandler {
 
     public List<NPCPacket> getNpcs() {
         return npcs;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

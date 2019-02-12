@@ -3,6 +3,7 @@ package client;
 import client.menu.LoginController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.listener.ExitListener;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.RenderLayer;
 import com.almasb.fxgl.entity.SpawnData;
@@ -76,6 +77,16 @@ public class Screen extends GameApplication {
     public void initGamee() {
         loggedIn = true;
         ClientHandler.LOGIN_STATUS = true;
+
+        this.addExitListener(new ExitListener() {
+            @Override
+            public void onExit() {
+                System.out.println("Bye!");
+                clientHandler.quit(clientHandler.getId());
+                clientHandler.getClient().close();
+                System.exit(0);
+            }
+        });
 
         Platform.runLater(new Runnable(){
             @Override
@@ -275,6 +286,7 @@ public class Screen extends GameApplication {
                         System.out.println("Adding player " + packet.id);
                         SpawnData data = new SpawnData(packet.x, packet.y);
                         data.put("ID", packet.id);
+                        data.put("user", packet.name);
                         getGameWorld().spawn("player", data);
                         playersHere.add(packet);
                     }

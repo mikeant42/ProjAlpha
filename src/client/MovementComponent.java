@@ -11,7 +11,6 @@ enum INVALID_MOVE {
 }
 
 public class MovementComponent extends Component {
-    // note that this component is injected automatically
 
     private double speed;
     private int moveFactor = 75;
