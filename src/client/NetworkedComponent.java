@@ -17,6 +17,11 @@ public class NetworkedComponent extends Component {
 
     }
 
+    @Override
+    public void onAdded() {
+        movementComponent = entity.getComponent(AnimatedMovementComponent.class);
+    }
+
     public boolean isSyncMovement() {
         return syncMovement;
     }
@@ -43,16 +48,15 @@ public class NetworkedComponent extends Component {
 
 
     public void update() {
-        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER) && ClientHandler.LOGIN_STATUS) {
+        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
 
             // This value is null if there is no physics component
 
             // This is null unless we have a movement component
-//            if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
-                movementComponent = entity.getComponent(AnimatedMovementComponent.class);
+            //if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
                 handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getState(), getEntity().getX(),
                         getEntity().getY(), this.id);
-          //  }
+            //}
 
         }
 

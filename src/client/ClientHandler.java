@@ -90,11 +90,12 @@ public class ClientHandler {
 
     }
 
-    public void updateNPC(float x, float y, int id) {
+    public void updateNPC(float x, float y, int move, int id) {
         for (NPCPacket packet : npcs) {
             if (id == packet.id) {
                 packet.x = x;
                 packet.y = y;
+                packet.moveState = move;
             }
         }
     }

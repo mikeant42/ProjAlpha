@@ -28,7 +28,7 @@ public class NPCResponseListener extends Listener {
 
         if (object instanceof Network.UpdateNPC) {
             Network.UpdateNPC packet = (Network.UpdateNPC)object;
-            handler.updateNPC(packet.x, packet.y, packet.id);
+            handler.updateNPC(packet.x, packet.y, packet.moveState, packet.id);
         }
     }
 

@@ -72,6 +72,7 @@ public class Network {
         public float y;
         public int id;
         public EntityType type;
+        public int moveState;
     }
 
     static public class UpdateNPC {

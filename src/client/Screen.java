@@ -302,14 +302,14 @@ public class Screen extends GameApplication {
 
 //                            // idea -- Move this into AnimMovemementComponent
 //                            if (moveState == Data.MovementState.RUNNING_FORWARD) {
-//                                entity.getComponent(AnimatedMovementComponent.class).animUp();
+//                                entity.getComponent(AnimatedMovementComponent.class).up();
 //                            } else if (moveState == Data.MovementState.RUNNING_BACK) {
-//                                entity.getComponent(AnimatedMovementComponent.class).animDown();
+//                                entity.getComponent(AnimatedMovementComponent.class).down();
 //                            } else if (moveState == Data.MovementState.RUNNING_LEFT) {
-//                                entity.getComponent(AnimatedMovementComponent.class).animLeft();
+//                                entity.getComponent(AnimatedMovementComponent.class).left();
 //                            } else if (moveState == Data.MovementState.RUNNING_RIGHT) {
-//                                entity.getComponent(AnimatedMovementComponent.class).animRight();
-//                           // } else {
+//                                entity.getComponent(AnimatedMovementComponent.class).right();
+//                            }
 //                           //     entity.getComponent(AnimatedMovementComponent.class).animIdle();
 //                            }
                             entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
@@ -343,6 +343,7 @@ public class Screen extends GameApplication {
             List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.ROAMING_NPC);
             for (Entity entity : entities) {
                 if (packet.id == entity.getInt("ID")) {
+                    entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                     entity.setX(packet.x);
                     entity.setY(packet.y);
                 }

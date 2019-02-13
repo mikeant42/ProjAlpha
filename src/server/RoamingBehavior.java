@@ -1,8 +1,7 @@
 package server;
 
+import shared.Data;
 import shared.EntityType;
-import shared.NPCState;
-import shared.Network;
 
 import java.util.Random;
 
@@ -58,7 +57,7 @@ public class RoamingBehavior extends NPCBehavior {
             setState(choice);
             elapsedTime = 0;
         } else if (elapsedTime >= directionTime) {
-            setState(NPCState.STANDING);
+            setState(Data.MovementState.STANDING);
         }
 
         lastTime = currentTime;

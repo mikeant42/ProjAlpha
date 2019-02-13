@@ -16,47 +16,37 @@ public class AnimatedMovementComponent extends MovementComponent {
     private AnimationChannel animIdle, animWalkUp, animWalkDown, animRight, animLeft;
 
     private int animationSpeed = 0;
-    private int speed = 700;
+    private int speed = 1000;
     //private int frameWidth = 48, frameHeight = 64; // These numbers are the x,y of the image / number of rows/columns
     private int framesPerRow = 3;
+    private int frameWidth, frameHeight;
+    private String file;
+
+    private int idleStart, idleEnd, forwardStart, forwardEnd, backStart, backEnd, rightStart, rightEnd, leftStart, leftEnd;
 
     // TODO - make this more configurable for when we need to rotate objetcts for the animations, and when we don't
 
     public AnimatedMovementComponent(String file, int frameWidth, int frameHeight, int framesPerRow) {
         super();
 
-        animIdle = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), 8, 9);
-        animWalkUp = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), 0, 2);
-        animRight = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), 3, 5);
-        animWalkDown = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), 6, 8);
-        animLeft = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), 9, 11);
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
+        this.file = file;
 
-        texture = new AnimatedTexture(animIdle);
     }
-
-//    public AnimatedMovementComponent(String file, int frameWidth, int frameHeight, int framesPerRow) {
-//        super();
-//        this.frameWidth = frameWidth;
-//        this.frameHeight = frameHeight;
-//        this.framesPerRow = framesPerRow;
-//
-//        animIdle = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), 0, 2);
-//        animWalkUp = new AnimationChannel(file, 4, 32, 42, Duration.seconds(1), 0, 3);
-//
-//        texture = new AnimatedTexture(animIdle);
-//
-//
-//
-////        animatedTexture.setOnCycleFinished(() -> {
-////            if (animatedTexture.getAnimationChannel() == animJump) {
-////
-////                setState(FALL);
-////            }
-////        });
-//    }
 
     @Override
     public void onAdded() {
+
+        animIdle = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), idleStart, idleEnd);
+        animWalkUp = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight, Duration.seconds(1), forwardStart, forwardEnd);
+        animRight = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), rightStart, rightEnd);
+        animWalkDown = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), backStart, backEnd);
+        animLeft = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), leftStart, leftEnd);
+
+        texture = new AnimatedTexture(animIdle);
+
+
         entity.setView(texture);
     }
 
@@ -79,7 +69,7 @@ public class AnimatedMovementComponent extends MovementComponent {
             animationSpeed = 0;
         }
 
-
+        // update this before movementcomponent, or else will cause animation problems
         super.onUpdate(tpf);
 
     }
@@ -114,9 +104,44 @@ public class AnimatedMovementComponent extends MovementComponent {
         return texture.getHeight();
     }
 
-    public AnimatedTexture getActiveAnimation() {
-        return texture;
+    public int getAnimationSpeed() {
+        return speed;
     }
 
+    public void setAnimationSpeed(int animationSpeed) {
+        this.speed = animationSpeed;
+    }
 
+    public int getFramesPerRow() {
+        return framesPerRow;
+    }
+
+    public void setFramesPerRow(int framesPerRow) {
+        this.framesPerRow = framesPerRow;
+    }
+
+    public void setForward(int start, int end) {
+        forwardStart = start;
+        forwardEnd = end;
+    }
+
+    public void setIdle(int start, int end) {
+        idleStart = start;
+        idleEnd = end;
+    }
+
+    public void setBack(int start, int end) {
+        backStart = start;
+        backEnd = end;
+    }
+
+    public void setRight(int start, int end) {
+        rightStart = start;
+        rightEnd = end;
+    }
+
+    public void setLeft(int start, int end) {
+        leftStart = start;
+        leftEnd = end;
+    }
 }

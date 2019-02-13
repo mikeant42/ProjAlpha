@@ -90,4 +90,5 @@ public class MovementComponent extends Component {
     public boolean isMoving() {
         return !(state == Data.MovementState.STANDING);
     }
+
 }

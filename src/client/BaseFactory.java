@@ -23,7 +23,12 @@ public class BaseFactory implements EntityFactory {
     @Spawns("player")
     public Entity spawnPlayer(SpawnData data) {
 
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png", 48, 64, 3);
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
+        movementComponent.setIdle(8,9);
+        movementComponent.setForward(0,2);
+        movementComponent.setRight(3,5);
+        movementComponent.setBack(6,8);
+        movementComponent.setLeft(9,11);
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
@@ -35,9 +40,10 @@ public class BaseFactory implements EntityFactory {
 
 
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
+        player.addComponent(movementComponent);
+
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(new OverlayTextComponent(data.get("user")));
-        player.addComponent(movementComponent);
 
 
         player.setScaleX(playerScale);
@@ -48,7 +54,12 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("localplayer")
     public Entity spawnLocalPlayer(SpawnData data) {
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("mage-light.png", 48, 64, 3);
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
+        movementComponent.setIdle(8,9);
+        movementComponent.setForward(0,2);
+        movementComponent.setRight(3,5);
+        movementComponent.setBack(6,8);
+        movementComponent.setLeft(9,11);
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
@@ -58,8 +69,9 @@ public class BaseFactory implements EntityFactory {
         player.setType(EntityType.LOCAL_PLAYER);
 
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
-        player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(movementComponent);
+
+        player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
 
@@ -71,6 +83,13 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("Roaming NPC")
     public Entity spawnRoamingNPC(SpawnData data) {
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/googon.png", 48, 64, 3);
+        movementComponent.setIdle(8,9);
+        movementComponent.setForward(0,2);
+        movementComponent.setRight(3,5);
+        movementComponent.setBack(6,8);
+        movementComponent.setLeft(9,11);
+
         Entity npc = Entities.builder()
                 .at(data.getX(), data.getY())
                 .viewFromNode(new Rectangle(25, 25, Color.BLUE))
@@ -82,6 +101,7 @@ public class BaseFactory implements EntityFactory {
         npc.setType(EntityType.ROAMING_NPC);
 
         npc.setProperty("ID", data.get("ID"));
+        npc.addComponent(movementComponent);
 
         return npc;
     }

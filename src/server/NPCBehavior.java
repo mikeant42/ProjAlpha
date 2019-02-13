@@ -6,7 +6,7 @@ public class NPCBehavior {
 
     private Network.NPCPacket data;
 
-    private int state = 0;
+    private int state = Data.MovementState.STANDING;
 
     private Network.UpdateNPC updateNPC;
 
@@ -102,6 +102,7 @@ public class NPCBehavior {
         updateNPC.x =  x;
         updateNPC.y =  y;
         updateNPC.id = data.id;
+        updateNPC.moveState = state;
 
         return updateNPC;
     }
