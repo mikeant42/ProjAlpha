@@ -43,16 +43,16 @@ public class NetworkedComponent extends Component {
 
 
     public void update() {
-        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
+        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER) && ClientHandler.LOGIN_STATUS) {
 
             // This value is null if there is no physics component
 
             // This is null unless we have a movement component
-            //if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
+//            if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
                 movementComponent = entity.getComponent(AnimatedMovementComponent.class);
-                handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getInput(), getEntity().getX(),
+                handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getState(), getEntity().getX(),
                         getEntity().getY(), this.id);
-            //}
+          //  }
 
         }
 

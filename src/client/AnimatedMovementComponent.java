@@ -1,9 +1,9 @@
 package client;
 
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
+import shared.Data;
 
 /**
  * Class for moving characters who also have an animated texture
@@ -63,27 +63,21 @@ public class AnimatedMovementComponent extends MovementComponent {
 
     @Override
     public void onUpdate(double tpf) {
-        if (animationSpeed != 0) {
-//            if (texture.getAnimationChannel() == animIdle) {
-//                if (getInput().UP) {
-//                    texture.loopAnimationChannel(animWalkUp);
-//                    System.out.println("looping up");
-//                } else if (getInput().DOWN) {
-//                    texture.loopAnimationChannel(animWalkDown);
-//                } else if (getInput().RIGHT) {
-//                    texture.loopAnimationChannel(animRight);
-//                } else if (getInput().LEFT) {
-//                    texture.loopAnimationChannel(animLeft);
-//                }
-//            }
+        if (getState() == Data.MovementState.RUNNING_FORWARD && texture.getAnimationChannel() != animWalkUp) {
+            texture.loopAnimationChannel(animWalkUp);
+        } else if (getState() == Data.MovementState.RUNNING_BACK && texture.getAnimationChannel() != animWalkDown) {
+            texture.loopAnimationChannel(animWalkDown);
+        } else if (getState() == Data.MovementState.RUNNING_LEFT && texture.getAnimationChannel() != animLeft) {
+            texture.loopAnimationChannel(animLeft);
+        } else if (getState() == Data.MovementState.RUNNING_RIGHT && texture.getAnimationChannel() != animRight) {
+            texture.loopAnimationChannel(animRight);
+        }
 
-            // If no inputs are registering, its safe to move idle
-            if (!isMoving()) {
-                texture.loopAnimationChannel(animIdle);
-                animationSpeed = 0;
-            }
-
-       }
+        // If no inputs are registering, its safe to move idle
+        if (!isMoving()) {
+            animIdle();
+            animationSpeed = 0;
+        }
 
 
         super.onUpdate(tpf);
@@ -91,33 +85,25 @@ public class AnimatedMovementComponent extends MovementComponent {
     }
 
     public void animRight() {
-        animationSpeed = speed;
-        if (texture.getAnimationChannel() != animRight)
-            texture.loopAnimationChannel(animRight);
-        getInput().RIGHT = true;
-        //getEntity().setScaleX(1);
+        setState(Data.MovementState.RUNNING_RIGHT);
     }
 
     public void animLeft() {
-        animationSpeed = -speed;
-        if (texture.getAnimationChannel() != animLeft)
-            texture.loopAnimationChannel(animLeft);
-        getInput().LEFT = true;
-        //getEntity().setScaleX(-1);
+        setState(Data.MovementState.RUNNING_LEFT);
     }
 
     public void animUp() {
-        animationSpeed = speed;
-        if (texture.getAnimationChannel() != animWalkUp)
-            texture.loopAnimationChannel(animWalkUp);
-        getInput().UP = true;
+        setState(Data.MovementState.RUNNING_FORWARD);
     }
 
     public void animDown() {
-        animationSpeed = -speed;
         if (texture.getAnimationChannel() != animWalkDown)
-            texture.loopAnimationChannel(animWalkDown);
-        getInput().DOWN = true;
+            setState(Data.MovementState.RUNNING_BACK);
+    }
+
+    public void animIdle() {
+        if (texture.getAnimationChannel() != animIdle)
+            texture.loopAnimationChannel(animIdle);
     }
 
     public double getWidth() {
@@ -131,5 +117,6 @@ public class AnimatedMovementComponent extends MovementComponent {
     public AnimatedTexture getActiveAnimation() {
         return texture;
     }
+
 
 }

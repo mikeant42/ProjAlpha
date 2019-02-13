@@ -5,19 +5,15 @@ import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.listener.ExitListener;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.RenderLayer;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
+import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import shared.CharacterPacket;
 import shared.Data;
 import shared.EntityType;
@@ -75,8 +71,7 @@ public class Screen extends GameApplication {
     In this method we init the world game for the player.
      */
     public void initGamee() {
-        loggedIn = true;
-        ClientHandler.LOGIN_STATUS = true;
+
 
         this.addExitListener(new ExitListener() {
             @Override
@@ -93,6 +88,8 @@ public class Screen extends GameApplication {
             public void run() {
                 // Make sure we disconnect at the end of the game
                 iniInput();
+                loggedIn = true;
+                ClientHandler.LOGIN_STATUS = true;
 
                 getGameScene().removeUI(loginScreen);
                 getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
@@ -115,6 +112,7 @@ public class Screen extends GameApplication {
     }
 
     private void iniInput() {
+
         getInput().addAction(new UserAction("Up 1") {
             @Override
             protected void onAction() {
@@ -299,28 +297,30 @@ public class Screen extends GameApplication {
                         if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                             // We found the dude we need to update
 
-                            //entity.getComponent(AnimatedMovementComponent.class).setInput(input);
-                            Data.Input input = packet.input;
-                            if (input != null) {
-                                if (input.UP) {
-                                    entity.getComponent(AnimatedMovementComponent.class).animUp();
-                                } else if (input.DOWN) {
-                                    entity.getComponent(AnimatedMovementComponent.class).animDown();
-                                } else if (input.LEFT) {
-                                    entity.getComponent(AnimatedMovementComponent.class).animLeft();
-                                } else if (input.RIGHT) {
-                                    entity.getComponent(AnimatedMovementComponent.class).animRight();
-                                }
-                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
-                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
-                            }
+                            entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+                            int moveState = packet.moveState;
+
+//                            // idea -- Move this into AnimMovemementComponent
+//                            if (moveState == Data.MovementState.RUNNING_FORWARD) {
+//                                entity.getComponent(AnimatedMovementComponent.class).animUp();
+//                            } else if (moveState == Data.MovementState.RUNNING_BACK) {
+//                                entity.getComponent(AnimatedMovementComponent.class).animDown();
+//                            } else if (moveState == Data.MovementState.RUNNING_LEFT) {
+//                                entity.getComponent(AnimatedMovementComponent.class).animLeft();
+//                            } else if (moveState == Data.MovementState.RUNNING_RIGHT) {
+//                                entity.getComponent(AnimatedMovementComponent.class).animRight();
+//                           // } else {
+//                           //     entity.getComponent(AnimatedMovementComponent.class).animIdle();
+//                            }
+                            entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
+                            entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+
+
+                        }
 
 //                entity.getComponent(PhysicsComponent.class).setVelocityX(velX);
 //                entity.getComponent(PhysicsComponent.class).setVelocityY(velY);
 
-                        }
-
-
                     }
 
 
@@ -330,25 +330,26 @@ public class Screen extends GameApplication {
             }
 
 
-            for (Network.NPCPacket packet : clientHandler.getNpcs()) {
-                if (!isNPCHere(packet.id)) {
-                    System.out.println("Spawning npc " + packet.id);
-                    SpawnData data = new SpawnData(packet.x, packet.y);
-                    data.put("ID", packet.id);
-                    getGameWorld().spawn("Roaming NPC", data);
-                    npcsHere.add(packet);
-                }
 
-                List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.ROAMING_NPC);
-                for (Entity entity : entities) {
-                    if (packet.id == entity.getInt("ID")) {
-                        entity.setX(packet.x);
-                        entity.setY(packet.y);
-                    }
-                }
-
-
+        for (Network.NPCPacket packet : clientHandler.getNpcs()) {
+            if (!isNPCHere(packet.id)) {
+                System.out.println("Spawning npc " + packet.id);
+                SpawnData data = new SpawnData(packet.x, packet.y);
+                data.put("ID", packet.id);
+                getGameWorld().spawn("Roaming NPC", data);
+                npcsHere.add(packet);
             }
+
+            List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.ROAMING_NPC);
+            for (Entity entity : entities) {
+                if (packet.id == entity.getInt("ID")) {
+                    entity.setX(packet.x);
+                    entity.setY(packet.y);
+                }
+            }
+
+
+        }
 
 
         }

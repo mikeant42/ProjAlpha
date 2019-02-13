@@ -1,18 +1,12 @@
 package client;
 
-import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.parser.tiled.Layer;
-import com.almasb.fxgl.parser.tiled.TMXParser;
-import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import shared.EntityType;
-
-import java.io.*;
 
 public class BaseFactory implements EntityFactory {
 
@@ -42,7 +36,7 @@ public class BaseFactory implements EntityFactory {
 
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
-        player.addComponent(new OverlayText(data.get("user")));
+        player.addComponent(new OverlayTextComponent(data.get("user")));
         player.addComponent(movementComponent);
 
 
@@ -66,7 +60,7 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(movementComponent);
-        player.addComponent(new OverlayText(handler.getUsername()));
+        player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
 
         player.setScaleX(playerScale);

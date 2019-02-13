@@ -1,8 +1,6 @@
 package server;
 
-import shared.CharacterPacket;
-import shared.EntityType;
-import shared.Network;
+import shared.*;
 
 public class NPCBehavior {
 
@@ -123,4 +121,5 @@ public class NPCBehavior {
     public void setSpeed(float speed) {
         this.speed = speed;
     }
+
 }

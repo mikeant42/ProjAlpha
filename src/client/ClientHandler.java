@@ -11,7 +11,6 @@ import shared.CharacterPacket;
 import shared.Data;
 import shared.Network;
 import shared.Network.*;
-import shared.Data.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class ClientHandler {
 
     private int id; // This is the id the server assigned to us
     private String username;
+    public static int moveState = Data.MovementState.STANDING;
 
     private LoginResponseListener loginResponseListener;
     private CharacterResponseListener characterResponseListener;
@@ -79,12 +79,12 @@ public class ClientHandler {
 
     }
 
-    public void updatePlayerLocal(Data.Input input, double x, double y, int idd) {
+    public void updatePlayerLocal(int move, double x, double y, int idd) {
         for (CharacterPacket packet : otherPlayers) {
             if (idd == packet.id && idd != id) {
                 packet.x = x;
                 packet.y = y;
-                packet.input = input;
+                packet.moveState = move;
             }
         }
 
@@ -144,9 +144,9 @@ public class ClientHandler {
         client.sendTCP(query);
     }
 
-    public void sendMovement(Input input, double x, double y, int id) {
+    public void sendMovement(int move, double x, double y, int id) {
         Network.UpdateCharacter update = new Network.UpdateCharacter();
-        update.input = input;
+        update.moveState = move;
         update.id = id;
         update.x = x;
         update.y = y;

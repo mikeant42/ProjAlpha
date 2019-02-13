@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 
 import static client.Screen.TILESIZE;
 
-public class OverlayText extends Component {
+public class OverlayTextComponent extends Component {
 
     private String text;
     private int offsetX = 70;
@@ -20,7 +20,7 @@ public class OverlayText extends Component {
     private Point2D pos;
     private Viewport viewport;
 
-    public OverlayText(String text) {
+    public OverlayTextComponent(String text) {
         this.text = text;
     }
 
@@ -42,6 +42,11 @@ public class OverlayText extends Component {
 
         //Bindings.createIntegerBinding(() -> textPixels.setTranslateX(pos.getX()), )
 
+    }
+
+    @Override
+    public void onRemoved() {
+        FXGL.getApp().getGameScene().removeUINode(textPixels);
     }
 
     @Override

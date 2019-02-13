@@ -26,7 +26,6 @@ public class Network {
         kryo.register(MoveCharacter.class);
         kryo.register(LoginSuccess.class);
         kryo.register(WorldQuery.class);
-        kryo.register(Data.Input.class);
         kryo.register(EntityType.class);
         kryo.register(NPCPacket.class);
         kryo.register(UpdateNPC.class);
@@ -48,7 +47,7 @@ public class Network {
     static public class UpdateCharacter {
         public int id;
         public double x, y;
-        public Data.Input input;
+        public int moveState;
     }
 
     static public class AddCharacter {
@@ -79,6 +78,7 @@ public class Network {
         public float x;
         public float y;
         public int id;
+        public int moveState;
     }
 
     static public class WorldQuery {

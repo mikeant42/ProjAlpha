@@ -48,7 +48,7 @@ public class CharacterCommandListener extends Listener {
         }
 
 
-        // In this case we are given an input Input and must produce the output of x,y
+        // In this case we are given an input MovementState and must produce the output of x,y
         // Or we could just send the inputs to the clients, and let them simulate. This would be simpler but it would make client cheating easy
 //        if (object instanceof Network.UpdateCharacter2) {
 //            Network.UpdateCharacter2 attempt = (Network.UpdateCharacter2)object;

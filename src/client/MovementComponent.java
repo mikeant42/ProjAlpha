@@ -5,6 +5,7 @@ import shared.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Point2D;
 
 enum INVALID_MOVE {
     RIGHT, LEFT, UP, DOWN, NONE
@@ -16,11 +17,11 @@ public class MovementComponent extends Component {
     private int moveFactor = 75;
     private List<INVALID_MOVE> invalidMoves = new ArrayList<>();
 
-    private Data.Input input;
+    private int state = Data.MovementState.STANDING;
+    private Point2D previousPos = new Point2D(0,0);
 
     public MovementComponent() {
         this.moveFactor = moveFactor;
-        input = new Data.Input();
 
     }
 
@@ -28,22 +29,19 @@ public class MovementComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        if (getEntity().getPosition().equals(previousPos)) { // If we haven't moved, we must be standing
+            state = Data.MovementState.STANDING;
+        }
+        previousPos = getEntity().getPosition();
+
         speed = (int)(tpf * moveFactor);
-
-
-        input.UP = false;
-        input.DOWN = false;
-        input.RIGHT = false;
-        input.LEFT = false;
-
-
     }
 
     public void up() {
         //physics.setVelocityY(-moveFactor);
         if (!invalidMoves.contains(INVALID_MOVE.UP)) {
             getEntity().setY(getEntity().getY() - speed);
-            input.UP = true;
+            state = Data.MovementState.RUNNING_FORWARD;
         }
 
     }
@@ -51,7 +49,7 @@ public class MovementComponent extends Component {
     public void down() {
         if (!invalidMoves.contains(INVALID_MOVE.DOWN)) {
             getEntity().setY(getEntity().getY() + speed);
-            input.DOWN = true;
+            state = Data.MovementState.RUNNING_BACK;
         }
 
     }
@@ -59,7 +57,7 @@ public class MovementComponent extends Component {
     public void left() {
         if (!invalidMoves.contains(INVALID_MOVE.LEFT)) {
             getEntity().setX(getEntity().getX() - speed);
-            input.LEFT = true;
+            state = Data.MovementState.RUNNING_LEFT;
 
         }
     }
@@ -67,7 +65,7 @@ public class MovementComponent extends Component {
     public void right() {
         if (!invalidMoves.contains(INVALID_MOVE.RIGHT)) {
             getEntity().setX(getEntity().getX() + speed);
-            input.RIGHT = true;
+            state = Data.MovementState.RUNNING_RIGHT;
         }
 
     }
@@ -81,15 +79,15 @@ public class MovementComponent extends Component {
         invalidMoves.removeAll(invalidMoves);
     }
 
-    public Data.Input getInput() {
-        return input;
+    public int getState() {
+        return state;
     }
 
-    public void setInput(Data.Input input) {
-        this.input = input;
+    public void setState(int input) {
+        this.state = input;
     }
 
     public boolean isMoving() {
-        return !(!getInput().LEFT && !getInput().RIGHT && !getInput().UP && !getInput().DOWN);
+        return !(state == Data.MovementState.STANDING);
     }
 }
