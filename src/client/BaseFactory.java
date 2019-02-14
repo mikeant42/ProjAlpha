@@ -4,8 +4,6 @@ import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import shared.EntityType;
 
 public class BaseFactory implements EntityFactory {
@@ -24,7 +22,7 @@ public class BaseFactory implements EntityFactory {
     public Entity spawnPlayer(SpawnData data) {
 
         AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
-        movementComponent.setIdle(8,9);
+        movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
         movementComponent.setRight(3,5);
         movementComponent.setBack(6,8);
@@ -55,7 +53,7 @@ public class BaseFactory implements EntityFactory {
     @Spawns("localplayer")
     public Entity spawnLocalPlayer(SpawnData data) {
         AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
-        movementComponent.setIdle(8,9);
+        movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
         movementComponent.setRight(3,5);
         movementComponent.setBack(6,8);
@@ -84,7 +82,7 @@ public class BaseFactory implements EntityFactory {
     @Spawns("Roaming NPC")
     public Entity spawnRoamingNPC(SpawnData data) {
         AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/googon.png", 48, 64, 3);
-        movementComponent.setIdle(8,9);
+        movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
         movementComponent.setRight(3,5);
         movementComponent.setBack(6,8);
@@ -92,11 +90,11 @@ public class BaseFactory implements EntityFactory {
 
         Entity npc = Entities.builder()
                 .at(data.getX(), data.getY())
-                .viewFromNode(new Rectangle(25, 25, Color.BLUE))
+                //.viewFromNode(new Rectangle(25, 25, Color.BLUE))
                 //.build()
                 //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
                 //.bbox(new HitBox(BoundingShape.box(25, 25)))
-                .with(new CollidableComponent(true))
+                //.with(new CollidableComponent(true))
                 .build();
         npc.setType(EntityType.ROAMING_NPC);
 
@@ -106,12 +104,12 @@ public class BaseFactory implements EntityFactory {
         return npc;
     }
 
-    @Spawns("hut")
+    @Spawns("collide")
     public Entity newHut(SpawnData data) {
         return Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .type(EntityType.HUT)
+                .type(EntityType.Collidable)
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -122,7 +120,7 @@ public class BaseFactory implements EntityFactory {
         return Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .type(EntityType.HUT)
+                .type(EntityType.Collidable)
                 .with(new CollidableComponent(true))
                 .build();
     }

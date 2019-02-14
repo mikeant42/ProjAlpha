@@ -38,7 +38,6 @@ public class ClientHandler {
 
     private int id; // This is the id the server assigned to us
     private String username;
-    public static int moveState = Data.MovementState.STANDING;
 
     private LoginResponseListener loginResponseListener;
     private CharacterResponseListener characterResponseListener;

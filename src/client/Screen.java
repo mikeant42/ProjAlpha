@@ -1,21 +1,24 @@
 package client;
 
-import client.menu.LoginController;
+import client.ui.LoginController;
+import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.listener.ExitListener;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
-import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.ui.InGamePanel;
 import com.almasb.fxgl.ui.UI;
+import com.almasb.fxgl.ui.UIController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.text.Text;
 import shared.CharacterPacket;
-import shared.Data;
 import shared.EntityType;
 import shared.Network;
 
@@ -30,7 +33,10 @@ import java.util.List;
 public class Screen extends GameApplication {
 
     private ClientHandler clientHandler;
+
     private UI loginScreen;
+    private UI mainPanel;
+
     private LoginController loginController;
     private List<CharacterPacket> playersHere = new ArrayList<>();
     private List<Network.NPCPacket> npcsHere = new ArrayList<>();
@@ -42,6 +48,9 @@ public class Screen extends GameApplication {
 
     public static int TILESIZE = 256;
 
+
+    private boolean panelOpen = false;
+
     public Screen() {
         clientHandler = new ClientHandler(this);
         clientHandler.connectServer();
@@ -52,6 +61,11 @@ public class Screen extends GameApplication {
     public void initUI() {
         loginController = new LoginController(clientHandler, getGameScene());
         loginScreen = getAssetLoader().loadUI("login.fxml", loginController);
+
+        MainPanelController panelControl = new MainPanelController();
+        mainPanel = getAssetLoader().loadUI("mainpanel.fxml", panelControl);
+        mainPanel.getRoot().setStyle("modena_dark.css");
+
 //        loginController.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 //            @Override
 //            public void handle(WindowEvent t) {
@@ -93,7 +107,10 @@ public class Screen extends GameApplication {
 
                 getGameScene().removeUI(loginScreen);
                 getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
+
                 clientHandler.requestMap();
+
+                mainPanel.getRoot().toFront();
 
 
 
@@ -113,11 +130,16 @@ public class Screen extends GameApplication {
 
     private void iniInput() {
 
+
+    }
+
+    @Override
+    public void initInput() {
+
         getInput().addAction(new UserAction("Up 1") {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).up();
-                player.getComponent(AnimatedMovementComponent.class).animUp();
             }
         }, KeyCode.W);
 
@@ -125,7 +147,6 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).down();
-                player.getComponent(AnimatedMovementComponent.class).animDown();
             }
         }, KeyCode.S);
 
@@ -133,7 +154,6 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).right();
-                player.getComponent(AnimatedMovementComponent.class).animRight();
             }
         }, KeyCode.D);
 
@@ -141,10 +161,28 @@ public class Screen extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(AnimatedMovementComponent.class).left();
-                player.getComponent(AnimatedMovementComponent.class).animLeft();
             }
         }, KeyCode.A);
+
+
+
+
+
+        UserAction tab = new UserAction("Tab") {
+            public void onActionBegin() {
+                if (panelOpen) {
+                    getGameScene().removeUI(mainPanel);
+                    panelOpen = false;
+                } else {
+                    getGameScene().addUI(mainPanel);
+                    panelOpen = true;
+                }
+            }
+        };
+        getInput().addAction(tab, KeyCode.TAB);
     }
+
+
 
     /**
      * This physics handler only handles local data, like handling map collisions such as trees, water, etc
@@ -153,7 +191,7 @@ public class Screen extends GameApplication {
     @Override
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.HUT) {
+        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.Collidable) {
 
             /*
             This is sort of a home cooked collision system. There is a bug with this system that causes the player to sometimes get stuck if they are colliding to the right or left, but
@@ -239,12 +277,6 @@ public class Screen extends GameApplication {
                 }
             }
         });
-
-    }
-
-
-    @Override
-    protected void initInput() {
 
     }
 
@@ -361,7 +393,7 @@ public class Screen extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(860);
         settings.setHeight(600);
-        settings.setTitle("Basic Game App");
+        settings.setTitle("Alpha 0.0");
     }
 
     public static void main(String[] aargs) {

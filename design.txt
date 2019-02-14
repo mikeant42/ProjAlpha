@@ -2,19 +2,29 @@ turn based, 2d, top down
 - tick based
 
 open map / world
-- collectable resources with a system of progression
 - in-game player trading
 - medieval setting with fantasy elements
 
 combat progression
 - players can unlock new spells by finding scrolls, or finding npc's that will teach you
 - each scroll acts as a "card" with a certain requirement to cast.
+- you can get them by killing monsters
+  - thinking of a system where you can collect "essence" from pvp combat and you can use these to form "new" spells
+
+
+
+tech
+- full inventory system
+- full npc system
+- full combat card system
+    - it will probably go like `damage = gear * spell` and `hit = spell accuracy * gear accuracy`
+    - it will give players each 8 seconds to select a card
 
 
 player progression
-- players can unlock new armour by killing monsters, doing quests, trading, or crafting
+- players can unlock new armour by killing or buying
 
 questing
-- various mini "quests" given along the way by npcs you will find in the world, or interferring in certain events
+- don't know if i'm gonna implement quests
 
 

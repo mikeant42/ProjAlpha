@@ -65,35 +65,14 @@ public class AnimatedMovementComponent extends MovementComponent {
 
         // If no inputs are registering, its safe to move idle
         if (!isMoving()) {
-            animIdle();
+            if (texture.getAnimationChannel() != animIdle)
+                texture.loopAnimationChannel(animIdle);
             animationSpeed = 0;
         }
 
         // update this before movementcomponent, or else will cause animation problems
         super.onUpdate(tpf);
 
-    }
-
-    public void animRight() {
-        setState(Data.MovementState.RUNNING_RIGHT);
-    }
-
-    public void animLeft() {
-        setState(Data.MovementState.RUNNING_LEFT);
-    }
-
-    public void animUp() {
-        setState(Data.MovementState.RUNNING_FORWARD);
-    }
-
-    public void animDown() {
-        if (texture.getAnimationChannel() != animWalkDown)
-            setState(Data.MovementState.RUNNING_BACK);
-    }
-
-    public void animIdle() {
-        if (texture.getAnimationChannel() != animIdle)
-            texture.loopAnimationChannel(animIdle);
     }
 
     public double getWidth() {

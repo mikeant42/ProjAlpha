@@ -1,5 +1,6 @@
 package server;
 
+import javafx.geometry.Point2D;
 import shared.*;
 
 public class NPCBehavior {
@@ -12,6 +13,7 @@ public class NPCBehavior {
 
     private int bounds; // We need this so the npc doesn't wander far from where he was spawned
     private float x,y;
+    private float lastX, lastY;
 
     float speed = 0.9f;
 
@@ -23,6 +25,9 @@ public class NPCBehavior {
         // data.x, data.y are our spawn coords
         data.x = x;
         data.y = y;
+
+        lastX = x;
+        lastY = y;
 
         this.x = x;
         this.y = y;
@@ -40,6 +45,9 @@ public class NPCBehavior {
 
     public void update() {
 
+        lastX = x;
+        lastY = y;
+
         switch (state) {
             case 1:
                 moveUp(speed);
@@ -53,6 +61,10 @@ public class NPCBehavior {
             case 4:
                 moveDown(speed);
                 break;
+        }
+
+        if (lastX == x && lastY == y) {
+            state = Data.MovementState.STANDING;
         }
 
     }
