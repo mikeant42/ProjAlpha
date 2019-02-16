@@ -11,13 +11,10 @@ import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
-import com.almasb.fxgl.ui.InGamePanel;
 import com.almasb.fxgl.ui.UI;
-import com.almasb.fxgl.ui.UIController;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Background;
-import javafx.scene.text.Text;
+import shared.AlphaCollision;
 import shared.CharacterPacket;
 import shared.EntityType;
 import shared.Network;
@@ -64,17 +61,6 @@ public class Screen extends GameApplication {
 
         MainPanelController panelControl = new MainPanelController();
         mainPanel = getAssetLoader().loadUI("mainpanel.fxml", panelControl);
-        mainPanel.getRoot().setStyle("modena_dark.css");
-
-//        loginController.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-//            @Override
-//            public void handle(WindowEvent t) {
-//                System.out.println("Bye!");
-//                clientHandler.quit(clientHandler.getId());
-//                clientHandler.getClient().close();
-//                System.exit(0);
-//            }
-//        });
 
         getGameScene().addUI(loginScreen);
 
@@ -84,9 +70,7 @@ public class Screen extends GameApplication {
     /*
     In this method we init the world game for the player.
      */
-    public void initGamee() {
-
-
+    public void startGame() {
         this.addExitListener(new ExitListener() {
             @Override
             public void onExit() {
@@ -191,37 +175,7 @@ public class Screen extends GameApplication {
     @Override
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
-        getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.Collidable) {
-
-            /*
-            This is sort of a home cooked collision system. There is a bug with this system that causes the player to sometimes get stuck if they are colliding to the right or left, but
-            they cannot move up or down.
-            This collision system is only meant for map entities that are static on all clients.
-             */
-            @Override
-            protected void onCollision(Entity playerCollision, Entity hut) {
-                if (!(hut.getBoundingBoxComponent().getMinYWorld() < playerCollision.getBoundingBoxComponent().getMinYWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.DOWN);
-                }
-                if (!(hut.getBoundingBoxComponent().getMaxYWorld() > playerCollision.getBoundingBoxComponent().getMaxYWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.UP);
-                }
-                if (!(hut.getBoundingBoxComponent().getMaxXWorld() > playerCollision.getBoundingBoxComponent().getMaxXWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.LEFT);
-                }
-                if (!(hut.getBoundingBoxComponent().getMinXWorld() < playerCollision.getBoundingBoxComponent().getMinXWorld())) {
-                    player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.RIGHT);
-                }
-            }
-
-
-            @Override
-            public void onCollisionEnd(Entity player, Entity hut) {
-                player.getComponent(AnimatedMovementComponent.class).resetMoves();
-            }
-
-        });
-
+        getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.Collidable));
     }
 
 
@@ -393,7 +347,7 @@ public class Screen extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setWidth(860);
         settings.setHeight(600);
-        settings.setTitle("Alpha 0.0");
+        settings.setTitle("Alpha");
     }
 
     public static void main(String[] aargs) {

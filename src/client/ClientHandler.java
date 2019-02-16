@@ -171,7 +171,7 @@ public class ClientHandler {
 
     public void onLoggedIn(int id) {
         this.id = id;
-        screen.initGamee();
+        screen.startGame();
         //client.removeListener(loginResponseListener);
     }
 

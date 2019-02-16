@@ -29,6 +29,7 @@ public class Network {
         kryo.register(EntityType.class);
         kryo.register(NPCPacket.class);
         kryo.register(UpdateNPC.class);
+        kryo.register(GameObjectPacket.class);
     }
 
     static public class Login {
@@ -80,6 +81,11 @@ public class Network {
         public float y;
         public int id;
         public int moveState;
+    }
+
+    static public class GameObjectPacket {
+        public float x,y;
+        public int id;
     }
 
     static public class WorldQuery {

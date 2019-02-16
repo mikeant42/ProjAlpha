@@ -28,8 +28,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Button fx:id="useButton" layoutX="28.0" layoutY="187.0" mnemonicParsing="false" text="Use" />
-                  <Button fx:id="dropButton" layoutX="96.0" layoutY="187.0" mnemonicParsing="false" text="Drop" />
+                  <Button fx:id="use" layoutX="28.0" layoutY="187.0" mnemonicParsing="false" text="Use" />
+                  <Button fx:id="drop" layoutX="96.0" layoutY="187.0" mnemonicParsing="false" onAction="#dropItem" text="Drop" />
                </children></AnchorPane>
       </content>
     </Tab>

@@ -5,6 +5,7 @@ import com.almasb.fxgl.ui.UIController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.ColorAdjust;
@@ -31,6 +32,12 @@ public class MainPanelController implements UIController {
 
     @FXML
     private GridPane invent;
+
+    @FXML
+    private Button drop;
+
+    @FXML
+    private Button use;
 
     private int grid = 4; // 4x4, 3x3
 
@@ -124,6 +131,7 @@ public class MainPanelController implements UIController {
                         if (selected == internal) {
                             defaul.setEffect(new ColorAdjust());
                             canSelect = true;
+                            selected = 200;
                         } else if (canSelect) {
                             defaul.setEffect(adjust);
                             selected = internal;
@@ -140,7 +148,22 @@ public class MainPanelController implements UIController {
             }
         }
 
+
         //create();
+    }
+
+
+    public void dropItem() {
+        if (selected <= grid*grid) {
+            ImageView view = inventory[selected];
+            if (view != null) {
+                FXGL.getApp().getGameScene().removeUINode(view);
+                System.out.println(selected + "removing");
+            } else {
+                System.out.println("selection is null");
+            }
+        }
+
     }
 
 }

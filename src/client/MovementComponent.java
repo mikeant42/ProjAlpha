@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
 
-enum INVALID_MOVE {
-    RIGHT, LEFT, UP, DOWN, NONE
-}
-
 public class MovementComponent extends Component {
+
+    public enum INVALID_MOVE {
+        RIGHT, LEFT, UP, DOWN, NONE
+    }
 
     private double speed;
     private int moveFactor = 75;
