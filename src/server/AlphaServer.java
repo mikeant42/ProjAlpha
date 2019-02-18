@@ -51,10 +51,8 @@ public class AlphaServer extends Server {
             System.out.println("Client " + packet.id);
         }
 
-        // We also have to spawn all the npcs in his level
-        for (NPCBehavior npcBehavior : map.getNPCHandler().getNPCs()) {
-            c.sendTCP(npcBehavior.getData());
-        }
+
+        map.onCharacterAdd(character);
     }
 
 

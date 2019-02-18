@@ -13,9 +13,4 @@ public class Data {
         public static int RUNNING_BACK       = 4;
     }
 
-    static public class State {
-        public State() {}
-        public Vec2 position;
-        public Vec2 velocity;
-    }
 }

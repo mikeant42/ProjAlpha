@@ -14,10 +14,7 @@ import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
-import shared.AlphaCollision;
-import shared.CharacterPacket;
-import shared.EntityType;
-import shared.Network;
+import shared.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +34,7 @@ public class Screen extends GameApplication {
     private LoginController loginController;
     private List<CharacterPacket> playersHere = new ArrayList<>();
     private List<Network.NPCPacket> npcsHere = new ArrayList<>();
+    private List<GameObject> objectsHere = new ArrayList<>();
     private boolean loggedIn = false;
 
     private Entity player;
@@ -252,6 +250,15 @@ public class Screen extends GameApplication {
         return false;
     }
 
+    private boolean isObjectHere(int uid) {
+        for (GameObject object : objectsHere) {
+            if (object.getUniqueGameId() == uid) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     protected void onUpdate(double dtf) {
@@ -336,6 +343,18 @@ public class Screen extends GameApplication {
             }
 
 
+        }
+
+        for (GameObject object : clientHandler.getObjects()) {
+            if (!isObjectHere(object.getUniqueGameId())) {
+                SpawnData data = new SpawnData(object.getX(), object.getY());
+                data.put("ID", object.getId());
+                data.put("uid", object.getUniqueGameId());
+
+                getGameWorld().spawn("Gameobject", data);
+
+                objectsHere.add(object);
+            }
         }
 
 

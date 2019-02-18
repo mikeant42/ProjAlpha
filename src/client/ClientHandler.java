@@ -4,11 +4,14 @@ import client.listener.CharacterResponseListener;
 import client.listener.LoginResponseListener;
 import client.listener.NPCResponseListener;
 import client.listener.WorldResponseListener;
+import com.almasb.fxgl.entity.SpawnData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import javafx.application.Platform;
 import shared.CharacterPacket;
 import shared.Data;
+import shared.GameObject;
 import shared.Network;
 import shared.Network.*;
 
@@ -32,6 +35,7 @@ public class ClientHandler {
 
     private HashSet<CharacterPacket> otherPlayers = new HashSet<>();
     private List<NPCPacket> npcs = new ArrayList<>();
+    private List<GameObject> objects = new ArrayList<>();
 
 
     private Screen screen;
@@ -181,6 +185,19 @@ public class ClientHandler {
         client.sendTCP(msg);
     }
 
+    public void addGameObject(GameObject obj) {
+        objects.add(obj);
+    }
+
+    public void removeGameObject(int uid) {
+        for (GameObject object : objects) {
+            if (object.getUniqueGameId() == uid) {
+                objects.remove(object);
+            }
+        }
+        screen.removeNetworkedEntity(uid);
+    }
+
     public Screen getScreen() {
         return screen;
     }
@@ -206,5 +223,9 @@ public class ClientHandler {
 
     public String getUsername() {
         return username;
+    }
+
+    public List<GameObject> getObjects() {
+        return objects;
     }
 }

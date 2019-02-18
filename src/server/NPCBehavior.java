@@ -63,6 +63,7 @@ public class NPCBehavior {
                 break;
         }
 
+        // This is very similar to how things are done in movementcomponent maybe combine them somehow
         if (lastX == x && lastY == y) {
             state = Data.MovementState.STANDING;
         }

@@ -4,6 +4,8 @@ import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import shared.EntityType;
 
 public class BaseFactory implements EntityFactory {
@@ -102,6 +104,15 @@ public class BaseFactory implements EntityFactory {
         npc.addComponent(movementComponent);
 
         return npc;
+    }
+
+    @Spawns("Gameobject")
+    public Entity newGameObject(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .viewFromNode(new Rectangle(25, 25, Color.BLUE))
+                .with(new NetworkedComponent(data.get("uid"), handler))
+                .build();
     }
 
     @Spawns("collide")

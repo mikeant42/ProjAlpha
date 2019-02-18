@@ -52,9 +52,7 @@ public class ServerHandler {
                 Log.NONE();
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        for (NPCBehavior behavior : server.getMap().getNPCHandler().getNPCs()) {
-                            behavior.update();
-                        }
+                       server.getMap().updateAction();
                         Thread.sleep(50);
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
@@ -78,20 +76,6 @@ public class ServerHandler {
             }
         }
     }
-
-
-    /*
-    For each type of object there is an id prefix. Probably should put in a globals class in shared
-     */
-//    public int assignID(Object o,  Connection c) {
-//        int id = 0;
-//        if (o.getClass().equals(Network.Login.class)) {
-//            id = 00 + c.getID();
-//            System.out.println(id);
-//        }
-//
-//        return id;
-//    }
 
 
     private void sendAll(Object o) {

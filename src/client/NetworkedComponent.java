@@ -19,7 +19,8 @@ public class NetworkedComponent extends Component {
 
     @Override
     public void onAdded() {
-        movementComponent = entity.getComponent(AnimatedMovementComponent.class);
+        if (getEntity().getType().equals(EntityType.LOCAL_PLAYER))
+            movementComponent = entity.getComponent(AnimatedMovementComponent.class);
     }
 
     public boolean isSyncMovement() {

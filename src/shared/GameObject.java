@@ -1,33 +1,22 @@
 package shared;
 
 public class GameObject {
-
-    public class Food {
-        public static final int FISH = 5001;
-        public static final int MEAT = 5002;
-    }
-
-    public class Weapon {
-
-    }
-
-    public class ItemLevel {
-        public static final int COMMON = 1001;
-        public static final int UNIQUE = 1002;
-        public static final int EPIC   = 1003;
-    }
-
     // this will be everything from weapons to food to potions, all objects in the game that can be picked up, used, seen, and removed
     // Attributes CONSUMABLE,
+
 
     private int id;
     private int itemLevel;
     private String name;
+    private String desc;
     private float x,y;
+    private int uniqueGameId;
 
     public GameObject(int id) {
         this.id = id;
     }
+
+    public GameObject() {}
 
     public float getX() {
         return x;
@@ -45,11 +34,32 @@ public class GameObject {
         this.y = y;
     }
 
-    private Network.GameObjectPacket getPacket() {
-        Network.GameObjectPacket packet = new Network.GameObjectPacket();
-        packet.x = x;
-        packet.y = y;
-        packet.id = id;
-        return packet;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public int getUniqueGameId() {
+        return uniqueGameId;
+    }
+
+    public void setUniqueGameId(int uniqueGameId) {
+        this.uniqueGameId = uniqueGameId;
+    }
+
+    public int getId() {
+        return id;
     }
 }
