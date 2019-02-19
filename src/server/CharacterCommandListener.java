@@ -26,6 +26,7 @@ public class CharacterCommandListener extends Listener {
             // Broadcast to all to remove the character
             Network.RemoveCharacter msg = new Network.RemoveCharacter();
             msg.id = c.getID();
+            System.out.println("og id " + c.getID());
             System.out.println("Server recieved, client " + msg.id + " is quitting.");
 
             handler.getServer().sendToAllExceptTCP(c.getID(), msg);
@@ -43,7 +44,7 @@ public class CharacterCommandListener extends Listener {
         if (object instanceof Network.UpdateCharacter) {
             Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
 
-            handler.updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
+            handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             handler.getServer().sendToAllExceptTCP(updateCharacter.id, updateCharacter);
         }
 

@@ -74,6 +74,12 @@ public class BaseFactory implements EntityFactory {
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
+//        System.out.println(player.getBoundingBoxComponent().getMaxXWorld());
+//        System.out.println(player.getBoundingBoxComponent().getMinXWorld());
+//
+//        System.out.println(player.getBoundingBoxComponent().getMinYWorld());
+//        System.out.println(player.getBoundingBoxComponent().getMaxYWorld());
+
 
         player.setScaleX(playerScale);
         player.setScaleY(playerScale);

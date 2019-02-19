@@ -267,10 +267,12 @@ public class Screen extends GameApplication {
             // 2. Draw and update all visible players
             //    - All of the networked npcs/players should update within their own loop
 
+            player.getComponent(NetworkedComponent.class).update();
+
 
             if (!clientHandler.getOtherPlayers().isEmpty()) {
 
-                player.getComponent(NetworkedComponent.class).update();
+
 
                 for (CharacterPacket packet : clientHandler.getOtherPlayers()) {
                     if (!isPlayerHere(packet.id) && packet.id != clientHandler.getId()) {

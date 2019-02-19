@@ -63,7 +63,8 @@ public class GameMap {
 
         for (GameObject object : objects) {
             for (CharacterPacket packet : server.getLoggedIn()) {
-                if (packet.x == object.getX() && packet.y == object.getY()) {
+
+                if ((int)packet.x == (int)object.getX() && (int)packet.y == (int)object.getY()) {
                     removeGameObject(object.getUniqueGameId());
                     System.out.println("collision");
                 }
@@ -101,7 +102,7 @@ public class GameMap {
         for (int i = 0; i < uniqueObjects.length; i++) {
             // if this id has already been assigned
             if (uniqueObjects[i] == num) {
-                assignUniqueId(); // we want to pick another number if our random has already been chosen
+                num = assignUniqueId(); // we want to pick another number if our random has already been chosen
             }
         }
 

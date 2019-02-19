@@ -42,6 +42,9 @@ public class AlphaCollision {
     }
 
 
+    public static boolean doesCollide(GameObject object, CharacterPacket packet) {
+        return false;
+    }
 
 }
 

@@ -55,6 +55,14 @@ public class AlphaServer extends Server {
         map.onCharacterAdd(character);
     }
 
+    protected void updateClient(int id, double x, double y) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.id == id) {
+                packet.x = x;
+                packet.y = y;
+            }
+        }
+    }
 
     public HashSet<CharacterPacket> getLoggedIn() {
         return loggedIn;

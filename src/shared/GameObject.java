@@ -12,6 +12,13 @@ public class GameObject {
     private float x,y;
     private int uniqueGameId;
 
+
+    private int minX = 50;
+    private int maxX = 85;
+
+    private int minY = 50;
+    private int maxY = 90;
+
     public GameObject(int id) {
         this.id = id;
     }
@@ -61,5 +68,21 @@ public class GameObject {
 
     public int getId() {
         return id;
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMaxY() {
+        return maxY;
     }
 }

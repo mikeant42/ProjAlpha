@@ -14,6 +14,8 @@ All in a prototype state
 Network
 - Can handle logins(no db yet) and disconnects
 - Syncs player movement
+- Syncs npc movement
+- Syncs game objects
 
 
 Mobile

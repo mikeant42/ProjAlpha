@@ -1,6 +1,7 @@
 package client;
 
 import com.almasb.fxgl.entity.component.Component;
+import shared.Data;
 import shared.EntityType;
 
 public class NetworkedComponent extends Component {
@@ -54,10 +55,10 @@ public class NetworkedComponent extends Component {
             // This value is null if there is no physics component
 
             // This is null unless we have a movement component
-            //if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
+            if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
                 handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getState(), getEntity().getX(),
                         getEntity().getY(), this.id);
-            //}
+            }
 
         }
 

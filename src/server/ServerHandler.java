@@ -52,7 +52,7 @@ public class ServerHandler {
                 Log.NONE();
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                       server.getMap().updateAction();
+                        server.getMap().updateAction();
                         Thread.sleep(50);
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
@@ -66,15 +66,6 @@ public class ServerHandler {
         Log.NONE();
 
 //    }
-    }
-
-    protected void updateClient(int id, double x, double y) {
-        for (CharacterPacket packet : server.getLoggedIn()) {
-            if (packet.id == id) {
-                packet.x = x;
-                packet.y = y;
-            }
-        }
     }
 
 
