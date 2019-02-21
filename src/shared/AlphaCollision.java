@@ -1,14 +1,13 @@
 package shared;
 
 import client.AnimatedMovementComponent;
-import client.MovementComponent;
 import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 
 public class AlphaCollision {
     public static CollisionHandler setClientCollision(EntityType player, EntityType hut) {
-        return new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.Collidable) {
+        return new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.COLLIDE) {
 
             /*
             This is sort of a home cooked collision system. There is a bug with this system that causes the player to sometimes get stuck if they are colliding to the right or left, but
@@ -42,7 +41,20 @@ public class AlphaCollision {
     }
 
 
+    /*
+    Server side collision is simple
+     */
     public static boolean doesCollide(GameObject object, CharacterPacket packet) {
+        int playerWidth = 40;
+        int playerHeight = 40;
+
+        if(packet.x < object.getX() + object.getWidth() &&
+                packet.x + playerWidth > object.getX() &&
+                packet.y < object.getY() + playerHeight &&
+                packet.y + playerHeight > object.getY())
+        {
+            return true;
+        }
         return false;
     }
 

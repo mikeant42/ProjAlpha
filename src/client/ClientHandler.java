@@ -40,8 +40,7 @@ public class ClientHandler {
 
     private Screen screen;
 
-    private int id; // This is the id the server assigned to us
-    private String username;
+    private CharacterPacket characterPacket;
 
     private LoginResponseListener loginResponseListener;
     private CharacterResponseListener characterResponseListener;
@@ -84,7 +83,7 @@ public class ClientHandler {
 
     public void updatePlayerLocal(int move, double x, double y, int idd) {
         for (CharacterPacket packet : otherPlayers) {
-            if (idd == packet.id && idd != id) {
+            if (idd == packet.id && idd != characterPacket.id) {
                 packet.x = x;
                 packet.y = y;
                 packet.moveState = move;
@@ -139,12 +138,12 @@ public class ClientHandler {
         login.pass = password;
         client.sendTCP(login);
 
-        this.username = username;
+        //this.username = username;
     }
 
     public void requestMap() {
         Network.WorldQuery query = new Network.WorldQuery();
-        query.cid = id;
+        query.cid = characterPacket.id;
         client.sendTCP(query);
     }
 
@@ -173,8 +172,8 @@ public class ClientHandler {
         return false;
     }
 
-    public void onLoggedIn(int id) {
-        this.id = id;
+    public void onLoggedIn() {
+        //this.id = id;
         screen.startGame();
         //client.removeListener(loginResponseListener);
     }
@@ -190,12 +189,26 @@ public class ClientHandler {
     }
 
     public void removeGameObject(int uid) {
+        List<GameObject> remove = new ArrayList<>();
         for (GameObject object : objects) {
             if (object.getUniqueGameId() == uid) {
-                objects.remove(object);
+                remove.add(object);
             }
         }
+        objects.removeAll(remove);
         screen.removeNetworkedEntity(uid);
+    }
+
+    public CharacterPacket getCharacterPacket() {
+        return characterPacket;
+    }
+
+    public void setCharacterPacket(CharacterPacket characterPacket) {
+        this.characterPacket = characterPacket;
+    }
+
+    public void addInventory(GameObject object) {
+
     }
 
     public Screen getScreen() {
@@ -204,7 +217,7 @@ public class ClientHandler {
 
 
     public int getId() {
-        return id;
+        return characterPacket.id;
     }
 
     public Client getClient() {
@@ -222,7 +235,7 @@ public class ClientHandler {
     }
 
     public String getUsername() {
-        return username;
+        return characterPacket.name;
     }
 
     public List<GameObject> getObjects() {

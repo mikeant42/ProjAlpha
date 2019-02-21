@@ -13,11 +13,8 @@ public class GameObject {
     private int uniqueGameId;
 
 
-    private int minX = 50;
-    private int maxX = 85;
-
-    private int minY = 50;
-    private int maxY = 90;
+    private int width  = 20;
+    private int height = 20;
 
     public GameObject(int id) {
         this.id = id;
@@ -70,19 +67,24 @@ public class GameObject {
         return id;
     }
 
-    public int getMinX() {
-        return minX;
+    public int getWidth() {
+        return width;
     }
 
-    public int getMaxX() {
-        return maxX;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getMinY() {
-        return minY;
+    public int getHeight() {
+        return height;
     }
 
-    public int getMaxY() {
-        return maxY;
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
+    public void setOnCollision() {
+
     }
 }

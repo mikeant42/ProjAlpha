@@ -20,7 +20,7 @@ public class NetworkedComponent extends Component {
 
     @Override
     public void onAdded() {
-        if (getEntity().getType().equals(EntityType.LOCAL_PLAYER))
+        if (getEntity().getType().equals(EntityType.LOCAL_PLAYER) || getEntity().getType().equals(EntityType.PLAYER))
             movementComponent = entity.getComponent(AnimatedMovementComponent.class);
     }
 
@@ -48,20 +48,27 @@ public class NetworkedComponent extends Component {
         this.moveFlag = moveFlag;
     }
 
-
     public void update() {
-        if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
+        if (ClientHandler.LOGIN_STATUS) {
+            if (getEntity().getType().equals(EntityType.PLAYER) && !getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
+                movementComponent.setState(Data.MovementState.STANDING);
+                System.out.println("other player isnt moving");
+            }
 
-            // This value is null if there is no physics component
+            if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
 
-            // This is null unless we have a movement component
-            if (getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
-                handler.sendMovement(getEntity().getComponent(AnimatedMovementComponent.class).getState(), getEntity().getX(),
-                        getEntity().getY(), this.id);
+                // This value is null if there is no physics component
+
+                // This is null unless we have a movement component
+                if (movementComponent.isMoving()) {
+                    System.out.println("moving");
+                    handler.sendMovement(movementComponent.getState(), getEntity().getX(),
+                            getEntity().getY(), this.id);
+                }
+
             }
 
         }
-
     }
 
 }

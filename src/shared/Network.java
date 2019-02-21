@@ -14,6 +14,7 @@ public class Network {
     static public final int port = 54555;
 
     // This registers objects that are going to be sent over the network.
+    // TODO - organize
     static public void register (EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(Login.class);
@@ -31,6 +32,10 @@ public class Network {
         kryo.register(UpdateNPC.class);
         kryo.register(GameObject.class);
         kryo.register(RemoveGameObject.class);
+        kryo.register(Inventory.class);
+        kryo.register(AddInventoryItem.class);
+        kryo.register(RemoveInventoryItem.class);
+        kryo.register(GameObject[].class);
     }
 
     static public class Login {
@@ -66,7 +71,7 @@ public class Network {
 
     static public class LoginSuccess {
         public boolean success;
-        public int id;
+        public CharacterPacket packet;
     }
 
     static public class NPCPacket {
@@ -86,6 +91,14 @@ public class Network {
 
     static public class RemoveGameObject {
         public int uid;
+    }
+
+    static public class RemoveInventoryItem {
+        public GameObject object;
+    }
+
+    static public class AddInventoryItem {
+        public GameObject object;
     }
 
 //    static public class GameObjectPacket {

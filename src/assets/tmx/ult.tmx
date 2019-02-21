@@ -22,11 +22,11 @@
   <image source="../textures/PathAndObjects.png" width="512" height="512"/>
  </tileset>
  <objectgroup name="Object Layer 1">
-  <object id="37" type="hut" x="1.33333" y="-12.6667" width="1917.55" height="202.667"/>
-  <object id="39" type="hut" x="1056.33" y="192.333" width="130.545" height="94.6667"/>
-  <object id="41" type="hut" x="-2.66667" y="588" width="116" height="258.667"/>
-  <object id="42" type="hut" x="238.667" y="578.667" width="98.6667" height="274.667"/>
-  <object id="44" type="hut" x="264" y="892" width="1654" height="62"/>
+  <object id="37" type="collide" x="1.33333" y="-12.6667" width="1917.55" height="202.667"/>
+  <object id="39" type="collide" x="1056.33" y="192.333" width="130.545" height="94.6667"/>
+  <object id="41" type="collide" x="-2.66667" y="588" width="116" height="258.667"/>
+  <object id="42" type="collide" x="238.667" y="578.667" width="98.6667" height="274.667"/>
+  <object id="44" type="collide" x="264" y="892" width="1654" height="62"/>
   <object id="48" type="hut" x="3" y="901" width="127" height="53"/>
  </objectgroup>
  <layer name="Tile Layer 1" width="60" height="60">

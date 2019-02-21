@@ -104,7 +104,7 @@ public class BaseFactory implements EntityFactory {
                 //.bbox(new HitBox(BoundingShape.box(25, 25)))
                 //.with(new CollidableComponent(true))
                 .build();
-        npc.setType(EntityType.ROAMING_NPC);
+        npc.setType(EntityType.NPC);
 
         npc.setProperty("ID", data.get("ID"));
         npc.addComponent(movementComponent);
@@ -116,8 +116,8 @@ public class BaseFactory implements EntityFactory {
     public Entity newGameObject(SpawnData data) {
         return Entities.builder()
                 .from(data)
-                .viewFromNode(new Rectangle(25, 25, Color.BLUE))
                 .with(new NetworkedComponent(data.get("uid"), handler))
+                .viewFromTexture("objects/" + data.get("name") + ".png")
                 .build();
     }
 
@@ -126,7 +126,7 @@ public class BaseFactory implements EntityFactory {
         return Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .type(EntityType.Collidable)
+                .type(EntityType.COLLIDE)
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -137,7 +137,7 @@ public class BaseFactory implements EntityFactory {
         return Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .type(EntityType.Collidable)
+                .type(EntityType.COLLIDE)
                 .with(new CollidableComponent(true))
                 .build();
     }

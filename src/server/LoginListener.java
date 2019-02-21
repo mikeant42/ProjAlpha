@@ -3,6 +3,7 @@ package server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.CharacterPacket;
+import shared.Inventory;
 import shared.Network;
 
 public class LoginListener extends Listener {
@@ -33,6 +34,7 @@ public class LoginListener extends Listener {
             }
 
 
+            // TODO - very important code here - this is where we fill the user's data
             // This code should retrieve relevant info from the db and check the strings
             // This is where the db fills all of the information about the character
             character = new CharacterPacket();
@@ -40,6 +42,8 @@ public class LoginListener extends Listener {
             character.y = 50;
             character.id = connection.getID();
             character.name = name;
+            character.inventory = new Inventory();
+
             handler.getServer().logIn(connection, character);
 
 

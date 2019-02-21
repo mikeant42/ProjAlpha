@@ -34,10 +34,18 @@ public class GameMap {
         create();
 
         GameObject object = new GameObject(IDs.Food.FISH);
-        object.setX(150);
-        object.setY(150);
+        object.setX(300);
+        object.setY(300);
+        object.setName(Names.Food.FISH);
         object.setUniqueGameId(assignUniqueId());
         addGameObject(object);
+
+        GameObject object1 = new GameObject(IDs.Food.FISH);
+        object1.setX(0);
+        object1.setY(200);
+        object1.setName(Names.Food.FISH);
+        object1.setUniqueGameId(assignUniqueId());
+        addGameObject(object1);
     }
 
     public void create() {
@@ -47,6 +55,9 @@ public class GameMap {
 
     }
 
+    /*
+    This is a server update
+     */
     public void update() {
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
             server.sendToAllTCP(behavior.formUpdate());
@@ -56,6 +67,9 @@ public class GameMap {
 
     }
 
+    /*
+    This updates in another thread for non-networking updates
+     */
     public void updateAction() {
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
             behavior.update();
@@ -64,7 +78,7 @@ public class GameMap {
         for (GameObject object : objects) {
             for (CharacterPacket packet : server.getLoggedIn()) {
 
-                if ((int)packet.x == (int)object.getX() && (int)packet.y == (int)object.getY()) {
+                if (AlphaCollision.doesCollide(object, packet)) {
                     removeGameObject(object.getUniqueGameId());
                     System.out.println("collision");
                 }

@@ -9,7 +9,6 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.parser.tiled.*;
-import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
@@ -173,7 +172,7 @@ public class Screen extends GameApplication {
     @Override
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
-        getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.Collidable));
+        getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.COLLIDE));
     }
 
 
@@ -183,7 +182,7 @@ public class Screen extends GameApplication {
             public void run() {
                 if (id == 1) {
                     try {
-                        parseWorld("src/assets/json/testing3.xml");
+                        parseWorld("src/assets/json/ult.xml");
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -211,7 +210,7 @@ public class Screen extends GameApplication {
 
         TMXParser parser = new TMXParser();
         TiledMap map = parser.parse(targetStream);
-        map.getLayerByName("Treetop").setDraworder("topdown");
+//        map.getLayerByName("Treetop").setDraworder("topdown");
 
         getGameWorld().setLevelFromMap(map);
     }
@@ -335,7 +334,7 @@ public class Screen extends GameApplication {
                 npcsHere.add(packet);
             }
 
-            List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.ROAMING_NPC);
+            List<Entity> entities = getGameWorld().getEntitiesByType(EntityType.NPC);
             for (Entity entity : entities) {
                 if (packet.id == entity.getInt("ID")) {
                     entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
@@ -352,6 +351,7 @@ public class Screen extends GameApplication {
                 SpawnData data = new SpawnData(object.getX(), object.getY());
                 data.put("ID", object.getId());
                 data.put("uid", object.getUniqueGameId());
+                data.put("name", object.getName());
 
                 getGameWorld().spawn("Gameobject", data);
 

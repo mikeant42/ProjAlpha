@@ -16,7 +16,7 @@ public class RoamingBehavior extends NPCBehavior {
 
 
     public RoamingBehavior(int x, int y) {
-        super(EntityType.ROAMING_NPC, x, y);
+        super(EntityType.NPC, x, y);
 
 
         lastTime = (float)getTime();

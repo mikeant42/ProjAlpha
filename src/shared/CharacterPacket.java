@@ -10,4 +10,5 @@ public class CharacterPacket {
     public int id;
     public double x, y;
     public int moveState;
+    public Inventory inventory;
 }
