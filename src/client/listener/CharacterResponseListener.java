@@ -20,10 +20,10 @@ public class CharacterResponseListener extends Listener {
     public void received (Connection c, Object object) {
         if (object instanceof Network.AddCharacter) {
             Network.AddCharacter msg = (Network.AddCharacter)object;
-            if (msg.character.id != handler.getId()) { // lets make sure we dont dupelicate ourselves
+           // if (msg.character.id != handler.getId()) { // lets make sure we dont dupelicate ourselves
                 handler.getOtherPlayers().add(msg.character);
                 System.out.println(handler.getOtherPlayers().size());
-            }
+           // }
         }
 
         // IF we get the command to remove from the server all we do is remove it from the game world
@@ -53,8 +53,9 @@ public class CharacterResponseListener extends Listener {
 
             if (object instanceof Network.AddInventoryItem) {
                 Network.AddInventoryItem update = (Network.AddInventoryItem) object;
-
+                handler.addInventory(update.object);
             }
+
         }
 
     }

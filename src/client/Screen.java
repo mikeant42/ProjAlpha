@@ -45,6 +45,8 @@ public class Screen extends GameApplication {
 
     private boolean panelOpen = false;
 
+    MainPanelController panelControl;
+
     public Screen() {
         clientHandler = new ClientHandler(this);
         clientHandler.connectServer();
@@ -56,7 +58,7 @@ public class Screen extends GameApplication {
         loginController = new LoginController(clientHandler, getGameScene());
         loginScreen = getAssetLoader().loadUI("login.fxml", loginController);
 
-        MainPanelController panelControl = new MainPanelController();
+         panelControl = new MainPanelController();
         mainPanel = getAssetLoader().loadUI("mainpanel.fxml", panelControl);
 
         getGameScene().addUI(loginScreen);
@@ -363,6 +365,9 @@ public class Screen extends GameApplication {
         }
     }
 
+    public MainPanelController getPanelControl() {
+        return panelControl;
+    }
 
     @Override
     protected void initSettings(GameSettings settings) {

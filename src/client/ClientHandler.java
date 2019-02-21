@@ -208,7 +208,13 @@ public class ClientHandler {
     }
 
     public void addInventory(GameObject object) {
+        characterPacket.inventory.addObject(object);
+        screen.getPanelControl().addItem(object);
+        System.out.println("added object  " + object.getUniqueGameId());
+    }
 
+    public void removeInventory(int uid) {
+        characterPacket.inventory.removeObject(uid);
     }
 
     public Screen getScreen() {

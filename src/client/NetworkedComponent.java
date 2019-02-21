@@ -50,10 +50,10 @@ public class NetworkedComponent extends Component {
 
     public void update() {
         if (ClientHandler.LOGIN_STATUS) {
-            if (getEntity().getType().equals(EntityType.PLAYER) && !getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
-                movementComponent.setState(Data.MovementState.STANDING);
-                System.out.println("other player isnt moving");
-            }
+//            if (getEntity().getType().equals(EntityType.PLAYER) && !getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
+//                movementComponent.setState(Data.MovementState.STANDING);
+//                System.out.println("other player isnt moving");
+//            }
 
             if (syncMovement && getEntity().getType().equals(EntityType.LOCAL_PLAYER)) {
 
@@ -61,7 +61,6 @@ public class NetworkedComponent extends Component {
 
                 // This is null unless we have a movement component
                 if (movementComponent.isMoving()) {
-                    System.out.println("moving");
                     handler.sendMovement(movementComponent.getState(), getEntity().getX(),
                             getEntity().getY(), this.id);
                 }

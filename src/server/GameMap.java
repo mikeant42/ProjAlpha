@@ -2,9 +2,7 @@ package server;
 
 import shared.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GameMap {
     /*
@@ -21,6 +19,10 @@ public class GameMap {
 
     private List<GameObject> objects = new ArrayList<>();
 
+    private List<GameObject> objectsToRemove = new ArrayList<>();
+    private List<GameObject> objectsToAdd = new ArrayList<>();
+
+
     // 128 is the limit of the number of game objects in one map
     private int[] uniqueObjects = new int[objectLimit];
 
@@ -33,19 +35,27 @@ public class GameMap {
 
         create();
 
+        Random r = new Random();
+        int maxX = 500;
+        int minX = 300;
+        for (int i = 0; i < 1; i++) {
+            int next = i*2;
+            GameObject object = new GameObject(IDs.Food.FISH);
+            float finalX = next;
+            float finalY = next^next/2;
+            object.setX(r.nextFloat());
+            object.setY(r.nextFloat());
+            object.setName(Names.Food.FISH);
+            object.setUniqueGameId(assignUniqueId());
+            addGameObject(object);
+        }
+
         GameObject object = new GameObject(IDs.Food.FISH);
-        object.setX(300);
-        object.setY(300);
+        object.setX(200);
+        object.setY(200);
         object.setName(Names.Food.FISH);
         object.setUniqueGameId(assignUniqueId());
         addGameObject(object);
-
-        GameObject object1 = new GameObject(IDs.Food.FISH);
-        object1.setX(0);
-        object1.setY(200);
-        object1.setName(Names.Food.FISH);
-        object1.setUniqueGameId(assignUniqueId());
-        addGameObject(object1);
     }
 
     public void create() {
@@ -63,14 +73,18 @@ public class GameMap {
             server.sendToAllTCP(behavior.formUpdate());
         }
 
-
-
     }
 
     /*
     This updates in another thread for non-networking updates
      */
     public void updateAction() {
+        objects.addAll(objectsToAdd);
+        objects.removeAll(objectsToRemove);
+
+        objectsToAdd.clear();
+        objectsToRemove.clear();
+
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
             behavior.update();
         }
@@ -79,11 +93,22 @@ public class GameMap {
             for (CharacterPacket packet : server.getLoggedIn()) {
 
                 if (AlphaCollision.doesCollide(object, packet)) {
-                    removeGameObject(object.getUniqueGameId());
+
+                    // when player runs over an object, he adds it to his inventory
+                    removeGameObject(object);
+                    addInventory(packet.id, object);
+
+
                     System.out.println("collision");
                 }
             }
         }
+    }
+
+    public void addInventory(int cid, GameObject object) {
+        Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
+        inventoryItem.object = object;
+        server.sendToTCP(cid, inventoryItem);
     }
 
     public void onCharacterAdd(CharacterPacket packet) {
@@ -95,18 +120,21 @@ public class GameMap {
         for (GameObject object : objects) {
             server.sendToTCP(packet.id, object);
         }
+
     }
 
     public void addGameObject(GameObject object) {
-        objects.add(object);
+        objectsToAdd.add(object);
 
         server.sendToAllTCP(object);
     }
 
-    public void removeGameObject(int uid) {
+    public void removeGameObject(GameObject object) {
         Network.RemoveGameObject packet = new Network.RemoveGameObject();
-        packet.uid = uid;
+        packet.uid = object.getUniqueGameId();
         server.sendToAllTCP(packet);
+
+       objectsToRemove.add(object);
     }
 
     private int assignUniqueId() {

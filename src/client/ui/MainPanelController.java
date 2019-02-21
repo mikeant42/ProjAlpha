@@ -15,6 +15,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import shared.GameObject;
+import shared.Inventory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public class MainPanelController implements UIController {
     @FXML
     private Button use;
 
-    private int grid = 4; // 4x4, 3x3
+    private int grid = (int)Math.sqrt(Inventory.INVENT_SIZE); // 4x4, 3x3
 
 
     // There needs to be corresponding GameObjects
@@ -73,6 +74,17 @@ public class MainPanelController implements UIController {
             });
         }
 
+    }
+
+    public void addItem(GameObject object) {
+        for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
+          //  if (inventory[i] != null) {
+                if (inventory[i].getImage() == FXGL.getAssetLoader().loadImage("ui/box.png")) {
+                    inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
+                    return;
+                }
+           // }
+        }
     }
 
     private ContextMenu createContextMenu(int id) {
@@ -121,8 +133,6 @@ public class MainPanelController implements UIController {
                 ImageView defaul = new ImageView(FXGL.getAssetLoader().loadImage("ui/box.png"));
                 defaul.setPreserveRatio(true);
 
-
-                tick++;
                 int internal = i+j;
                 inventory[internal] = defaul;
                 defaul.setOnMouseClicked(new EventHandler<MouseEvent>() {
