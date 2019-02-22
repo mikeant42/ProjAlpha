@@ -17,19 +17,27 @@ public class Inventory {
         // Find first slot not filled and fill it
         for (int i = 0; i < INVENT_SIZE; i++) {
             if (objects[i] == null) {
-                objects[i] = object;
+                addObject(i, object);
+                return;
             }
         }
     }
 
-    public GameObject getObject(int i) {
-        return objects[i];
+    public void addObject(int i, GameObject object) {
+        objects[i] = object;
+    }
+
+    public GameObject getObjectSlot(int slotNumber) {
+        return objects[slotNumber];
     }
 
     public void removeObject(int uid) {
         for (int i = 0; i < INVENT_SIZE; i++) {
-            if (objects[i].getUniqueGameId() == uid) {
-                objects[i] = null; // NOT TESTED!!!!!!!!!!!!!!!!
+            if (objects[i] != null) {
+                if (objects[i].getUniqueGameId() == uid) {
+                    objects[i] = null; // NOT TESTED!!!!!!!!!!!!!!!!
+                    return;
+                }
             }
         }
     }

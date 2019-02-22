@@ -16,11 +16,14 @@ public class GameObject {
     private int width  = 20;
     private int height = 20;
 
+    private ObjectUseHandler useHandler;
+
     public GameObject(int id) {
         this.id = id;
     }
 
-    public GameObject() {}
+    public GameObject() {
+    }
 
     public float getX() {
         return x;
@@ -86,5 +89,13 @@ public class GameObject {
 
     public void setOnCollision() {
 
+    }
+
+    public void setOnUse(ObjectUseHandler handler) {
+        this.useHandler = handler;
+    }
+
+    public void use(CharacterPacket packet) {
+        useHandler.onUse(packet);
     }
 }

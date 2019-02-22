@@ -95,6 +95,8 @@ public class Screen extends GameApplication {
 
                 mainPanel.getRoot().toFront();
 
+                panelControl.create(clientHandler);
+
 
 
 

@@ -35,27 +35,35 @@ public class GameMap {
 
         create();
 
-        Random r = new Random();
-        int maxX = 500;
-        int minX = 300;
-        for (int i = 0; i < 1; i++) {
-            int next = i*2;
-            GameObject object = new GameObject(IDs.Food.FISH);
-            float finalX = next;
-            float finalY = next^next/2;
-            object.setX(r.nextFloat());
-            object.setY(r.nextFloat());
-            object.setName(Names.Food.FISH);
-            object.setUniqueGameId(assignUniqueId());
-            addGameObject(object);
-        }
+
+//        int maxX = 500;
+//        int minX = 300;
+//        for (int i = 0; i < 5; i++) {
+//            Random r = new Random();
+//            int next = i*2;
+//            GameObject object = new GameObject(IDs.Food.FISH);
+//            float finalX = next;
+//            float finalY = next^next/2;
+//            object.setX(r.nextFloat());
+//            object.setY(r.nextFloat());
+//            object.setName(Names.Food.FISH);
+//            object.setUniqueGameId(assignUniqueId());
+//            addGameObject(object);
+//        }
 
         GameObject object = new GameObject(IDs.Food.FISH);
         object.setX(200);
         object.setY(200);
         object.setName(Names.Food.FISH);
         object.setUniqueGameId(assignUniqueId());
+//        object.setOnUse(new ObjectUseHandler() {
+//            @Override
+//            public void onUse(CharacterPacket packet) {
+//
+//            }
+//        });
         addGameObject(object);
+
     }
 
     public void create() {

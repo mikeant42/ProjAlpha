@@ -2,9 +2,7 @@ package server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import shared.CharacterPacket;
-import shared.Inventory;
-import shared.Network;
+import shared.*;
 
 public class LoginListener extends Listener {
 
@@ -43,6 +41,13 @@ public class LoginListener extends Listener {
             character.id = connection.getID();
             character.name = name;
             character.inventory = new Inventory();
+
+            GameObject object1 = new GameObject(IDs.Food.FISH);
+            object1.setX(200);
+            object1.setY(200);
+            object1.setName(Names.Food.FISH);
+            object1.setUniqueGameId(10);
+            character.inventory.addObject(0,object1);
 
             handler.getServer().logIn(connection, character);
 

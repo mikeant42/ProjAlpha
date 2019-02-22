@@ -37,6 +37,8 @@ public class AlphaServer extends Server {
             }
         }
 
+
+
         Network.LoginSuccess success = new Network.LoginSuccess();
         success.success = true;
         //success.id = c.getID();
