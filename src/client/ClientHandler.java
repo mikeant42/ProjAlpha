@@ -214,7 +214,7 @@ public class ClientHandler {
     }
 
     public void removeInventory(int uid) {
-        characterPacket.inventory.removeObject(uid);
+        characterPacket.inventory.removeObjectFromUID(uid);
     }
 
     public Screen getScreen() {

@@ -1,7 +1,5 @@
 package shared;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Inventory {
     public static final int INVENT_SIZE = 16;
@@ -31,7 +29,7 @@ public class Inventory {
         return objects[slotNumber];
     }
 
-    public void removeObject(int uid) {
+    public void removeObjectFromUID(int uid) {
         for (int i = 0; i < INVENT_SIZE; i++) {
             if (objects[i] != null) {
                 if (objects[i].getUniqueGameId() == uid) {
@@ -40,6 +38,10 @@ public class Inventory {
                 }
             }
         }
+    }
+
+    public void removeObjectFromSlot(int slotNumber) {
+        objects[slotNumber] = null;
     }
 
     public void fillSlot(int i, GameObject object) {

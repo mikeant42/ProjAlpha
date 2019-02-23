@@ -42,12 +42,12 @@ public class LoginListener extends Listener {
             character.name = name;
             character.inventory = new Inventory();
 
-            GameObject object1 = new GameObject(IDs.Food.FISH);
-            object1.setX(200);
-            object1.setY(200);
-            object1.setName(Names.Food.FISH);
-            object1.setUniqueGameId(10);
-            character.inventory.addObject(0,object1);
+//            GameObject object1 = new GameObject(IDs.Food.FISH);
+//            object1.setX(200);
+//            object1.setY(200);
+//            object1.setName(Names.Food.FISH);
+//            object1.setUniqueGameId(10);
+//            character.inventory.addObject(0,object1);
 
             handler.getServer().logIn(connection, character);
 

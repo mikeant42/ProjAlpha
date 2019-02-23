@@ -31,13 +31,15 @@ public class Network {
         kryo.register(EntityType.class);
         kryo.register(NPCPacket.class);
         kryo.register(UpdateNPC.class);
+        kryo.register(ObjectUseHandler.class);
         kryo.register(GameObject.class);
+        kryo.register(GameObject[].class);
+
         kryo.register(RemoveGameObject.class);
         kryo.register(Inventory.class);
         kryo.register(AddInventoryItem.class);
         kryo.register(RemoveInventoryItem.class);
-        kryo.register(GameObject[].class);
-        kryo.register(ObjectUseHandler.class);
+
     }
 
     static public class Login {

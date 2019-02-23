@@ -16,13 +16,23 @@ public class GameObject {
     private int width  = 20;
     private int height = 20;
 
-    private ObjectUseHandler useHandler;
-
     public GameObject(int id) {
         this.id = id;
+//        setOnUse(new ObjectUseHandler() {
+//            @Override
+//            public void onUse(CharacterPacket packet) {
+//                System.out.println("hello");
+//            }
+//        });
     }
 
     public GameObject() {
+//        setOnUse(new ObjectUseHandler() {
+//            @Override
+//            public void onUse(CharacterPacket packet) {
+//                System.out.println("hello");
+//            }
+//        });
     }
 
     public float getX() {
@@ -91,11 +101,7 @@ public class GameObject {
 
     }
 
-    public void setOnUse(ObjectUseHandler handler) {
-        this.useHandler = handler;
-    }
-
     public void use(CharacterPacket packet) {
-        useHandler.onUse(packet);
+        System.out.println(packet.name);
     }
 }

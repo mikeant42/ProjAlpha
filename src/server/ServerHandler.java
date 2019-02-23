@@ -63,7 +63,7 @@ public class ServerHandler {
         npcThread.run();
 
 
-        Log.NONE();
+        Log.TRACE();
 
 //    }
     }

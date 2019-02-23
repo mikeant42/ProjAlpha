@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -54,6 +55,8 @@ public class MainPanelController implements UIController {
 
     private ClientHandler handler;
 
+    private Image defaultImage = FXGL.getAssetLoader().loadImage("ui/box.png");
+
     public MainPanelController() {
 
     }
@@ -72,12 +75,10 @@ public class MainPanelController implements UIController {
 
     public void addItem(GameObject object) {
         for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
-            if (inventory[i] != null) {
-                if (inventory[i].getImage() == FXGL.getAssetLoader().loadImage("ui/box.png")) {
-                    inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
-                    userInvent.addObject(i, object);
-                    return;
-                }
+            if (!slotTaken(i)) {
+                inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
+                userInvent.addObject(i, object);
+                return;
             }
         }
     }
@@ -97,7 +98,7 @@ public class MainPanelController implements UIController {
         for (int i = 0; i < grid; i++) {
             for (int j = 0; j < grid; j++) {
                 if (internal <= Inventory.INVENT_SIZE) {
-                    ImageView defaul = new ImageView(FXGL.getAssetLoader().loadImage("ui/box.png"));
+                    ImageView defaul = new ImageView(defaultImage);
                     defaul.setPreserveRatio(true);
 
                     internal++;
@@ -136,11 +137,11 @@ public class MainPanelController implements UIController {
 
     public void dropItem() {
         if (selected <= grid*grid) { // if its a valid selection
-            ImageView view = inventory[selected];
-            if (view != null && userInvent != null) {
-                userInvent.removeObject(selected);
+            if (slotTaken(selected) && userInvent != null) {
+                userInvent.removeObjectFromSlot(selected);
+                //System.out.println(userInvent.getObjectSlot(selected).getName());
                 System.out.println(userInvent.getObjectSlot(selected) == null);
-                view.setImage(FXGL.getAssetLoader().loadImage("ui/box.png"));
+                inventory[selected].setImage(FXGL.getAssetLoader().loadImage("ui/box.png"));
                 System.out.println(selected + "removing");
             } else {
                 System.err.println("selection is null");
@@ -151,14 +152,17 @@ public class MainPanelController implements UIController {
 
     public void useItem() {
         if (selected <= grid*grid) { // if its a valid selection
-            ImageView view = inventory[selected];
-            if (view != null && userInvent != null) {
+            if (slotTaken(selected) && userInvent != null) {
                 userInvent.getObjectSlot(selected).use(handler.getCharacterPacket());
                 System.out.println(userInvent.getObjectSlot(selected).getUniqueGameId() + " is being used");
             } else {
                 System.err.println("selection is null");
             }
         }
+    }
+
+    public boolean slotTaken(int slot) {
+        return !(inventory[slot].getImage() == defaultImage);
     }
 
 }
