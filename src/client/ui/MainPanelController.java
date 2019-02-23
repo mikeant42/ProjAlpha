@@ -3,9 +3,14 @@ package client.ui;
 import client.ClientHandler;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.ui.UIController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import shared.GameObject;
 import shared.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPanelController implements UIController {
 
@@ -33,6 +41,14 @@ public class MainPanelController implements UIController {
 
     @FXML
     private Button use;
+
+    @FXML
+    private TextField chatBox;
+
+    @FXML
+    private ListView<String> chatView;
+
+    private ObservableList<String> chatLog = FXCollections.observableArrayList();
 
     private int grid = (int)Math.sqrt(Inventory.INVENT_SIZE); // 4x4, 3x3
 
@@ -89,6 +105,8 @@ public class MainPanelController implements UIController {
         adjust = new ColorAdjust();
         adjust.setBrightness(0.7);
         adjust.setSaturation(0.5);
+
+        chatView.setOrientation(Orientation.VERTICAL);
 //        slot1.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
 //        slot2.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
 //        slot3.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
@@ -103,7 +121,7 @@ public class MainPanelController implements UIController {
 
                     internal++;
                     defaul.setUserData(internal);
-                    System.out.println(internal);
+
                     inventory[internal] = defaul;
                     defaul.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
@@ -159,6 +177,16 @@ public class MainPanelController implements UIController {
                 System.err.println("selection is null");
             }
         }
+    }
+
+    public void sendChat() {
+        handler.sendChat(chatBox.getText().trim());
+        chatBox.clear();
+    }
+
+    public void addChat(String chat) {
+        chatLog.add(chat);
+        chatView.setItems(chatLog);
     }
 
     public boolean slotTaken(int slot) {

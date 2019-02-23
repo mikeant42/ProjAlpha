@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.CharacterPacket;
 import shared.Network;
+import sun.nio.ch.Net;
 
 public class CharacterCommandListener extends Listener {
     private ServerHandler handler;
@@ -46,6 +47,11 @@ public class CharacterCommandListener extends Listener {
 
             handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             handler.getServer().sendToAllExceptTCP(updateCharacter.id, updateCharacter);
+        }
+
+        if (object instanceof Network.UserChat) {
+            Network.UserChat chat = (Network.UserChat)object;
+            handler.getServer().sendToAllTCP(chat);
         }
 
 

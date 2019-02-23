@@ -43,7 +43,7 @@ public class BaseFactory implements EntityFactory {
         player.addComponent(movementComponent);
 
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
-        player.addComponent(new OverlayTextComponent(data.get("user")));
+        //player.addComponent(new OverlayTextComponent(data.get("user")));
 
 
         player.setScaleX(playerScale);
@@ -72,7 +72,7 @@ public class BaseFactory implements EntityFactory {
         player.addComponent(movementComponent);
 
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
-        player.addComponent(new OverlayTextComponent(handler.getUsername()));
+        //player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
 //        System.out.println(player.getBoundingBoxComponent().getMaxXWorld());
 //        System.out.println(player.getBoundingBoxComponent().getMinXWorld());

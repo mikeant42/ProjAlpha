@@ -16,6 +16,7 @@ Network
 - Syncs player movement
 - Syncs npc movement
 - Syncs game objects
+- In-game chat
 
 
 Mobile

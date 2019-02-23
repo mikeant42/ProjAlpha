@@ -56,6 +56,11 @@ public class CharacterResponseListener extends Listener {
                 handler.addInventory(update.object);
             }
 
+            if (object instanceof Network.UserChat) {
+                Network.UserChat chat = (Network.UserChat)object;
+                handler.getScreen().addChatMsg(chat);
+            }
+
         }
 
     }

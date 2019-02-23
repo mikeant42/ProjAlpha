@@ -34,7 +34,7 @@ public class Network {
         kryo.register(ObjectUseHandler.class);
         kryo.register(GameObject.class);
         kryo.register(GameObject[].class);
-
+        kryo.register(UserChat.class);
         kryo.register(RemoveGameObject.class);
         kryo.register(Inventory.class);
         kryo.register(AddInventoryItem.class);
@@ -103,6 +103,11 @@ public class Network {
 
     static public class AddInventoryItem {
         public GameObject object;
+    }
+
+    static public class UserChat {
+        public String message;
+        public int cid;
     }
 
 //    static public class GameObjectPacket {

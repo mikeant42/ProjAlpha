@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import shared.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,6 +35,10 @@ public class Screen extends GameApplication {
     private List<CharacterPacket> playersHere = new ArrayList<>();
     private List<Network.NPCPacket> npcsHere = new ArrayList<>();
     private List<GameObject> objectsHere = new ArrayList<>();
+
+
+    private List<Network.UserChat> messagesToAdd = new ArrayList<>();
+
     private boolean loggedIn = false;
 
     private Entity player;
@@ -235,6 +240,28 @@ public class Screen extends GameApplication {
 
     }
 
+    public void addChatMsg(Network.UserChat chat) {
+        messagesToAdd.add(chat);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                panelControl.addChat(chat.message);
+            }
+        });
+    }
+
+
+    public Network.UserChat getChatMsg(int cid) {
+        for (Network.UserChat chat : messagesToAdd) {
+            if (chat.cid == cid) {
+                return chat;
+            }
+        }
+
+        return null;
+    }
+
     private boolean isPlayerHere(int id) {
         for (CharacterPacket packet : playersHere) {
             if (packet.id == id) {
@@ -272,6 +299,11 @@ public class Screen extends GameApplication {
 
             player.getComponent(NetworkedComponent.class).update();
 
+            if (getChatMsg(clientHandler.getCharacterPacket().id) != null) {
+                Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().id);
+                player.addComponent(new OverlayTextComponent(chat.message, 5));
+            }
+
 
             if (!clientHandler.getOtherPlayers().isEmpty()) {
 
@@ -294,6 +326,15 @@ public class Screen extends GameApplication {
 
                         if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                             // We found the dude we need to update
+
+                            if (getChatMsg(packet.id) != null) {
+                                // thinking there needs to be an overlaytextcomponentpool, it can override old messages this way
+                                Network.UserChat chat = getChatMsg(packet.id);
+                                System.out.println("added comp");
+                                entity.addComponent(new OverlayTextComponent(chat.message, 5));
+                                messagesToAdd.remove(chat);
+
+                            }
 
                             entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                             int moveState = packet.moveState;
@@ -363,6 +404,8 @@ public class Screen extends GameApplication {
             }
         }
 
+
+        messagesToAdd.clear();
 
         }
     }

@@ -199,6 +199,13 @@ public class ClientHandler {
         screen.removeNetworkedEntity(uid);
     }
 
+    public void sendChat(String message) {
+        UserChat chat = new UserChat();
+        chat.message = message;
+        chat.cid = characterPacket.id;
+        client.sendTCP(chat);
+    }
+
     public CharacterPacket getCharacterPacket() {
         return characterPacket;
     }
