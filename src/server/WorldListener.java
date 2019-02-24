@@ -19,6 +19,7 @@ public class WorldListener extends Listener {
             query.map = 1;
 
             handler.getServer().sendToTCP(c.getID(), query);
+            handler.getServer().setIsLoaded(c.getID(), true);
         }
     }
 }

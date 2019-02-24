@@ -40,6 +40,8 @@ public class ClientHandler {
 
     private Screen screen;
 
+    private int latestWorldID = 1;
+
     private CharacterPacket characterPacket;
 
     private LoginResponseListener loginResponseListener;
@@ -110,9 +112,9 @@ public class ClientHandler {
         }
     }
 
-    public void setMap(int id) {
-        screen.setMap(id);
-    }
+//    public void setMap(int id) {
+//        screen.setMap(id);
+//    }
 
     public boolean hasNPC(int id) {
         for (NPCPacket packet : npcs) {
@@ -186,6 +188,7 @@ public class ClientHandler {
 
     public void addGameObject(GameObject obj) {
         objects.add(obj);
+        screen.getActiveWorld().addGameObject(obj);
     }
 
     public void removeGameObject(int uid) {
@@ -196,7 +199,7 @@ public class ClientHandler {
             }
         }
         objects.removeAll(remove);
-        screen.removeNetworkedEntity(uid);
+        screen.getActiveWorld().removeNetworkedEntity(uid);
     }
 
     public void sendChat(String message) {
@@ -253,5 +256,13 @@ public class ClientHandler {
 
     public List<GameObject> getObjects() {
         return objects;
+    }
+
+    public int getLatestWorldID() {
+        return latestWorldID;
+    }
+
+    public void setLatestWorldID(int latestWorldID) {
+        this.latestWorldID = latestWorldID;
     }
 }

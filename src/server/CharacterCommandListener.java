@@ -30,7 +30,7 @@ public class CharacterCommandListener extends Listener {
             System.out.println("og id " + c.getID());
             System.out.println("Server recieved, client " + msg.id + " is quitting.");
 
-            handler.getServer().sendToAllExceptTCP(c.getID(), msg);
+            handler.getServer().sendToAllReadyExcept(c.getID(), msg);
         }
 
 
@@ -46,12 +46,12 @@ public class CharacterCommandListener extends Listener {
             Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
 
             handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
-            handler.getServer().sendToAllExceptTCP(updateCharacter.id, updateCharacter);
+            handler.getServer().sendToAllReadyExcept(updateCharacter.id, updateCharacter);
         }
 
         if (object instanceof Network.UserChat) {
             Network.UserChat chat = (Network.UserChat)object;
-            handler.getServer().sendToAllTCP(chat);
+            handler.getServer().sendToAllReady(chat);
         }
 
 

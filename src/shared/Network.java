@@ -3,6 +3,7 @@ package shared;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import server.GameMap;
+import shared.objects.Fish;
 
 // This class is a convenient place to keep things common to both the client and server.
 
@@ -39,6 +40,7 @@ public class Network {
         kryo.register(Inventory.class);
         kryo.register(AddInventoryItem.class);
         kryo.register(RemoveInventoryItem.class);
+        kryo.register(Fish.class);
 
     }
 

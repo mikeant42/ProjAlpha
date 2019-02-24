@@ -22,6 +22,7 @@ public class CharacterResponseListener extends Listener {
             Network.AddCharacter msg = (Network.AddCharacter)object;
            // if (msg.character.id != handler.getId()) { // lets make sure we dont dupelicate ourselves
                 handler.getOtherPlayers().add(msg.character);
+                handler.getScreen().getActiveWorld().addPlayer(msg.character);
                 System.out.println(handler.getOtherPlayers().size());
            // }
         }
@@ -29,7 +30,7 @@ public class CharacterResponseListener extends Listener {
         // IF we get the command to remove from the server all we do is remove it from the game world
         if (object instanceof Network.RemoveCharacter) {
             Network.RemoveCharacter msg = (Network.RemoveCharacter) object;
-            handler.getScreen().removeNetworkedEntity(msg.id);
+            handler.getScreen().getActiveWorld().removeNetworkedEntity(msg.id);
             System.out.println("Removing client " + msg.id + " from the world");
             return;
         }

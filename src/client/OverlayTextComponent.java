@@ -12,7 +12,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.collections.ObservableSet;
 import javafx.geometry.Point2D;
-import javafx.scene.text.Text;
+import javafx.scene.effect.Glow;
+import javafx.scene.text.*;
 import javafx.util.Duration;
 
 import static client.Screen.TILESIZE;
@@ -44,7 +45,7 @@ public class OverlayTextComponent extends Component {
     public void onAdded() {
         textPixels = new Text(text);
 
-        offsetX = text.length() / 2;
+        offsetX = 0;
         offsetY = 0;
 
         getEntity().getView().addNode(textPixels);
@@ -56,9 +57,15 @@ public class OverlayTextComponent extends Component {
         textPixels.translateXProperty().bind(transX);
         textPixels.translateYProperty().bind(transY);
 
+        textPixels.setStrokeWidth(10);
+
+        textPixels.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
+
+
         if (timed != 0) {
             FXGL.getApp().getMasterTimer().runOnceAfter(() -> {
-                getEntity().removeComponent(OverlayTextComponent.class);
+                if (entity.hasComponent(OverlayTextComponent.class))
+                    getEntity().removeComponent(OverlayTextComponent.class);
             }, Duration.seconds(timed));
         }
 
@@ -67,6 +74,10 @@ public class OverlayTextComponent extends Component {
     @Override
     public void onRemoved() {
         getEntity().getView().removeNode(textPixels);
+    }
+
+    public void setText(String text) {
+        textPixels.setText(text);
     }
 
     private Point2D getTextPos() {

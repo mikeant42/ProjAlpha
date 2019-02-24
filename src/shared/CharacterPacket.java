@@ -11,4 +11,5 @@ public class CharacterPacket {
     public double x, y;
     public int moveState;
     public Inventory inventory;
+    public boolean isLoaded = false;
 }

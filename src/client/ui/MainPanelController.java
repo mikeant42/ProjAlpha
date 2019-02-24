@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
@@ -44,6 +45,9 @@ public class MainPanelController implements UIController {
 
     @FXML
     private TextField chatBox;
+
+    @FXML
+    private Label goldLabel;
 
     @FXML
     private ListView<String> chatView;
@@ -87,6 +91,8 @@ public class MainPanelController implements UIController {
                 addItem(userInvent.getObjectSlot(i));
             }
         }
+
+        goldLabel.setText("" + userInvent.getGold());
     }
 
     public void addItem(GameObject object) {
@@ -107,6 +113,7 @@ public class MainPanelController implements UIController {
         adjust.setSaturation(0.5);
 
         chatView.setOrientation(Orientation.VERTICAL);
+
 //        slot1.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
 //        slot2.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
 //        slot3.setImage(FXGL.getAssetLoader().loadImage("ui/sword.png"));
@@ -182,6 +189,7 @@ public class MainPanelController implements UIController {
     public void sendChat() {
         handler.sendChat(chatBox.getText().trim());
         chatBox.clear();
+        chatBox.setFocusTraversable(false);
     }
 
     public void addChat(String chat) {

@@ -7,6 +7,8 @@ public class Inventory {
 
     public GameObject[] objects;
 
+    private int gold = 10;
+
     public Inventory() {
         objects = new GameObject[INVENT_SIZE];
     }
@@ -47,4 +49,10 @@ public class Inventory {
     public void fillSlot(int i, GameObject object) {
         objects[i] = object;
     }
+
+    public int getGold() {
+        return gold;
+    }
+
+
 }

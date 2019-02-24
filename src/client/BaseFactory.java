@@ -42,12 +42,16 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
+        player.setProperty("player", data.get("ID"));
+
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         //player.addComponent(new OverlayTextComponent(data.get("user")));
 
 
         player.setScaleX(playerScale);
         player.setScaleY(playerScale);
+
+        player.setRenderLayer(RenderLayer.TOP);
 
         return player;
     }
@@ -71,6 +75,8 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
+        player.setProperty("player", data.get("ID"));
+
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         //player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
@@ -83,6 +89,8 @@ public class BaseFactory implements EntityFactory {
 
         player.setScaleX(playerScale);
         player.setScaleY(playerScale);
+
+        player.setRenderLayer(RenderLayer.TOP);
 
         return player;
     }
@@ -106,6 +114,8 @@ public class BaseFactory implements EntityFactory {
                 .build();
         npc.setType(EntityType.NPC);
 
+        npc.setRenderLayer(RenderLayer.TOP);
+
         npc.setProperty("ID", data.get("ID"));
         npc.addComponent(movementComponent);
 
@@ -114,11 +124,15 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("Gameobject")
     public Entity newGameObject(SpawnData data) {
-        return Entities.builder()
+        Entity entity = Entities.builder()
                 .from(data)
                 .with(new NetworkedComponent(data.get("uid"), handler))
                 .viewFromTexture("objects/" + data.get("name") + ".png")
                 .build();
+
+        entity.setRenderLayer(RenderLayer.TOP);
+
+        return entity;
     }
 
     @Spawns("collide")

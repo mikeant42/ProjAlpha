@@ -55,7 +55,8 @@ public class AlphaServer extends Server {
         }
 
 
-        map.onCharacterAdd(character);
+        //map.onCharacterAdd(character);
+        map.addUnloadedPlayer(character);
     }
 
     protected void updateClient(int id, double x, double y) {
@@ -63,6 +64,14 @@ public class AlphaServer extends Server {
             if (packet.id == id) {
                 packet.x = x;
                 packet.y = y;
+            }
+        }
+    }
+
+    public void setIsLoaded(int cid, boolean tf) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.id == cid) {
+                packet.isLoaded = tf;
             }
         }
     }
@@ -87,5 +96,21 @@ public class AlphaServer extends Server {
 
     public GameMap getMap() {
         return map;
+    }
+
+    public void sendToAllReady(Object o) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.isLoaded) {
+                sendToTCP(packet.id, o);
+            }
+        }
+    }
+
+    public void sendToAllReadyExcept(int i, Object o) {
+        for (CharacterPacket packet : loggedIn) {
+            if (packet.isLoaded && packet.id != i) {
+                sendToTCP(packet.id, o);
+            }
+        }
     }
 }

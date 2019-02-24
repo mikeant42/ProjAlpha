@@ -19,7 +19,8 @@ public class WorldResponseListener extends Listener {
         if (object instanceof Network.WorldQuery) {
             Network.WorldQuery query = (Network.WorldQuery)object;
 
-            handler.getScreen().setMap(query.map); // NEED to use object queue
+            //handler.getScreen().setMap(query.map); // NEED to use object queue
+            handler.setLatestWorldID(((Network.WorldQuery) object).map);
         }
 
 
@@ -31,6 +32,7 @@ public class WorldResponseListener extends Listener {
         if (object instanceof Network.RemoveGameObject) {
             Network.RemoveGameObject obj = (Network.RemoveGameObject)object;
             handler.removeGameObject(obj.uid);
+            System.out.println("remopving obj");
         }
     }
 }

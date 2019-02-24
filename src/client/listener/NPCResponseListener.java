@@ -23,6 +23,7 @@ public class NPCResponseListener extends Listener {
             System.out.println("npcs added");
             if (!handler.hasNPC(packet.id)) {
                 handler.getNpcs().add(packet);
+                handler.getScreen().getActiveWorld().addNPC(packet);
             }
         }
 

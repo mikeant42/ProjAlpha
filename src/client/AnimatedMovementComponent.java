@@ -68,6 +68,7 @@ public class AnimatedMovementComponent extends MovementComponent {
             if (texture.getAnimationChannel() != animIdle)
                 texture.loopAnimationChannel(animIdle);
             animationSpeed = 0;
+            setState(Data.MovementState.STANDING);
         }
 
         // update this before movementcomponent, or else will cause animation problems

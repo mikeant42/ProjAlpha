@@ -1,6 +1,7 @@
 package server;
 
 import shared.*;
+import shared.objects.Fish;
 
 import java.util.*;
 
@@ -21,6 +22,10 @@ public class GameMap {
 
     private List<GameObject> objectsToRemove = new ArrayList<>();
     private List<GameObject> objectsToAdd = new ArrayList<>();
+
+    private List<CharacterPacket> unLoadedPlayers = new ArrayList<>();
+    private List<CharacterPacket> unLoadedPlayersToAdd = new ArrayList<>();
+    private List<CharacterPacket> unLoadedPlayersToRemove = new ArrayList<>();
 
 
     // 128 is the limit of the number of game objects in one map
@@ -51,10 +56,9 @@ public class GameMap {
 //            addGameObject(object);
 //        }
 
-        GameObject object = new GameObject(IDs.Food.FISH);
+        Fish object = new Fish();
         object.setX(200);
         object.setY(200);
-        object.setName(Names.Food.FISH);
         object.setUniqueGameId(assignUniqueId());
 //        object.setOnUse(new ObjectUseHandler() {
 //            @Override
@@ -92,6 +96,21 @@ public class GameMap {
 
         objectsToAdd.clear();
         objectsToRemove.clear();
+
+        unLoadedPlayers.addAll(unLoadedPlayersToAdd);
+        unLoadedPlayersToAdd.clear();
+
+        unLoadedPlayers.removeAll(unLoadedPlayersToRemove);
+        unLoadedPlayersToRemove.clear();
+
+
+        for (CharacterPacket packet : unLoadedPlayers) {
+            if (packet.isLoaded) {
+                onCharacterAdd(packet);
+                System.out.println("loaded char");
+                unLoadedPlayersToRemove.add(packet);
+            }
+        }
 
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
             behavior.update();
@@ -134,13 +153,13 @@ public class GameMap {
     public void addGameObject(GameObject object) {
         objectsToAdd.add(object);
 
-        server.sendToAllTCP(object);
+        server.sendToAllReady(object);
     }
 
     public void removeGameObject(GameObject object) {
         Network.RemoveGameObject packet = new Network.RemoveGameObject();
         packet.uid = object.getUniqueGameId();
-        server.sendToAllTCP(packet);
+        server.sendToAllReady(packet);
 
        objectsToRemove.add(object);
     }
@@ -157,6 +176,10 @@ public class GameMap {
         }
 
         return num;
+    }
+
+    public void addUnloadedPlayer(CharacterPacket packet) {
+        unLoadedPlayersToAdd.add(packet);
     }
 
     public MapType getMapType() {

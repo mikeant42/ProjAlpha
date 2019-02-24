@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -10,13 +11,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="253.0" prefWidth="433.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="320.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>
     <Tab text="Inventory">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <GridPane fx:id="invent" gridLinesVisible="true" layoutX="15.0" layoutY="14.0" prefHeight="166.0" prefWidth="404.0">
+                  <GridPane fx:id="invent" gridLinesVisible="true" layoutX="8.0" layoutY="14.0" prefHeight="125.0" prefWidth="304.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,8 +31,10 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Button fx:id="use" layoutX="28.0" layoutY="187.0" mnemonicParsing="false" onAction="#useItem" text="Use" />
-                  <Button fx:id="drop" layoutX="96.0" layoutY="187.0" mnemonicParsing="false" onAction="#dropItem" text="Drop" />
+                  <Button fx:id="use" layoutX="14.0" layoutY="162.0" mnemonicParsing="false" onAction="#useItem" text="Use" />
+                  <Button fx:id="drop" layoutX="66.0" layoutY="162.0" mnemonicParsing="false" onAction="#dropItem" text="Drop" />
+                  <Label layoutX="125.0" layoutY="167.0" text="Gold: " textFill="#e1e40e" />
+                  <Label fx:id="goldLabel" layoutX="160.0" layoutY="167.0" prefHeight="15.0" prefWidth="30.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -44,8 +47,8 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="chatBox" layoutX="14.0" layoutY="170.0" onAction="#sendChat" prefHeight="25.0" prefWidth="371.0" promptText="Say something...." />
-                  <ListView fx:id="chatView" layoutX="12.0" layoutY="14.0" prefHeight="140.0" prefWidth="409.0" />
+                  <TextField fx:id="chatBox" layoutX="3.0" layoutY="168.0" onAction="#sendChat" prefHeight="26.0" prefWidth="313.0" promptText="Say something...." />
+                  <ListView fx:id="chatView" layoutX="12.0" layoutY="14.0" prefHeight="104.0" prefWidth="304.0" />
                </children>
             </AnchorPane>
         </content>
