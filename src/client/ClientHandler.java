@@ -4,13 +4,10 @@ import client.listener.CharacterResponseListener;
 import client.listener.LoginResponseListener;
 import client.listener.NPCResponseListener;
 import client.listener.WorldResponseListener;
-import com.almasb.fxgl.entity.SpawnData;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import javafx.application.Platform;
 import shared.CharacterPacket;
-import shared.Data;
 import shared.GameObject;
 import shared.Network;
 import shared.Network.*;
@@ -38,8 +35,9 @@ public class ClientHandler {
     private List<GameObject> objects = new ArrayList<>();
 
 
-    private Screen screen;
+    private AlphaClientApp alphaClientApp;
 
+    // TODO - FIX THIS
     private int latestWorldID = 1;
 
     private CharacterPacket characterPacket;
@@ -49,7 +47,7 @@ public class ClientHandler {
     private WorldResponseListener worldResponseListener;
     private NPCResponseListener npcResponseListener;
 
-    public ClientHandler(Screen screen) {
+    public ClientHandler(AlphaClientApp alphaClientApp) {
         client = new Client();
         client.start();
 
@@ -58,7 +56,7 @@ public class ClientHandler {
         worldResponseListener = new WorldResponseListener(this);
         npcResponseListener = new NPCResponseListener(this);
 
-        this.screen = screen;
+        this.alphaClientApp = alphaClientApp;
 
         Network.register(client);
 
@@ -113,7 +111,7 @@ public class ClientHandler {
     }
 
 //    public void setMap(int id) {
-//        screen.setMap(id);
+//        alphaClientApp.setMap(id);
 //    }
 
     public boolean hasNPC(int id) {
@@ -176,7 +174,7 @@ public class ClientHandler {
 
     public void onLoggedIn() {
         //this.id = id;
-        screen.startGame();
+        alphaClientApp.startGame();
         //client.removeListener(loginResponseListener);
     }
 
@@ -188,7 +186,7 @@ public class ClientHandler {
 
     public void addGameObject(GameObject obj) {
         objects.add(obj);
-        screen.getActiveWorld().addGameObject(obj);
+        alphaClientApp.getActiveWorld().addGameObject(obj);
     }
 
     public void removeGameObject(int uid) {
@@ -196,10 +194,10 @@ public class ClientHandler {
         for (GameObject object : objects) {
             if (object.getUniqueGameId() == uid) {
                 remove.add(object);
+                alphaClientApp.getActiveWorld().removeGameObject(object);
             }
         }
         objects.removeAll(remove);
-        screen.getActiveWorld().removeNetworkedEntity(uid);
     }
 
     public void sendChat(String message) {
@@ -219,7 +217,7 @@ public class ClientHandler {
 
     public void addInventory(GameObject object) {
         characterPacket.inventory.addObject(object);
-        screen.getPanelControl().addItem(object);
+        alphaClientApp.getPanelControl().addItem(object);
         System.out.println("added object  " + object.getUniqueGameId());
     }
 
@@ -227,8 +225,8 @@ public class ClientHandler {
         characterPacket.inventory.removeObjectFromUID(uid);
     }
 
-    public Screen getScreen() {
-        return screen;
+    public AlphaClientApp getAlphaClientApp() {
+        return alphaClientApp;
     }
 
 

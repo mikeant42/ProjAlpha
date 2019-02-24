@@ -168,7 +168,7 @@ public class GameMap {
         Random random = new Random();
         int num = random.nextInt(objectLimit);
 
-        for (int i = 0; i < uniqueObjects.length; i++) {
+        for (int i = 0; i < uniqueObjects.length; i++) { // We need to make sure this unique id isnt also a player unique id!!!
             // if this id has already been assigned
             if (uniqueObjects[i] == num) {
                 num = assignUniqueId(); // we want to pick another number if our random has already been chosen

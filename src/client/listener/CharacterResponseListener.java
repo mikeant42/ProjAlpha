@@ -1,11 +1,8 @@
 package client.listener;
 
 import client.ClientHandler;
-import com.almasb.fxgl.app.FXGL;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import javafx.event.Event;
-import shared.CharacterPacket;
 import shared.Network;
 
 public class CharacterResponseListener extends Listener {
@@ -22,7 +19,7 @@ public class CharacterResponseListener extends Listener {
             Network.AddCharacter msg = (Network.AddCharacter)object;
            // if (msg.character.id != handler.getId()) { // lets make sure we dont dupelicate ourselves
                 handler.getOtherPlayers().add(msg.character);
-                handler.getScreen().getActiveWorld().addPlayer(msg.character);
+                handler.getAlphaClientApp().getActiveWorld().addPlayer(msg.character);
                 System.out.println(handler.getOtherPlayers().size());
            // }
         }
@@ -30,7 +27,7 @@ public class CharacterResponseListener extends Listener {
         // IF we get the command to remove from the server all we do is remove it from the game world
         if (object instanceof Network.RemoveCharacter) {
             Network.RemoveCharacter msg = (Network.RemoveCharacter) object;
-            handler.getScreen().getActiveWorld().removeNetworkedEntity(msg.id);
+            handler.getAlphaClientApp().getActiveWorld().removePlayer(msg.id);
             System.out.println("Removing client " + msg.id + " from the world");
             return;
         }
@@ -44,7 +41,7 @@ public class CharacterResponseListener extends Listener {
 //        }
 
 
-        if (ClientHandler.LOGIN_STATUS) {
+       // if (ClientHandler.LOGIN_STATUS) {
             if (object instanceof Network.UpdateCharacter) {
                 Network.UpdateCharacter update = (Network.UpdateCharacter) object;
                 handler.updatePlayerLocal(update.moveState, update.x, update.y, update.id);
@@ -59,10 +56,10 @@ public class CharacterResponseListener extends Listener {
 
             if (object instanceof Network.UserChat) {
                 Network.UserChat chat = (Network.UserChat)object;
-                handler.getScreen().addChatMsg(chat);
+                handler.getAlphaClientApp().addChatMsg(chat);
             }
 
-        }
+      //  }
 
     }
 }

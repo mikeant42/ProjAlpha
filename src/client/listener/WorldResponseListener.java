@@ -19,7 +19,7 @@ public class WorldResponseListener extends Listener {
         if (object instanceof Network.WorldQuery) {
             Network.WorldQuery query = (Network.WorldQuery)object;
 
-            //handler.getScreen().setMap(query.map); // NEED to use object queue
+            //handler.getAlphaClientApp().setMap(query.map); // NEED to use object queue
             handler.setLatestWorldID(((Network.WorldQuery) object).map);
         }
 

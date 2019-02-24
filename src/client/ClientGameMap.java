@@ -27,9 +27,12 @@ public class ClientGameMap {
     private List<GameObject> objectsHere = new ArrayList<>();
 
     private List<CharacterPacket> playersToAdd = new ArrayList<>();
-
     private List<GameObject> objectsToAdd = new ArrayList<>();
     private List<Network.NPCPacket> npcsToAdd = new ArrayList<>();
+
+    private List<CharacterPacket> playersToRemove = new ArrayList<>();
+    private List<GameObject> objectsToRemove = new ArrayList<>();
+    private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
 
 
     private List<Network.UserChat> messagesToAdd = new ArrayList<>();
@@ -144,6 +147,22 @@ public class ClientGameMap {
 
     }
 
+    public void removeGameObject(GameObject object) {
+        objectsToRemove.add(object);
+        removeNetworkedEntity(object.getUniqueGameId());
+    }
+
+    public void removePlayer(int id) {
+        for (CharacterPacket packet : playersHere) {
+            if (packet.id == id) {
+                playersToRemove.add(packet);
+                removeNetworkedEntity(packet.id);
+                return;
+            }
+        }
+
+    }
+
     public void addChatMsg(Network.UserChat chat) {
         messagesToAdd.add(chat);
     }
@@ -221,13 +240,22 @@ public class ClientGameMap {
         playersHere.addAll(playersToAdd);
         playersToAdd.clear();
 
+        playersHere.removeAll(playersToRemove);
+        playersToRemove.clear();
+
         objectsHere.addAll(objectsToAdd);
         objectsToAdd.clear();
+
+        objectsHere.removeAll(objectsToRemove);
+        objectsToRemove.clear();
 
         npcsHere.addAll(npcsToAdd);
         npcsToAdd.clear();
 
+        npcsHere.removeAll(npcsToRemove);
+        npcsToRemove.clear();
 
+        System.out.println(objectsHere.size());
 
 
         // 1. Have the server send us the world.
@@ -256,19 +284,16 @@ public class ClientGameMap {
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
 
-                    System.out.println(entity.getPosition());
+                    //System.out.println(entity.getPosition());
                     Network.UserChat entityChat = getChatMsg(packet.id);
 
                     if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                         // We found the dude we need to update
 
                         if (entityChat != null) {
-                            // thinking there needs to be an overlaytextcomponent pool, it can override old messages this way
-
                             if (entity.hasComponent(OverlayTextComponent.class)) {
                                 entity.getComponent(OverlayTextComponent.class).setText(entityChat.message);
                             } else {
-                                System.out.println("added comp");
                                 entity.addComponent(new OverlayTextComponent(entityChat.message, 5));
                             }
 

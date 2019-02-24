@@ -2,22 +2,11 @@ package client;
 
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.view.EntityView;
-import com.almasb.fxgl.scene.FXGLMenu;
-import com.almasb.fxgl.scene.GameScene;
-import com.almasb.fxgl.scene.Viewport;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.collections.ObservableSet;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Glow;
 import javafx.scene.text.*;
 import javafx.util.Duration;
-
-import static client.Screen.TILESIZE;
-import static javafx.application.Application.getUserAgentStylesheet;
 
 public class OverlayTextComponent extends Component {
 
