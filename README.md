@@ -17,6 +17,7 @@ Network
 - Syncs npc movement
 - Syncs game objects
 - In-game chat
+- Basic queueing system that can store messages until the client is ready to accept them
 
 
 Mobile

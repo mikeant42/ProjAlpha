@@ -1,9 +1,7 @@
 package server;
 
 import com.esotericsoftware.kryonet.Server;
-import shared.CharacterPacket;
-import shared.EntityType;
-import shared.Network;
+import shared.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +13,10 @@ public class AlphaServer extends Server {
     private HashSet<CharacterPacket> loggedIn = new HashSet();
     private GameMap map; // List<GameMap>
 
+    private List<Tuple<Integer, Object>> messageQueue = new ArrayList<>();
+    private List<Tuple<Integer, Object>> messagesToAddQueue = new ArrayList<>();
+    private List<Tuple<Integer, Object>> messageToRemoveQueue = new ArrayList<>();
+
     public AlphaServer() {
         map = new GameMap(this);
     }
@@ -22,6 +24,22 @@ public class AlphaServer extends Server {
     @Override
     public void update(int i) throws IOException {
         super.update(i);
+
+        messageQueue.addAll(messagesToAddQueue);
+        messageQueue.removeAll(messageToRemoveQueue);
+
+        messagesToAddQueue.clear();
+        messageToRemoveQueue.clear();
+
+        for (CharacterPacket packet : loggedIn) {
+            for (Tuple<Integer, Object> message : messageQueue) {
+                if (message.x.intValue() == packet.id && packet.isLoaded) {
+                    sendToTCP(packet.id, message.y);
+                    removeMessageFromQueue(message);
+                    System.out.println("message!");
+                }
+            }
+        }
 
         map.update();
     }
@@ -32,7 +50,8 @@ public class AlphaServer extends Server {
             if (other.id != c.getID()) {
                 Network.AddCharacter addCharacter = new Network.AddCharacter();
                 addCharacter.character = other;
-                c.sendTCP(addCharacter);
+                //c.sendTCP(addCharacter);
+                sendWithQueue(c.getID(), addCharacter, true);
                 System.out.println("Client " + other.id + " added to client " + c.getID());
             }
         }
@@ -48,11 +67,11 @@ public class AlphaServer extends Server {
 
         Network.AddCharacter addC = new Network.AddCharacter();
         addC.character = character;
-        sendToAllExceptTCP(c.getID(), addC); // Don't add the client's own player to his "other player" stack
+        sendToAllReadyExcept(c.getID(), addC, true); // Don't add the client's own player to his "other player" stack
 
-        for (CharacterPacket packet : getLoggedIn()) {
-            System.out.println("Client " + packet.id);
-        }
+//        for (CharacterPacket packet : getLoggedIn()) {
+//            System.out.println("Client " + packet.id);
+//        }
 
 
         //map.onCharacterAdd(character);
@@ -98,19 +117,53 @@ public class AlphaServer extends Server {
         return map;
     }
 
-    public void sendToAllReady(Object o) {
+    public void sendToAllReady(Object o, boolean queue) {
         for (CharacterPacket packet : loggedIn) {
             if (packet.isLoaded) {
                 sendToTCP(packet.id, o);
+            } else if (queue) {
+                messagesToAddQueue.add(new Tuple<>(packet.id, o));
             }
         }
     }
 
+    public void sendToAllReady(Object o) {
+        sendToAllReady(o, false);
+    }
+
+    public void sendWithQueue(int id, Object o, boolean queue) {
+//        for (CharacterPacket packet : loggedIn) {
+//            if (packet.id == id) {
+                if (queue) {
+                    messagesToAddQueue.add(new Tuple<>(id, o));
+                    System.out.println("hello");
+                } else {
+                    sendToTCP(id, o);
+                }
+         //   }
+       // }
+    }
+
     public void sendToAllReadyExcept(int i, Object o) {
+        sendToAllReadyExcept(i, o, false);
+    }
+
+    public void sendToAllReadyExcept(int i, Object o, boolean queue) {
         for (CharacterPacket packet : loggedIn) {
             if (packet.isLoaded && packet.id != i) {
                 sendToTCP(packet.id, o);
+            } else if (queue && packet.id != i) {
+                messagesToAddQueue.add(new Tuple<>(packet.id, o));
+                System.out.println("hello");
             }
         }
+    }
+
+    protected void removeMessageFromQueue(Tuple<Integer, Object> msg) {
+        messageToRemoveQueue.add(msg);
+    }
+
+    public List<Tuple<Integer, Object>> getMessageQueue() {
+        return messageQueue;
     }
 }

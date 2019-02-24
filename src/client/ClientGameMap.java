@@ -81,15 +81,7 @@ public class ClientGameMap {
                 FXGL.getApp().getGameScene().getViewport().bindToEntity(player, FXGL.getAppWidth()/2 - TILESIZE/2, FXGL.getAppHeight()/2 - TILESIZE/2);
                 FXGL.getApp().getGameScene().getViewport().setZoom(1.2);
 
-                /**
-                 * This is truly not a good way to do this. This is only a workaround for finding a better method
-                 * Need to wait for the variable to update
-                 */
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
+
             }
         });
     }
@@ -175,7 +167,7 @@ public class ClientGameMap {
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                if (!isPlayerHere(packet.id) && packet.id != clientHandler.getId()) {
+                if (!isPlayerHere(packet.id)) {
                     System.out.println("Adding player " + packet.id);
                     SpawnData data = new SpawnData(packet.x, packet.y);
                     data.put("ID", packet.id);
@@ -312,14 +304,16 @@ public class ClientGameMap {
 //                npcsHere.add(packet);
 //            }
 
-            List<Entity> entities = FXGL.getApp().getGameWorld().getEntitiesByType(EntityType.NPC);
-            for (Entity entity : entities) {
-                if (packet.id == entity.getInt("ID")) {
+            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.id);
+            if (optEnt.isPresent()) {
+                Entity entity = optEnt.get();
+//            List<Entity> entities = FXGL.getApp().getGameWorld().getEntitiesByType(EntityType.NPC);
+//            for (Entity entity : entities) {
+                //if (packet.id == entity.getInt("ID")) {
                     entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                     entity.setX(packet.x);
                     entity.setY(packet.y);
-                    System.out.println("updating npc");
-                }
+                //}
             }
 
 

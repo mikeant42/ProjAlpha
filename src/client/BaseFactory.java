@@ -2,6 +2,7 @@ package client;
 
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.paint.Color;
@@ -42,7 +43,7 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
-        player.setProperty("player", data.get("ID"));
+        player.addComponent(new IDComponent("player", data.get("ID")));
 
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         //player.addComponent(new OverlayTextComponent(data.get("user")));
@@ -75,8 +76,7 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
-        player.setProperty("player", data.get("ID"));
-
+        player.addComponent(new IDComponent("player", data.get("ID")));
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         //player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
@@ -116,7 +116,7 @@ public class BaseFactory implements EntityFactory {
 
         npc.setRenderLayer(RenderLayer.TOP);
 
-        npc.setProperty("ID", data.get("ID"));
+        npc.addComponent(new IDComponent("npc", data.get("ID")));
         npc.addComponent(movementComponent);
 
         return npc;

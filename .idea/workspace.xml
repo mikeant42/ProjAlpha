@@ -1,76 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/client/ClientGameMap.java" line="286" />
+    <bookmark url="file://$PROJECT_DIR$/src/client/ClientGameMap.java" line="278" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="412cecc1-ef73-4790-b089-3fceb850790d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/client/ClientGameMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared/objects/Fish.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-21-Feb-2019-16.31.17.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-21-Feb-2019-16.31.42.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-21-Feb-2019-16.31.53.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/assets/ui/mainpanel.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/assets/ui/mainpanel.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AnimatedMovementComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AnimatedMovementComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/FXGL-21-Feb-2019-16.32.19.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/BaseFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/BaseFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/OverlayTextComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/OverlayTextComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$10.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/Screen.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/CharacterResponseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/CharacterResponseListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/NPCResponseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/NPCResponseListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/WorldResponseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/listener/WorldResponseListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/MainPanelController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/MainPanelController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/MainPanelController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/MainPanelController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/AlphaServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/AlphaServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/WorldListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/WorldListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/CharacterPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/CharacterPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Inventory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$AddCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$AddCharacter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$AddInventoryItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$AddInventoryItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$LoginSuccess.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$LoginSuccess.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$MoveCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$MoveCharacter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$NPCPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$NPCPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$Register.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$Register.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RegistrationRequired.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RegistrationRequired.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveCharacter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveGameObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveGameObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveInventoryItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$RemoveInventoryItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateCharacter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateCharacter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPC.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UserChat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UserChat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$WorldQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$WorldQuery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/ui/mainpanel.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/ui/mainpanel.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/AnimatedMovementComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/AnimatedMovementComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/BaseFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/BaseFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/OverlayTextComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/OverlayTextComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Screen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Screen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/listener/NPCResponseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/listener/NPCResponseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/listener/WorldResponseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/listener/WorldResponseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ui/MainPanelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ui/MainPanelController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/ClientGameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientGameMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/AlphaServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/AlphaServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/CharacterCommandListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/CharacterCommandListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/GameMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/WorldListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/WorldListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/CharacterPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/CharacterPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Inventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Network.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -92,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/GameMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="105" column="8" selection-start-line="105" selection-start-column="8" selection-end-line="105" selection-end-column="8" />
+            <state relative-caret-position="178">
+              <caret line="148" column="9" selection-start-line="148" selection-start-column="9" selection-end-line="148" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4879#4880#0" expanded="true" />
@@ -107,18 +55,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/server/WorldListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/ServerHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
+            <state relative-caret-position="789">
               <caret line="54" selection-start-line="54" selection-end-line="54" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -128,10 +67,29 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/ArrayList.class">
+        <entry file="file://$PROJECT_DIR$/src/server/AlphaServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="1020" selection-start-line="1020" selection-end-line="1020" />
+            <state relative-caret-position="789">
+              <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#422#423#0" expanded="true" />
+                <element signature="e#461#462#0" expanded="true" />
+                <element signature="e#3895#3896#0" expanded="true" />
+                <element signature="e#4387#4388#0" expanded="true" />
+                <element signature="e#4436#4437#0" expanded="true" />
+                <element signature="e#4939#4940#0" expanded="true" />
+                <element signature="e#5035#5036#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="88" selection-start-line="19" selection-start-column="88" selection-end-line="19" selection-end-column="88" />
             </state>
           </provider>
         </entry>
@@ -139,15 +97,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/ClientGameMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="176" column="31" lean-forward="true" selection-start-line="176" selection-start-column="31" selection-end-line="176" selection-end-column="31" />
+            <state relative-caret-position="1003">
+              <caret line="308" column="45" lean-forward="true" selection-start-line="308" selection-start-column="45" selection-end-line="308" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3660#3661#0" expanded="true" />
                 <element signature="e#3699#3700#0" expanded="true" />
                 <element signature="e#4130#4131#0" expanded="true" />
                 <element signature="e#4159#4160#0" expanded="true" />
-                <element signature="e#6642#6643#0" expanded="true" />
+                <element signature="e#6205#6206#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/server/CharacterCommandListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="867">
+              <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -156,8 +126,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/BaseFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+            <state relative-caret-position="119">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#509#510#0" expanded="true" />
@@ -170,7 +140,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/ClientHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="-860">
               <caret line="138" column="30" lean-forward="true" selection-start-line="138" selection-start-column="30" selection-end-line="138" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -201,18 +171,6 @@
                 <element signature="e#7230#7231#0" expanded="true" />
                 <element signature="e#7296#7297#0" expanded="true" />
                 <element signature="e#13835#13836#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
-              <folding>
-                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -280,26 +238,26 @@
         <option value="$PROJECT_DIR$/src/server/LoginListener.java" />
         <option value="$PROJECT_DIR$/src/shared/ObjectUseHandler.java" />
         <option value="$PROJECT_DIR$/src/shared/GameObject.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/client/AnimatedMovementComponent.java" />
         <option value="$PROJECT_DIR$/src/shared/Inventory.java" />
         <option value="$PROJECT_DIR$/src/client/ui/MainPanelController.java" />
         <option value="$PROJECT_DIR$/src/client/OverlayTextComponent.java" />
-        <option value="$PROJECT_DIR$/src/shared/Network.java" />
         <option value="$PROJECT_DIR$/src/shared/objects/Fish.java" />
         <option value="$PROJECT_DIR$/src/client/ClientHandler.java" />
         <option value="$PROJECT_DIR$/src/client/listener/NPCResponseListener.java" />
-        <option value="$PROJECT_DIR$/src/client/BaseFactory.java" />
         <option value="$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java" />
         <option value="$PROJECT_DIR$/src/shared/CharacterPacket.java" />
         <option value="$PROJECT_DIR$/src/server/ServerHandler.java" />
         <option value="$PROJECT_DIR$/src/client/listener/WorldResponseListener.java" />
         <option value="$PROJECT_DIR$/src/client/Screen.java" />
-        <option value="$PROJECT_DIR$/src/client/ClientGameMap.java" />
         <option value="$PROJECT_DIR$/src/server/CharacterCommandListener.java" />
-        <option value="$PROJECT_DIR$/src/server/AlphaServer.java" />
         <option value="$PROJECT_DIR$/src/server/WorldListener.java" />
+        <option value="$PROJECT_DIR$/src/client/BaseFactory.java" />
+        <option value="$PROJECT_DIR$/src/client/ClientGameMap.java" />
+        <option value="$PROJECT_DIR$/src/shared/Network.java" />
         <option value="$PROJECT_DIR$/src/server/GameMap.java" />
+        <option value="$PROJECT_DIR$/src/server/AlphaServer.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -394,7 +352,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/boss/Documents/ProjAlpha/src/server/Main.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551025403148" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551029693174" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/shared/lib/fxgl-0.5.3-uber.jar!/" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -474,14 +432,14 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" sideWeight="0.50226927" side_tool="true" weight="0.28335112" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.4977307" visible="true" weight="0.13713981" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.4977307" visible="true" weight="0.13713981" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32899022" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.25515744" />
+      <window_info anchor="bottom" id="Run" order="5" visible="true" weight="0.25515744" />
       <window_info anchor="bottom" id="Debug" order="6" weight="0.3083605" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
@@ -656,23 +614,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/LoginListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/server/NPCBehavior.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -770,16 +711,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shared/Network.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="40" column="41" selection-start-line="40" selection-start-column="41" selection-end-line="40" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/ui/MainPanelController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2">
@@ -817,18 +748,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/ClientHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/client/listener/NPCResponseListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="138" column="30" lean-forward="true" selection-start-line="138" selection-start-column="30" selection-end-line="138" selection-end-column="30" />
+        <state relative-caret-position="303">
+          <caret line="21" column="36" lean-forward="true" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5977#5978#0" expanded="true" />
-            <element signature="e#6031#6032#0" expanded="true" />
-            <element signature="e#7098#7099#0" expanded="true" />
-            <element signature="e#7134#7135#0" expanded="true" />
-            <element signature="e#7189#7190#0" expanded="true" />
-            <element signature="e#7239#7240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/ArrayList.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="1020" selection-start-line="1020" selection-end-line="1020" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/WorldListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -852,56 +801,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/listener/CharacterResponseListener.java">
+    <entry file="file://$PROJECT_DIR$/src/client/ClientHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="22" column="21" selection-start-line="22" selection-start-column="21" selection-end-line="22" selection-end-column="21" />
+        <state relative-caret-position="-860">
+          <caret line="138" column="30" lean-forward="true" selection-start-line="138" selection-start-column="30" selection-end-line="138" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#5977#5978#0" expanded="true" />
+            <element signature="e#6031#6032#0" expanded="true" />
+            <element signature="e#7098#7099#0" expanded="true" />
+            <element signature="e#7134#7135#0" expanded="true" />
+            <element signature="e#7189#7190#0" expanded="true" />
+            <element signature="e#7239#7240#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/listener/NPCResponseListener.java">
+    <entry file="file://$PROJECT_DIR$/src/server/LoginListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="21" column="36" lean-forward="true" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+        <state relative-caret-position="398">
+          <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/CharacterCommandListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/AlphaServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-435">
-          <caret line="57" column="40" lean-forward="true" selection-start-line="57" selection-start-column="40" selection-end-line="57" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#422#423#0" expanded="true" />
-            <element signature="e#461#462#0" expanded="true" />
-            <element signature="e#2326#2327#0" expanded="true" />
-            <element signature="e#2362#2363#0" expanded="true" />
-            <element signature="e#2394#2395#0" expanded="true" />
-            <element signature="e#2420#2421#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/BaseFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+        <state relative-caret-position="119">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#509#510#0" expanded="true" />
@@ -910,9 +839,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/Network.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="3" lean-forward="true" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/CharacterCommandListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="53" column="47" selection-start-line="53" selection-start-column="47" selection-end-line="53" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/ClientGameMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="308" column="45" lean-forward="true" selection-start-line="308" selection-start-column="45" selection-end-line="308" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3660#3661#0" expanded="true" />
+            <element signature="e#3699#3700#0" expanded="true" />
+            <element signature="e#4130#4131#0" expanded="true" />
+            <element signature="e#4159#4160#0" expanded="true" />
+            <element signature="e#6205#6206#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/GameMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="148" column="9" selection-start-line="148" selection-start-column="9" selection-end-line="148" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4879#4880#0" expanded="true" />
+            <element signature="e#4922#4923#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/server/ServerHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
+        <state relative-caret-position="789">
           <caret line="54" selection-start-line="54" selection-end-line="54" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -920,44 +896,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/ArrayList.class">
+    <entry file="file://$PROJECT_DIR$/src/server/AlphaServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="1020" selection-start-line="1020" selection-end-line="1020" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/ClientGameMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="176" column="31" lean-forward="true" selection-start-line="176" selection-start-column="31" selection-end-line="176" selection-end-column="31" />
+        <state relative-caret-position="789">
+          <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3660#3661#0" expanded="true" />
-            <element signature="e#3699#3700#0" expanded="true" />
-            <element signature="e#4130#4131#0" expanded="true" />
-            <element signature="e#4159#4160#0" expanded="true" />
-            <element signature="e#6642#6643#0" expanded="true" />
+            <element signature="e#422#423#0" expanded="true" />
+            <element signature="e#461#462#0" expanded="true" />
+            <element signature="e#3895#3896#0" expanded="true" />
+            <element signature="e#4387#4388#0" expanded="true" />
+            <element signature="e#4436#4437#0" expanded="true" />
+            <element signature="e#4939#4940#0" expanded="true" />
+            <element signature="e#5035#5036#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/WorldListener.java">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="21" column="12" lean-forward="true" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/GameMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="105" column="8" selection-start-line="105" selection-start-column="8" selection-end-line="105" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4879#4880#0" expanded="true" />
-            <element signature="e#4922#4923#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="323">
+          <caret line="19" column="88" selection-start-line="19" selection-start-column="88" selection-end-line="19" selection-end-column="88" />
         </state>
       </provider>
     </entry>
