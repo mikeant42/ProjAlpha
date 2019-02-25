@@ -10,9 +10,13 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.settings.GameSettings;
+import com.almasb.fxgl.ui.Position;
+import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import shared.*;
 
 import java.io.File;
@@ -29,6 +33,9 @@ public class AlphaClientApp extends GameApplication {
 
     private UI loginScreen;
     private UI mainPanel;
+
+    private ProgressBar hpBar;
+
     private LoginController loginController;
 
 //    private List<CharacterPacket> playersHere = new ArrayList<>();
@@ -45,8 +52,6 @@ public class AlphaClientApp extends GameApplication {
 //    private Entity player;
 
     private boolean hasMap = false;
-
-    public static int TILESIZE = 256;
 
 
     private boolean panelOpen = false;
@@ -71,6 +76,9 @@ public class AlphaClientApp extends GameApplication {
         mainPanel = getAssetLoader().loadUI("mainpanel.fxml", panelControl);
 
         getGameScene().addUI(loginScreen);
+
+
+
 
 
     }
@@ -107,6 +115,23 @@ public class AlphaClientApp extends GameApplication {
                 panelControl.create(clientHandler);
 
                 gameMap.init(clientHandler);
+
+                int healthWidth = 200;
+
+                hpBar = new ProgressBar();
+                hpBar.setMinValue(0);
+                hpBar.setMaxValue(Data.PlayerConstants.MAX_HEALTH);
+                hpBar.setCurrentValue(clientHandler.getCharacterPacket().health);
+                hpBar.setWidth(healthWidth);
+                hpBar.setLabelVisible(true);
+                hpBar.setLabelPosition(Position.BOTTOM);
+                hpBar.setFill(Color.GREEN);
+
+                Pane pane = new Pane();
+                pane.setTranslateX(FXGL.getAppWidth()-healthWidth);
+                pane.getChildren().add(hpBar);
+                getGameScene().addUINodes(pane);
+
 
 
 
@@ -212,6 +237,8 @@ public class AlphaClientApp extends GameApplication {
     protected void onUpdate(double dtf) {
 
         if (gameMap.isMapLoaded()) {
+            hpBar.setCurrentValue(clientHandler.getCharacterPacket().health);
+
             gameMap.update();
 
         }

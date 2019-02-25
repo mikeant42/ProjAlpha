@@ -1,5 +1,6 @@
 package client;
 
+import client.render.Camera;
 import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -47,12 +48,16 @@ public class ClientGameMap {
 
     private boolean isMapLoaded = false;
 
+    private Camera camera;
+
 
     public ClientGameMap() {
     }
 
     public void init(ClientHandler handler) {
         this.clientHandler = handler;
+
+        camera = new Camera();
 
         setMap(clientHandler.getLatestWorldID());
 
@@ -81,8 +86,7 @@ public class ClientGameMap {
                 data.put("ID", clientHandler.getId());
                 player = FXGL.getApp().getGameWorld().spawn("localplayer", data);
 
-                FXGL.getApp().getGameScene().getViewport().bindToEntity(player, FXGL.getAppWidth()/2 - TILESIZE/2, FXGL.getAppHeight()/2 - TILESIZE/2);
-                FXGL.getApp().getGameScene().getViewport().setZoom(1.2);
+                camera.bind(player);
 
 
             }
@@ -254,8 +258,6 @@ public class ClientGameMap {
 
         npcsHere.removeAll(npcsToRemove);
         npcsToRemove.clear();
-
-        System.out.println(objectsHere.size());
 
 
         // 1. Have the server send us the world.

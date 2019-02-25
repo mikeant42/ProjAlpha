@@ -1,9 +1,7 @@
 package shared.objects;
 
-import shared.CharacterPacket;
-import shared.GameObject;
-import shared.IDs;
-import shared.Names;
+import shared.*;
+import shared.Data.*;
 
 public class Fish extends GameObject{
     private double healAmount = 0.25;
@@ -15,7 +13,11 @@ public class Fish extends GameObject{
 
     @Override
     public void use(CharacterPacket packet) {
-        System.out.println(packet.x);
+        int effect = (int)(packet.health + (Data.PlayerConstants.MAX_HEALTH * healAmount));
+        if (effect < Data.PlayerConstants.MAX_HEALTH) {
+            packet.health = effect; // updateHealth()
+            System.out.println(effect);
+        }
     }
 
 }

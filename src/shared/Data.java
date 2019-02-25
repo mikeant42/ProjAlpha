@@ -13,4 +13,9 @@ public class Data {
         public static int RUNNING_BACK       = 4;
     }
 
+    static public class PlayerConstants {
+        public static int MAX_HEALTH = 100;
+        public static int MAX_MANA   = 100;
+    }
+
 }

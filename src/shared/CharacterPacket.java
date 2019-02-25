@@ -12,4 +12,7 @@ public class CharacterPacket {
     public int moveState;
     public Inventory inventory;
     public boolean isLoaded = false;
+
+    public int health;
+    public int mana;
 }

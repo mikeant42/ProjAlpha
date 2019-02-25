@@ -163,11 +163,7 @@ public class MainPanelController implements UIController {
     public void dropItem() {
         if (selected <= grid*grid) { // if its a valid selection
             if (slotTaken(selected) && userInvent != null) {
-                userInvent.removeObjectFromSlot(selected);
-                //System.out.println(userInvent.getObjectSlot(selected).getName());
-                System.out.println(userInvent.getObjectSlot(selected) == null);
-                inventory[selected].setImage(FXGL.getAssetLoader().loadImage("ui/box.png"));
-                System.out.println(selected + "removing");
+                drop(selected);
             } else {
                 System.err.println("selection is null");
             }
@@ -175,11 +171,21 @@ public class MainPanelController implements UIController {
 
     }
 
+    private void drop(int selected) {
+        userInvent.removeObjectFromSlot(selected);
+        //System.out.println(userInvent.getObjectSlot(selected).getName());
+        System.out.println(userInvent.getObjectSlot(selected) == null);
+        inventory[selected].setImage(defaultImage);
+        System.out.println(selected + "removing");
+    }
+
     public void useItem() {
         if (selected <= grid*grid) { // if its a valid selection
             if (slotTaken(selected) && userInvent != null) {
                 userInvent.getObjectSlot(selected).use(handler.getCharacterPacket());
                 System.out.println(userInvent.getObjectSlot(selected).getUniqueGameId() + " is being used");
+
+                drop(selected);
             } else {
                 System.err.println("selection is null");
             }
