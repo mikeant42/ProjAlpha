@@ -1,7 +1,7 @@
 package shared;
 
 /**
- * @id - this id is actually the id of the client from the Connection class. It's a temp id assigned per session
+ * @id - this uid is actually the uid of the client from the Connection class. It's a temp uid assigned per session
  */
 
 public class CharacterPacket {
@@ -13,6 +13,5 @@ public class CharacterPacket {
     public Inventory inventory;
     public boolean isLoaded = false;
 
-    public int health;
-    public int mana;
+    public CombatObject combat;
 }

@@ -40,7 +40,7 @@ public class BaseFactory implements EntityFactory {
 
 
 
-        // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
+        // We need to set the temp uid of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
         player.addComponent(new IDComponent("player", data.get("ID")));
@@ -73,7 +73,7 @@ public class BaseFactory implements EntityFactory {
                 .build();
         player.setType(EntityType.LOCAL_PLAYER);
 
-        // We need to set the temp id of the player so we are in sync with the client. This data is passed from the server.
+        // We need to set the temp uid of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
         player.addComponent(new IDComponent("player", data.get("ID")));

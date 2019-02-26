@@ -41,8 +41,9 @@ public class LoginListener extends Listener {
             character.id = connection.getID();
             character.name = name;
             character.inventory = new Inventory();
-            character.health = 60;
-            character.mana = 100;
+
+
+            character.combat = new CombatObject(60, 100);
 
 //            GameObject object1 = new GameObject(IDs.Food.FISH);
 //            object1.setX(200);

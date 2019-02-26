@@ -9,8 +9,8 @@ import shared.objects.Fish;
 
 /**
  * There are two different types of ids
- * - The connection id
- * - The npc id assigned to a non Connection networtk entity
+ * - The connection uid
+ * - The npc uid assigned to a non Connection networtk entity
  */
 public class Network {
     static public final int port = 54555;
@@ -41,6 +41,7 @@ public class Network {
         kryo.register(AddInventoryItem.class);
         kryo.register(RemoveInventoryItem.class);
         kryo.register(Fish.class);
+        kryo.register(CombatObject.class);
 
     }
 
@@ -83,15 +84,17 @@ public class Network {
     static public class NPCPacket {
         public float x;
         public float y;
-        public int id;
+        public int uid;
         public EntityType type;
         public int moveState;
+
+        public CombatObject combat;
     }
 
     static public class UpdateNPC {
         public float x;
         public float y;
-        public int id;
+        public int uid;
         public int moveState;
     }
 
@@ -113,7 +116,7 @@ public class Network {
     }
 
 //    static public class GameObjectPacket {
-//        public int id;
+//        public int uid;
 //        public int itemLevel;
 //        public String name;
 //        public String desc;

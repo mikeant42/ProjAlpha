@@ -1,8 +1,5 @@
 package server;
 
-import shared.EntityType;
-import shared.Network;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +16,14 @@ public class NPCHandler {
 
     }
 
-    protected void addNPC(NPCBehavior npc) {
+    protected void addNPC(NPCBehavior npc, int uid) {
+        npc.getData().uid = uid;
         npcs.add(npc);
     }
 
     protected void removeNPC(int id) {
         for (NPCBehavior npc : npcs) {
-            if (npc.getData().id == id) {
+            if (npc.getData().uid == id) {
                 npcs.remove(npc);
             }
         }

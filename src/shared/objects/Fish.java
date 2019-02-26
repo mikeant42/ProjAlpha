@@ -13,9 +13,9 @@ public class Fish extends GameObject{
 
     @Override
     public void use(CharacterPacket packet) {
-        int effect = (int)(packet.health + (Data.PlayerConstants.MAX_HEALTH * healAmount));
+        int effect = (int)(packet.combat.getHealth() + (Data.PlayerConstants.MAX_HEALTH * healAmount));
         if (effect < Data.PlayerConstants.MAX_HEALTH) {
-            packet.health = effect; // updateHealth()
+            packet.combat.setHealth(effect); // updateHealth()
             System.out.println(effect);
         }
     }

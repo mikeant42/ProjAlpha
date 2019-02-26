@@ -73,7 +73,11 @@ public class GameMap {
     public void create() {
         RoamingBehavior behavior = new RoamingBehavior(500, 500);
         npcHandler = new NPCHandler();
-        npcHandler.addNPC(behavior);
+        npcHandler.addNPC(behavior, assignUniqueId());
+
+        RoamingBehavior behavior2 = new RoamingBehavior(500, 200);
+        behavior2.stopMoving();
+        npcHandler.addNPC(behavior2, assignUniqueId());
 
     }
 
@@ -138,7 +142,7 @@ public class GameMap {
         server.sendToTCP(cid, inventoryItem);
     }
 
-    public void onCharacterAdd(CharacterPacket packet) {
+    private void onCharacterAdd(CharacterPacket packet) {
         // We also have to spawn all the npcs in his level
         for (NPCBehavior npcBehavior : npcHandler.getNPCs()) {
             server.sendToTCP(packet.id, npcBehavior.getData());
@@ -164,12 +168,13 @@ public class GameMap {
        objectsToRemove.add(object);
     }
 
+    // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
     private int assignUniqueId() {
         Random random = new Random();
         int num = random.nextInt(objectLimit);
 
-        for (int i = 0; i < uniqueObjects.length; i++) { // We need to make sure this unique id isnt also a player unique id!!!
-            // if this id has already been assigned
+        for (int i = 0; i < uniqueObjects.length; i++) { // We need to make sure this unique uid isnt also a player unique uid!!!
+            // if this uid has already been assigned
             if (uniqueObjects[i] == num) {
                 num = assignUniqueId(); // we want to pick another number if our random has already been chosen
             }

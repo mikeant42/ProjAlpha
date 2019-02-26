@@ -60,7 +60,7 @@ public class AlphaServer extends Server {
 
         Network.LoginSuccess success = new Network.LoginSuccess();
         success.success = true;
-        //success.id = c.getID();
+        //success.uid = c.getID();
         success.packet = character;
         sendToTCP(c.getID(), success);
         addLoggedIn(character);
@@ -70,7 +70,7 @@ public class AlphaServer extends Server {
         sendToAllReadyExcept(c.getID(), addC, true); // Don't add the client's own player to his "other player" stack
 
 //        for (CharacterPacket packet : getLoggedIn()) {
-//            System.out.println("Client " + packet.id);
+//            System.out.println("Client " + packet.uid);
 //        }
 
 
@@ -133,7 +133,7 @@ public class AlphaServer extends Server {
 
     public void sendWithQueue(int id, Object o, boolean queue) {
 //        for (CharacterPacket packet : loggedIn) {
-//            if (packet.id == id) {
+//            if (packet.uid == uid) {
                 if (queue) {
                     messagesToAddQueue.add(new Tuple<>(id, o));
                     System.out.println("hello");

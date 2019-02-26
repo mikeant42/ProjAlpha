@@ -1,6 +1,5 @@
 package server;
 
-import javafx.geometry.Point2D;
 import shared.*;
 
 public class NPCBehavior {
@@ -16,6 +15,8 @@ public class NPCBehavior {
     private float lastX, lastY;
 
     float speed = 0.9f;
+
+    private boolean allowedToMove = true;
 
 
     public NPCBehavior(EntityType entityType, int x, int y) {
@@ -45,22 +46,26 @@ public class NPCBehavior {
 
     public void update() {
 
-        lastX = x;
-        lastY = y;
+        if (allowedToMove) {
 
-        switch (state) {
-            case 1:
-                moveUp(speed);
-                break;
-            case 2:
-                moveRight(speed);
-                break;
-            case 3:
-                moveLeft(speed);
-                break;
-            case 4:
-                moveDown(speed);
-                break;
+            lastX = x;
+            lastY = y;
+
+            switch (state) {
+                case 1:
+                    moveUp(speed);
+                    break;
+                case 2:
+                    moveRight(speed);
+                    break;
+                case 3:
+                    moveLeft(speed);
+                    break;
+                case 4:
+                    moveDown(speed);
+                    break;
+            }
+
         }
 
         // This is very similar to how things are done in movementcomponent maybe combine them somehow
@@ -94,6 +99,14 @@ public class NPCBehavior {
             y = yr;
     }
 
+    public void stopMoving() {
+        allowedToMove = false;
+    }
+
+    public void resumeMoving() {
+        allowedToMove = true;
+    }
+
 
     public int getState() {
         return state;
@@ -114,7 +127,7 @@ public class NPCBehavior {
     public Network.UpdateNPC formUpdate() {
         updateNPC.x =  x;
         updateNPC.y =  y;
-        updateNPC.id = data.id;
+        updateNPC.uid = data.uid;
         updateNPC.moveState = state;
 
         return updateNPC;

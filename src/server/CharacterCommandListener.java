@@ -27,7 +27,7 @@ public class CharacterCommandListener extends Listener {
             // Broadcast to all to remove the character
             Network.RemoveCharacter msg = new Network.RemoveCharacter();
             msg.id = c.getID();
-            System.out.println("og id " + c.getID());
+            System.out.println("og uid " + c.getID());
             System.out.println("Server recieved, client " + msg.id + " is quitting.");
 
             handler.getServer().sendToAllReadyExcept(c.getID(), msg);
@@ -59,9 +59,9 @@ public class CharacterCommandListener extends Listener {
         // Or we could just send the inputs to the clients, and let them simulate. This would be simpler but it would make client cheating easy
 //        if (object instanceof Network.UpdateCharacter2) {
 //            Network.UpdateCharacter2 attempt = (Network.UpdateCharacter2)object;
-//            System.out.println("Char " + attempt.id + " moved " + attempt.input.UP);
+//            System.out.println("Char " + attempt.uid + " moved " + attempt.input.UP);
 //
-//            handler.updateClient(attempt.id, attempt.x, attempt.y);
+//            handler.updateClient(attempt.uid, attempt.x, attempt.y);
 //            handler.getServer().sendToAllExceptTCP(c.getID(), attempt);
 //
 //        }

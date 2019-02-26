@@ -26,6 +26,9 @@ TODO
 - once in a while client sends entire game world. Server checks and corrects anything out of sync
 - lag compensation / client side prediction / resyncing after lost or delayed packets
 - use udp port for real time packets, e.g. movement
+- authenticating packets based on timestamps, etc.
+- split server into LoginServer and GameServer
+    - split client into launcher and game
 
 
 Mobile

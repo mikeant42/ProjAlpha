@@ -94,7 +94,7 @@ public class ClientHandler {
 
     public void updateNPC(float x, float y, int move, int id) {
         for (NPCPacket packet : npcs) {
-            if (id == packet.id) {
+            if (id == packet.uid) {
                 packet.x = x;
                 packet.y = y;
                 packet.moveState = move;
@@ -110,13 +110,13 @@ public class ClientHandler {
         }
     }
 
-//    public void setMap(int id) {
-//        alphaClientApp.setMap(id);
+//    public void setMap(int uid) {
+//        alphaClientApp.setMap(uid);
 //    }
 
     public boolean hasNPC(int id) {
         for (NPCPacket packet : npcs) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 return true;
             }
         }
@@ -153,7 +153,7 @@ public class ClientHandler {
         update.id = id;
         update.x = x;
         update.y = y;
-        //System.out.println("id " + id);
+        //System.out.println("uid " + uid);
         client.sendTCP(update); // I'd like movement to be udp
     }
 
@@ -173,7 +173,7 @@ public class ClientHandler {
     }
 
     public void onLoggedIn() {
-        //this.id = id;
+        //this.uid = uid;
         alphaClientApp.startGame();
         //client.removeListener(loginResponseListener);
     }

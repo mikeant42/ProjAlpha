@@ -17,7 +17,7 @@ public class CharacterResponseListener extends Listener {
     public void received (Connection c, Object object) {
         if (object instanceof Network.AddCharacter) {
             Network.AddCharacter msg = (Network.AddCharacter)object;
-           // if (msg.character.id != handler.getId()) { // lets make sure we dont dupelicate ourselves
+           // if (msg.character.uid != handler.getId()) { // lets make sure we dont dupelicate ourselves
                 handler.getOtherPlayers().add(msg.character);
                 handler.getAlphaClientApp().getActiveWorld().addPlayer(msg.character);
                 System.out.println(handler.getOtherPlayers().size());
@@ -36,7 +36,7 @@ public class CharacterResponseListener extends Listener {
 //            if (object instanceof Network.UpdateCharacter2) {
 //                Network.UpdateCharacter2 update = (Network.UpdateCharacter2)object;
 //                handler.updatePlayerLocal(update.x, update.y, update.input, update.velX,
-//                        update.velY, update.id);
+//                        update.velY, update.uid);
 //            }
 //        }
 

@@ -121,7 +121,7 @@ public class AlphaClientApp extends GameApplication {
                 hpBar = new ProgressBar();
                 hpBar.setMinValue(0);
                 hpBar.setMaxValue(Data.PlayerConstants.MAX_HEALTH);
-                hpBar.setCurrentValue(clientHandler.getCharacterPacket().health);
+                hpBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getHealth());
                 hpBar.setWidth(healthWidth);
                 hpBar.setLabelVisible(true);
                 hpBar.setLabelPosition(Position.BOTTOM);
@@ -237,7 +237,7 @@ public class AlphaClientApp extends GameApplication {
     protected void onUpdate(double dtf) {
 
         if (gameMap.isMapLoaded()) {
-            hpBar.setCurrentValue(clientHandler.getCharacterPacket().health);
+            hpBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getHealth());
 
             gameMap.update();
 

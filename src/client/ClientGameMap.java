@@ -1,7 +1,6 @@
 package client;
 
 import client.render.Camera;
-import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -10,7 +9,6 @@ import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
 import shared.CharacterPacket;
-import shared.EntityType;
 import shared.GameObject;
 import shared.Network;
 
@@ -79,14 +77,18 @@ public class ClientGameMap {
 
                 }
 
+
+
                 FXGL.getApp().getGameWorld().setLevelFromMap(map);
-                isMapLoaded = true;
+
 
                 SpawnData data = new SpawnData(50, 50);
                 data.put("ID", clientHandler.getId());
                 player = FXGL.getApp().getGameWorld().spawn("localplayer", data);
 
                 camera.bind(player);
+
+                isMapLoaded = true;
 
 
             }
@@ -118,7 +120,7 @@ public class ClientGameMap {
 
     private boolean isNPCHere(int id) {
         for (Network.NPCPacket packet : npcsHere) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 return true;
             }
         }
@@ -224,10 +226,10 @@ public class ClientGameMap {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if (!isNPCHere(packet.id)) {
-                    System.out.println("Spawning npc " + packet.id);
+                if (!isNPCHere(packet.uid)) {
+                    System.out.println("Spawning npc " + packet.uid);
                     SpawnData data = new SpawnData(packet.x, packet.y);
-                    data.put("ID", packet.id);
+                    data.put("ID", packet.uid);
                     FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
                     npcsToAdd.add(packet);
                 }
@@ -264,7 +266,9 @@ public class ClientGameMap {
         // 2. Draw and update all visible players
         //    - All of the networked npcs/players should update within their own loop
 
-        player.getComponent(NetworkedComponent.class).update();
+        // haven't been able to reproduce bug where the networkedcomponent is null. needs more investigation
+        if (player.hasComponent(NetworkedComponent.class))
+            player.getComponent(NetworkedComponent.class).update();
 
         Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().id);
         if (chat != null) {
@@ -323,20 +327,20 @@ public class ClientGameMap {
 
 
         for (Network.NPCPacket packet : npcsHere) {
-//            if (!isNPCHere(packet.id)) {
-//                System.out.println("Spawning npc " + packet.id);
+//            if (!isNPCHere(packet.uid)) {
+//                System.out.println("Spawning npc " + packet.uid);
 //                SpawnData data = new SpawnData(packet.x, packet.y);
-//                data.put("ID", packet.id);
+//                data.put("ID", packet.uid);
 //                FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
 //                npcsHere.add(packet);
 //            }
 
-            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.id);
+            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.uid);
             if (optEnt.isPresent()) {
                 Entity entity = optEnt.get();
 //            List<Entity> entities = FXGL.getApp().getGameWorld().getEntitiesByType(EntityType.NPC);
 //            for (Entity entity : entities) {
-                //if (packet.id == entity.getInt("ID")) {
+                //if (packet.uid == entity.getInt("ID")) {
                     entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                     entity.setX(packet.x);
                     entity.setY(packet.y);
