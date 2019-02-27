@@ -127,4 +127,9 @@ public class Network {
         public int map;
         public int cid; // With this we can grab the info of the character connected
     }
+
+    static public class AddProjectile {
+        public double originX, originY;
+        public double destinationX, destinationY;
+    }
 }

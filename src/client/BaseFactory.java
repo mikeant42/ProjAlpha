@@ -1,8 +1,10 @@
 package client;
 
+import client.render.ProjectileComponent;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.scene.paint.Color;
@@ -153,6 +155,18 @@ public class BaseFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .type(EntityType.COLLIDE)
                 .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("projectile")
+    public Entity newProjectile(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
+                .viewFromTexture("tree.png")
+                //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                //.type(EntityType.COLLIDE)
+                //.with(new CollidableComponent(true))
                 .build();
     }
 

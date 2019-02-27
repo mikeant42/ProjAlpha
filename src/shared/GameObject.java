@@ -12,7 +12,10 @@ public class GameObject {
     private float x,y;
     private int uniqueGameId;
 
+    private boolean isProjectile = false;
 
+
+    // this is for bounding collision
     private int width  = 20;
     private int height = 20;
 
@@ -103,5 +106,11 @@ public class GameObject {
 
     public void use(CharacterPacket packet) {
         System.out.println(packet.name);
+    }
+
+    public void effect(CombatObject combatObject) {}
+
+    public boolean isProjectile() {
+        return isProjectile;
     }
 }

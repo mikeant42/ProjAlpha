@@ -27,6 +27,8 @@ public class GameMap {
     private List<CharacterPacket> unLoadedPlayersToAdd = new ArrayList<>();
     private List<CharacterPacket> unLoadedPlayersToRemove = new ArrayList<>();
 
+    private ProjectileManager projectileManager;
+
 
     // 128 is the limit of the number of game objects in one map
     private int[] uniqueObjects = new int[objectLimit];
@@ -39,6 +41,8 @@ public class GameMap {
         this.mapType = MapType.STARTER; // This is going to be important later
 
         create();
+
+        projectileManager = new ProjectileManager();
 
 
 //        int maxX = 500;
@@ -107,6 +111,8 @@ public class GameMap {
         unLoadedPlayers.removeAll(unLoadedPlayersToRemove);
         unLoadedPlayersToRemove.clear();
 
+        projectileManager.update();
+
 
         for (CharacterPacket packet : unLoadedPlayers) {
             if (packet.isLoaded) {
@@ -121,16 +127,26 @@ public class GameMap {
         }
 
         for (GameObject object : objects) {
+
+            // player vs object collision
             for (CharacterPacket packet : server.getLoggedIn()) {
 
                 if (AlphaCollision.doesCollide(object, packet)) {
 
-                    // when player runs over an object, he adds it to his inventory
-                    removeGameObject(object);
-                    addInventory(packet.id, object);
+                    if (!object.isProjectile()) {
+                        // when player runs over an object, he adds it to his inventory
+                        removeGameObject(object);
+                        addInventory(packet.id, object);
+                    }
 
 
                     System.out.println("collision");
+                }
+            }
+
+            for (NPCBehavior behavior : npcHandler.getNPCs()) {
+                if (AlphaCollision.doesProjectileCollide(object, behavior.getData())) {
+                    System.out.println("projectile-npc collision");
                 }
             }
         }
@@ -193,5 +209,9 @@ public class GameMap {
 
     public NPCHandler getNPCHandler() {
         return npcHandler;
+    }
+
+    public void addProjectile(Network.AddProjectile packet) {
+        projectileManager.addProjectile(packet);
     }
 }

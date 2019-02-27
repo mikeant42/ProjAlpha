@@ -1,5 +1,6 @@
 package client;
 
+import client.render.ProjectileComponent;
 import client.ui.LoginController;
 import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
@@ -15,6 +16,7 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import shared.*;
@@ -188,6 +190,24 @@ public class AlphaClientApp extends GameApplication {
 
 
 
+        UserAction click = new UserAction("Click") {
+            @Override
+            protected void onActionBegin() {
+                if (gameMap.isMapLoaded()) {
+                    Input input = getInput();
+                    SpawnData data = new SpawnData(gameMap.getPlayer().getX(), gameMap.getPlayer().getY());
+                    data.put("mouseX", input.getMouseXWorld());
+                    data.put("mouseY", input.getMouseYWorld());
+                    System.out.println(input.getMouseXWorld( ));
+                    System.out.println(input.getMouseYWorld());
+                    getGameWorld().spawn("projectile", data);
+
+                   // gameMap.getPlayer().addComponent(new ProjectileComponent(input.getMouseXWorld(), input.getMouseYWorld(), 5));
+                }
+            }
+        };
+
+        getInput().addAction(click, MouseButton.PRIMARY);
 
         UserAction tab = new UserAction("Tab") {
             public void onActionBegin() {

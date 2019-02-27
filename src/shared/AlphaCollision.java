@@ -41,22 +41,49 @@ public class AlphaCollision {
     }
 
 
+    private static boolean doesCollide(double pos1X, double pos1Y, double pos2X, double pos2Y, int pos1Width, int pos1Height, int pos2Width, int pos2Height) {
+        int playerWidth = 40;
+        int playerHeight = 40;
+        // packet - pos1, object - pos2
+
+        if(pos1X < pos2X + pos2Width &&
+                pos1X + pos1Width > pos2X &&
+                pos1Y < pos2Y + pos1Height &&
+                pos1Y + pos1Height > pos2Y)
+        {
+            return true;
+        }
+        return false;
+    }
+
     /*
     Server side collision is simple
      */
     public static boolean doesCollide(GameObject object, CharacterPacket packet) {
         int playerWidth = 40;
         int playerHeight = 40;
+//
+//        if(packet.x < object.getX() + object.getWidth() &&
+//                packet.x + playerWidth > object.getX() &&
+//                packet.y < object.getY() + playerHeight &&
+//                packet.y + playerHeight > object.getY())
+//        {
+//            return true;
+//        }
+//        return false;
 
-        if(packet.x < object.getX() + object.getWidth() &&
-                packet.x + playerWidth > object.getX() &&
-                packet.y < object.getY() + playerHeight &&
-                packet.y + playerHeight > object.getY())
-        {
-            return true;
-        }
-        return false;
+        return doesCollide(packet.x, packet.y, object.getX(), object.getY(), playerWidth, playerHeight, object.getWidth(), object.getHeight());
     }
+
+    public static boolean doesProjectileCollide(GameObject object, Network.NPCPacket packet) {
+        int projectileWidth = 10;
+        int projectileHeight = 10;
+        return doesCollide(packet.x, packet.y, object.getX(), object.getY(), projectileWidth, projectileHeight, object.getWidth(), object.getHeight());
+    }
+
+//    public Tuple<Integer, Integer> calculateProjectileMove(Network.AddProjectile projectile, double time) {
+//
+//    }
 
 }
 

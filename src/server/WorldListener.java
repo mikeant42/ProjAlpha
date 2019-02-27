@@ -2,6 +2,7 @@ package server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import shared.GameObject;
 import shared.Network;
 
 public class WorldListener extends Listener {
@@ -20,6 +21,11 @@ public class WorldListener extends Listener {
 
             handler.getServer().sendToTCP(c.getID(), query);
             handler.getServer().setIsLoaded(c.getID(), true);
+        }
+
+        if (object instanceof Network.AddProjectile) {
+            Network.AddProjectile gameObject = (Network.AddProjectile) object;
+            handler.getServer().getMap().addProjectile(gameObject);
         }
     }
 }

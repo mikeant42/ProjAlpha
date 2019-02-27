@@ -207,6 +207,15 @@ public class ClientHandler {
         client.sendTCP(chat);
     }
 
+    public void sendProjectile(double oX, double oY, double x, double y) {
+        AddProjectile projectile = new AddProjectile();
+        projectile.originX = oX;
+        projectile.originY = oY;
+        projectile.destinationX = x;
+        projectile.destinationY = y;
+        client.sendTCP(projectile);
+    }
+
     public CharacterPacket getCharacterPacket() {
         return characterPacket;
     }
