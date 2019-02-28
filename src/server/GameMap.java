@@ -31,7 +31,8 @@ public class GameMap {
 
 
     // 128 is the limit of the number of game objects in one map
-    private int[] uniqueObjects = new int[objectLimit];
+    //private int[] uniqueObjects = new int[objectLimit];
+    private List<Integer> uniques = new ArrayList<>();
 
     public GameMap(AlphaServer server) { // pass in the old npc handler
         this.npcHandler = new NPCHandler();
@@ -202,17 +203,25 @@ public class GameMap {
 
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
     public int assignUniqueId() {
-        Random random = new Random();
-        int num = random.nextInt(objectLimit);
+        if (uniques.size() <= objectLimit) {
+            Random random = new Random();
+            int num = random.nextInt(objectLimit);
 
-        for (int i = 0; i < uniqueObjects.length; i++) { // We need to make sure this unique uid isnt also a player unique uid!!!
-            // if this uid has already been assigned
-            if (uniqueObjects[i] == num) {
-                num = assignUniqueId(); // we want to pick another number if our random has already been chosen
+            for (int i = 0; i < uniques.size(); i++) { // We need to make sure this unique uid isnt also a player unique uid!!!
+                // if this uid has already been assigned
+                if (uniques.get(i) != null && uniques.get(i) == num) {
+                    num = assignUniqueId(); // we want to pick another number if our random has already been chosen
+                    return num;
+                }
             }
-        }
 
-        return num;
+            uniques.add(num);
+
+            return num;
+        } else {
+            System.err.println("Object limit reached! Don't add anymore objects!");
+            return -1;
+        }
     }
 
     public void addUnloadedPlayer(CharacterPacket packet) {
