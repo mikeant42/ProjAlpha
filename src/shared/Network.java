@@ -133,6 +133,7 @@ public class Network {
     static public class AddProjectile {
         public double originX, originY;
         public double destinationX, destinationY;
+        public int sourceUser;
     }
 
     static public class ObjectPositionUpdate {

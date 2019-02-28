@@ -222,6 +222,7 @@ public class ClientHandler {
         projectile.originY = oY;
         projectile.destinationX = x;
         projectile.destinationY = y;
+        projectile.sourceUser = getId();
         client.sendTCP(projectile);
     }
 

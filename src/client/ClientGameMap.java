@@ -313,10 +313,12 @@ public class ClientGameMap {
 
                         }
 
-                        entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
-                        int moveState = packet.moveState;
-                        entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
-                        entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                        if (entity.hasComponent(AnimatedMovementComponent.class)) {
+                            entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+                            int moveState = packet.moveState;
+                            entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
+                            entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                        }
 
 
                     }
@@ -357,8 +359,8 @@ public class ClientGameMap {
         }
 
 
-        for (GameObject object : clientHandler.getObjects()) {
-            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", object.getUniqueGameId());
+        for (GameObject object : objectsHere) {
+            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
             if (optEnt.isPresent()) {
                 Entity entity = optEnt.get();
 

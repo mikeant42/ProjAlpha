@@ -139,7 +139,11 @@ public class GameMap {
                         addInventory(packet.id, object);
                         System.out.println("picking up non projhectile");
                     } else if (object.isProjectile()) {
-                        removeGameObject(object);
+                        if (projectileManager.getSource(object) != packet.id) { // the user cant harm himself with a spell
+                            removeGameObject(object);
+                            projectileManager.remove(object);
+                        }
+
                     }
 
 

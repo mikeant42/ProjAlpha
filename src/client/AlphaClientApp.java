@@ -162,28 +162,32 @@ public class AlphaClientApp extends GameApplication {
         getInput().addAction(new UserAction("Up 1") {
             @Override
             protected void onAction() {
-                gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).up();
+                if (gameMap.getPlayer().hasComponent(AnimatedMovementComponent.class))
+                    gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).up();
             }
         }, KeyCode.W);
 
         getInput().addAction(new UserAction("Down 1") {
             @Override
             protected void onAction() {
-                gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).down();
+                if (gameMap.getPlayer().hasComponent(AnimatedMovementComponent.class))
+                    gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).down();
             }
         }, KeyCode.S);
 
         getInput().addAction(new UserAction("Right 1") {
             @Override
             protected void onAction() {
-                gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).right();
+                if (gameMap.getPlayer().hasComponent(AnimatedMovementComponent.class))
+                    gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).right();
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Left 1") {
             @Override
             protected void onAction() {
-                gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).left();
+                if (gameMap.getPlayer().hasComponent(AnimatedMovementComponent.class))
+                    gameMap.getPlayer().getComponent(AnimatedMovementComponent.class).left();
             }
         }, KeyCode.A);
 
