@@ -42,6 +42,8 @@ public class Network {
         kryo.register(RemoveInventoryItem.class);
         kryo.register(Fish.class);
         kryo.register(CombatObject.class);
+        kryo.register(AddProjectile.class);
+        kryo.register(ObjectPositionUpdate.class);
 
     }
 
@@ -131,5 +133,10 @@ public class Network {
     static public class AddProjectile {
         public double originX, originY;
         public double destinationX, destinationY;
+    }
+
+    static public class ObjectPositionUpdate {
+        public int uid;
+        public double x,y;
     }
 }

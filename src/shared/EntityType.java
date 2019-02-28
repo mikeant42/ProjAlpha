@@ -1,5 +1,5 @@
 package shared;
 
 public enum EntityType {
-    PLAYER, COLLIDE, LOCAL_PLAYER, NPC
+    PLAYER, COLLIDE, LOCAL_PLAYER, NPC, PROJECTILE, OBJECT
 }

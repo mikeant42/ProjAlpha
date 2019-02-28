@@ -200,6 +200,15 @@ public class ClientHandler {
         objects.removeAll(remove);
     }
 
+    public void updateObjectLocal(int uid, double x, double y) {
+        for (GameObject object1 : objects) {
+            if (object1.getUniqueGameId() == uid) {
+                object1.setX(x);
+                object1.setY(y);
+            }
+        }
+    }
+
     public void sendChat(String message) {
         UserChat chat = new UserChat();
         chat.message = message;

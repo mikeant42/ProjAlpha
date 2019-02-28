@@ -42,7 +42,7 @@ public class GameMap {
 
         create();
 
-        projectileManager = new ProjectileManager();
+        projectileManager = new ProjectileManager(this);
 
 
 //        int maxX = 500;
@@ -137,6 +137,9 @@ public class GameMap {
                         // when player runs over an object, he adds it to his inventory
                         removeGameObject(object);
                         addInventory(packet.id, object);
+                        System.out.println("picking up non projhectile");
+                    } else if (object.isProjectile()) {
+                        removeGameObject(object);
                     }
 
 
@@ -161,11 +164,11 @@ public class GameMap {
     private void onCharacterAdd(CharacterPacket packet) {
         // We also have to spawn all the npcs in his level
         for (NPCBehavior npcBehavior : npcHandler.getNPCs()) {
-            server.sendToTCP(packet.id, npcBehavior.getData());
+            server.sendWithQueue(packet.id, npcBehavior.getData(), true);
         }
 
         for (GameObject object : objects) {
-            server.sendToTCP(packet.id, object);
+            server.sendWithQueue(packet.id, object, true);
         }
 
     }
@@ -173,7 +176,16 @@ public class GameMap {
     public void addGameObject(GameObject object) {
         objectsToAdd.add(object);
 
-        server.sendToAllReady(object);
+        server.sendToAllTCP(object);
+    }
+
+    public void updateObjectPosition(GameObject object) {
+        Network.ObjectPositionUpdate update = new Network.ObjectPositionUpdate();
+        update.uid = object.getUniqueGameId();
+        update.x = object.getX();
+        update.y = object.getY();
+        server.sendToAllTCP(update);
+
     }
 
     public void removeGameObject(GameObject object) {
@@ -185,7 +197,7 @@ public class GameMap {
     }
 
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
-    private int assignUniqueId() {
+    public int assignUniqueId() {
         Random random = new Random();
         int num = random.nextInt(objectLimit);
 

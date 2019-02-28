@@ -7,8 +7,11 @@ import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import shared.EntityType;
 
 public class BaseFactory implements EntityFactory {
@@ -111,10 +114,12 @@ public class BaseFactory implements EntityFactory {
                 //.viewFromNode(new Rectangle(25, 25, Color.BLUE))
                 //.build()
                 //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
-                //.bbox(new HitBox(BoundingShape.box(25, 25)))
-                //.with(new CollidableComponent(true))
+                .bbox(new HitBox(BoundingShape.box(35, 40)))
+                .with(new CollidableComponent(true))
+                .type(EntityType.NPC)
                 .build();
-        npc.setType(EntityType.NPC);
+
+
 
         npc.setRenderLayer(RenderLayer.TOP);
 
@@ -126,7 +131,8 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("Gameobject")
     public Entity newGameObject(SpawnData data) {
-        Entity entity = Entities.builder()
+        Entity entity;
+        entity = Entities.builder()
                 .from(data)
                 .with(new NetworkedComponent(data.get("uid"), handler))
                 .viewFromTexture("objects/" + data.get("name") + ".png")
@@ -160,14 +166,24 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("projectile")
     public Entity newProjectile(SpawnData data) {
-        return Entities.builder()
+        System.out.println("hello");
+        String fileName = "spell/" + data.get("name") + ".png";
+        AnimationChannel channel = new AnimationChannel(fileName, 4,256/4, 64, Duration.seconds(1), 0, 3);
+        Entity entity =  Entities.builder()
                 .from(data)
-                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
-                .viewFromTexture("tree.png")
+                .bbox(new HitBox(BoundingShape.box(25,25)))
+                //dsd.with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
+                .with(new CollidableComponent(true))
+                .with(new NetworkedComponent(data.get("uid"), handler))
+                .with(new IDComponent("object", data.get("uid")))
+                .viewFromAnimatedTexture(new AnimatedTexture(channel))
+                .type(EntityType.PROJECTILE)
                 //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 //.type(EntityType.COLLIDE)
                 //.with(new CollidableComponent(true))
                 .build();
+        entity.setRenderLayer(RenderLayer.TOP);
+        return entity;
     }
 
 

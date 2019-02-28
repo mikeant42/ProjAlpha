@@ -27,7 +27,8 @@ public class ProjectileComponent extends Component {
     @Override
     public void onAdded() {
         FXGL.getApp().getMasterTimer().runOnceAfter(() -> {
-            getEntity().removeFromWorld();
+            if (getEntity() != null)
+                getEntity().removeFromWorld();
             }, Duration.seconds(timed));
     }
 
@@ -36,15 +37,17 @@ public class ProjectileComponent extends Component {
         float timeSinceStarted = 0f;
 
         timeSinceStarted += dtf;
-        getEntity().getPositionComponent().setValue(FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
-                destination.getX(), destination.getY(), 0.12));
-        //FXGLMath.ler
 
         // If the object has arrived, stop the coroutine
         if (getEntity().getPosition().getX() == (destination.getX()) && getEntity().getY() == destination.getY()) {
             onHit();
             //System.out.println("hit");
         }
+
+
+        getEntity().getPositionComponent().setValue(FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
+                destination.getX(), destination.getY(), 0.08));
+        //FXGLMath.ler
 
         // Otherwise, continue next frame
 

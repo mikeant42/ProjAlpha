@@ -200,7 +200,9 @@ public class AlphaClientApp extends GameApplication {
                     data.put("mouseY", input.getMouseYWorld());
                     System.out.println(input.getMouseXWorld( ));
                     System.out.println(input.getMouseYWorld());
-                    getGameWorld().spawn("projectile", data);
+                    data.put("name", Names.Spell.TORNADO);
+                   // getGameWorld().spawn("projectile", data);
+                    clientHandler.sendProjectile(gameMap.getPlayer().getX(), gameMap.getPlayer().getY(), input.getMouseXWorld(), input.getMouseYWorld());
 
                    // gameMap.getPlayer().addComponent(new ProjectileComponent(input.getMouseXWorld(), input.getMouseYWorld(), 5));
                 }
@@ -233,6 +235,8 @@ public class AlphaClientApp extends GameApplication {
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.COLLIDE));
+        //getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollision(EntityType.PLAYER, EntityType.PROJECTILE));
+       //dw getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollisionNPC(EntityType.NPC, EntityType.PROJECTILE));
     }
 
 

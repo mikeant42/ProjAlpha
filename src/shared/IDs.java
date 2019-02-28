@@ -18,6 +18,10 @@ public class IDs {
         public static final int LARGE_HEAL  = 7003;
     }
 
+    static public class Spell {
+        public static final int TORNADO = 9001;
+    }
+
     public class NPC {
 
 

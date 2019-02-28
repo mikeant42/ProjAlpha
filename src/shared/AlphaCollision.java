@@ -40,6 +40,31 @@ public class AlphaCollision {
 
     }
 
+    public static CollisionHandler setProjectileCollision(EntityType player, EntityType hut) {
+        return new CollisionHandler(EntityType.PLAYER, EntityType.PROJECTILE) {
+
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                hut.removeFromWorld();
+            }
+
+
+        };
+    }
+
+    public static CollisionHandler setProjectileCollisionNPC(EntityType player, EntityType hut) {
+        return new CollisionHandler(EntityType.NPC, EntityType.PROJECTILE) {
+
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                System.out.println("collision");
+                hut.removeFromWorld();
+            }
+
+
+        };
+    }
+
 
     private static boolean doesCollide(double pos1X, double pos1Y, double pos2X, double pos2Y, int pos1Width, int pos1Height, int pos2Width, int pos2Height) {
         int playerWidth = 40;

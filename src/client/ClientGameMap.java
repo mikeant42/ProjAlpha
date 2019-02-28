@@ -155,6 +155,7 @@ public class ClientGameMap {
 
     public void removeGameObject(GameObject object) {
         objectsToRemove.add(object);
+        System.out.println("removing" + object.getName());
         removeNetworkedEntity(object.getUniqueGameId());
     }
 
@@ -214,7 +215,12 @@ public class ClientGameMap {
                     data.put("uid", object.getUniqueGameId());
                     data.put("name", object.getName());
 
-                    FXGL.getApp().getGameWorld().spawn("Gameobject", data);
+                    if (object.isProjectile()) {
+                        FXGL.getApp().getGameWorld().spawn("projectile", data);
+                        System.out.println("adding projectile");
+                    } else {
+                        FXGL.getApp().getGameWorld().spawn("Gameobject", data);
+                    }
 
                     objectsToAdd.add(object);
                 }
@@ -348,6 +354,18 @@ public class ClientGameMap {
             }
 
 
+        }
+
+
+        for (GameObject object : clientHandler.getObjects()) {
+            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", object.getUniqueGameId());
+            if (optEnt.isPresent()) {
+                Entity entity = optEnt.get();
+
+                System.out.println(object.getX());
+                entity.setX(object.getX());
+                entity.setY(object.getY());
+            }
         }
 
 //        for (GameObject object : clientHandler.getObjects()) {

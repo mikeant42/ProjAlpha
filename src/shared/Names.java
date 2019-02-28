@@ -13,6 +13,10 @@ public class Names {
         public static final String LARGE_HEAL  = "largeheal";
     }
 
+    public class Spell {
+        public static final String TORNADO = "tornado";
+    }
+
     public class NPC {
 
 

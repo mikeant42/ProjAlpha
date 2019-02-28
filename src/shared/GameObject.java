@@ -9,7 +9,7 @@ public class GameObject {
     private int itemLevel;
     private String name;
     private String desc;
-    private float x,y;
+    private double x,y;
     private int uniqueGameId;
 
     private boolean isProjectile = false;
@@ -38,19 +38,19 @@ public class GameObject {
 //        });
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
@@ -112,5 +112,9 @@ public class GameObject {
 
     public boolean isProjectile() {
         return isProjectile;
+    }
+
+    public void setProjectile(boolean projectile) {
+        isProjectile = projectile;
     }
 }

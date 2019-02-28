@@ -34,5 +34,11 @@ public class WorldResponseListener extends Listener {
             handler.removeGameObject(obj.uid);
             System.out.println("remopving obj");
         }
+
+        if (object instanceof Network.ObjectPositionUpdate) {
+            Network.ObjectPositionUpdate update = (Network.ObjectPositionUpdate)object;
+            handler.updateObjectLocal(update.uid, update.x, update.y);
+            System.out.println("updating pos");
+        }
     }
 }
