@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextobjectid="50">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextobjectid="57">
  <tileset firstgid="1" name="pixel_nature" tilewidth="32" tileheight="32" tilecount="153" columns="9">
   <image source="../textures/pixel_nature.png" width="288" height="544"/>
  </tileset>
@@ -28,6 +28,23 @@
   <object id="42" type="collide" x="238.667" y="578.667" width="98.6667" height="274.667"/>
   <object id="44" type="collide" x="264" y="892" width="1654" height="62"/>
   <object id="48" type="collide" x="3" y="901" width="127" height="53"/>
+ </objectgroup>
+ <objectgroup name="spawn">
+  <object id="51" name="googon" type="roaming" x="832" y="800">
+   <point/>
+  </object>
+  <object id="53" name="googon" type="roaming" x="672" y="704">
+   <point/>
+  </object>
+  <object id="54" name="googon" type="roaming" x="992" y="672">
+   <point/>
+  </object>
+  <object id="55" name="googon" type="roaming" x="800" y="672">
+   <point/>
+  </object>
+  <object id="56" name="googon" type="roaming" x="640" y="800">
+   <point/>
+  </object>
  </objectgroup>
  <layer name="Tile Layer 1" width="60" height="60">
   <data encoding="csv">

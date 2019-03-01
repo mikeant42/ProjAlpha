@@ -18,6 +18,10 @@ public class NPCBehavior {
 
     private boolean allowedToMove = true;
 
+    private boolean isStatic = false;
+
+    private String name;
+
 
     public NPCBehavior(EntityType entityType, int x, int y) {
         data = new Network.NPCPacket();
@@ -121,6 +125,7 @@ public class NPCBehavior {
         return data;
     }
 
+    // This would only be implemented for dynamic npcs. Static npcs should have all interactive code on the client
     public void onCollisionWithPlayer(CharacterPacket packet) {
     }
 
@@ -147,6 +152,14 @@ public class NPCBehavior {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean aStatic) {
+        isStatic = aStatic;
     }
 
 }

@@ -176,7 +176,7 @@ public class MainPanelController implements UIController {
         //System.out.println(userInvent.getObjectSlot(selected).getName());
         System.out.println(userInvent.getObjectSlot(selected) == null);
         inventory[selected].setImage(defaultImage);
-        System.out.println(selected + "removing");
+        System.out.println(selected + " removing from inventory");
     }
 
     public void useItem() {

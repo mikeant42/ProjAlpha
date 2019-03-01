@@ -51,7 +51,7 @@ public class ProjectileManager {
         projectiles.addAll(projectilesToAdd);
         projectilesToAdd.clear();
 
-        projectilesToAdd.removeAll(projectilesToRemove);
+        projectiles.removeAll(projectilesToRemove);
         projectilesToRemove.clear();
 
 
@@ -62,11 +62,14 @@ public class ProjectileManager {
             Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
                     projectile.projectile.destinationX, projectile.projectile.destinationY, 0.08);
 
-            projectile.object.setX(newPosition.getX());
-            projectile.object.setY(newPosition.getY());
+//            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
+//
+                projectile.object.setX(newPosition.getX());
+                projectile.object.setY(newPosition.getY());
 
-            map.updateObjectPosition(projectile.object);
-            // if projectile is too old delete it
+                map.updateObjectPosition(projectile.object);
+//                // if projectile is too old delete it
+//            }
         }
     }
 
@@ -80,10 +83,11 @@ public class ProjectileManager {
         return -1;
     }
 
-    public void remove(GameObject object) {
+    public void remove(int uid) {
         for (Projectile projectile : projectiles) {
-            if (object.getUniqueGameId() == projectile.object.getUniqueGameId()) {
+            if (uid == projectile.object.getUniqueGameId()) {
                 projectilesToRemove.add(projectile);
+                System.out.println("removing projectile");
             }
         }
     }

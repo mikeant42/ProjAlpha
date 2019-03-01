@@ -6,6 +6,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.parser.tiled.TMXParser;
 import com.almasb.fxgl.parser.tiled.TiledMap;
+import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
 import shared.AlphaUtil;
@@ -35,6 +36,7 @@ public class ClientGameMap {
     private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
 
 
+    // chat messages auto-remove
     private List<Network.UserChat> messagesToAdd = new ArrayList<>();
 
     private TiledMap map;
@@ -83,6 +85,8 @@ public class ClientGameMap {
                 // this isMapLoaded flag alerts the server that we are ready to recieve information
                 // this could become a general-use flag to stop the server from sending info
 
+                // disable the spawn layer, this is only for the server
+                map.getLayerByName("spawn").setObjects(new ArrayList<TiledObject>());
 
                 FXGL.getApp().getGameWorld().setLevelFromMap(map);
 
@@ -134,6 +138,9 @@ public class ClientGameMap {
 
 
     public void removeNetworkedEntity(int id) {
+        if (id == clientHandler.getId()) {
+            System.err.println("Removing our own player!");
+        }
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -150,7 +157,7 @@ public class ClientGameMap {
 
     public void removeGameObject(GameObject object) {
         objectsToRemove.add(object);
-        System.out.println("removing" + object.getName());
+        System.out.println("removing " + object.getName());
         removeNetworkedEntity(object.getUniqueGameId());
     }
 
@@ -359,7 +366,6 @@ public class ClientGameMap {
             if (optEnt.isPresent()) {
                 Entity entity = optEnt.get();
 
-                System.out.println(object.getX());
                 entity.setX(object.getX());
                 entity.setY(object.getY());
             }

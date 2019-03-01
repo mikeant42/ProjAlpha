@@ -17,6 +17,10 @@ public class AlphaServer extends Server {
     private List<Tuple<Integer, Object>> messagesToAddQueue = new ArrayList<>();
     private List<Tuple<Integer, Object>> messageToRemoveQueue = new ArrayList<>();
 
+
+    // this number is used to make sure that objects dont acquire player ids
+    public static final int PLAYER_COUNT = 16;
+
     public AlphaServer() {
         map = new GameMap(this);
     }

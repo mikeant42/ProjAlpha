@@ -134,6 +134,8 @@ public class AlphaClientApp extends GameApplication {
                 pane.getChildren().add(hpBar);
                 getGameScene().addUINodes(pane);
 
+                getGameState().setValue("state", Data.AlphaGameState.FIGHTING);
+
 
 
 
@@ -197,7 +199,7 @@ public class AlphaClientApp extends GameApplication {
         UserAction click = new UserAction("Click") {
             @Override
             protected void onActionBegin() {
-                if (gameMap.isMapLoaded()) {
+                if (gameMap.isMapLoaded() && getGameState().getInt("state") == Data.AlphaGameState.FIGHTING) {
                     Input input = getInput();
                     SpawnData data = new SpawnData(gameMap.getPlayer().getX(), gameMap.getPlayer().getY());
                     data.put("mouseX", input.getMouseXWorld());
@@ -214,6 +216,15 @@ public class AlphaClientApp extends GameApplication {
         };
 
         getInput().addAction(click, MouseButton.PRIMARY);
+
+        UserAction rightClick = new UserAction("Rightclick") {
+            @Override
+            protected void onActionBegin() {
+
+            }
+        };
+
+        getInput().addAction(rightClick, MouseButton.SECONDARY);
 
         UserAction tab = new UserAction("Tab") {
             public void onActionBegin() {

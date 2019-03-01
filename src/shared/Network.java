@@ -89,6 +89,7 @@ public class Network {
         public int moveState;
 
         public CombatObject combat;
+        public String name;
     }
 
     static public class UpdateNPC {

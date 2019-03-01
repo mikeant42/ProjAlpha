@@ -18,4 +18,9 @@ public class Data {
         public static int MAX_MANA   = 100;
     }
 
+    static public class AlphaGameState {
+        public static int TALKING  = 0;
+        public static int FIGHTING = 1;
+    }
+
 }

@@ -7,6 +7,7 @@ import shared.objects.Fish;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap {
     /*
@@ -67,6 +68,7 @@ public class GameMap {
             @Override
             public void handleStaticCollision(TiledObject object, GameObject projectile) {
                 removeGameObject(projectile);
+                projectileManager.remove(projectile.getUniqueGameId());
                 System.out.println("world collision");
             }
         });
@@ -102,23 +104,26 @@ public class GameMap {
     }
 
     private void addCollidables() {
-        for (TiledObject object : map.getLayerByName("collision").getObjects()) {
-            // add collidable objects to server
-            // we get server-side collisidon detection
-            // this is necessary if we have objects that interact with the environment
-            staticCollisions.add(object);
+        staticCollisions.addAll(map.getLayerByName("collision").getObjects());
 
+        for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
+            if (object.getType().equals("roaming")) {
+                if (object.getName().equals("googon")) {
+                    RoamingBehavior behavior = new RoamingBehavior(object.getX(), object.getY());
+                    npcHandler.addNPC(behavior, assignUniqueId());
+                }
+            }
         }
     }
 
     public void create() {
-        RoamingBehavior behavior = new RoamingBehavior(500, 500);
-        npcHandler = new NPCHandler();
-        npcHandler.addNPC(behavior, assignUniqueId());
-
-        RoamingBehavior behavior2 = new RoamingBehavior(500, 200);
-        behavior2.stopMoving();
-        npcHandler.addNPC(behavior2, assignUniqueId());
+//        RoamingBehavior behavior = new RoamingBehavior(500, 500);
+//        npcHandler = new NPCHandler();
+//        npcHandler.addNPC(behavior, assignUniqueId());
+//
+//        RoamingBehavior behavior2 = new RoamingBehavior(500, 200);
+//        behavior2.stopMoving();
+//        npcHandler.addNPC(behavior2, assignUniqueId());
 
     }
 
@@ -182,7 +187,7 @@ public class GameMap {
                     } else if (object.isProjectile()) {
                         if (projectileManager.getSource(object) != packet.id) { // the user cant harm himself with a spell
                             removeGameObject(object);
-                            projectileManager.remove(object);
+                            projectileManager.remove(object.getUniqueGameId());
                         }
 
                     }
@@ -246,30 +251,28 @@ public class GameMap {
         server.sendToAllReady(packet);
 
        objectsToRemove.add(object);
+       deAllocateId(object.getUniqueGameId());
+    }
+
+    private void deAllocateId(int id) {
+        uniques.remove(new Integer(id));
+        System.out.println(uniques.contains(id));
     }
 
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
+    // if you gen too many ids this will cause a stackoverflow
     public int assignUniqueId() {
-        if (uniques.size() <= objectLimit) {
-            Random random = new Random();
-            int num = random.nextInt(objectLimit);
+        int num = ThreadLocalRandom.current().nextInt(AlphaServer.PLAYER_COUNT, objectLimit + 1);
 
-            for (int i = 0; i < uniques.size(); i++) { // We need to make sure this unique uid isnt also a player unique uid!!!
-                // if this uid has already been assigned
-                if (uniques.get(i) != null && uniques.get(i) == num) {
-                    num = assignUniqueId(); // we want to pick another number if our random has already been chosen
-                    return num;
-                }
-            }
-
-            uniques.add(num);
-
-            return num;
+        if (uniques.contains(num)) {
+            num = assignUniqueId();
         } else {
-            System.err.println("Object limit reached! Don't add anymore objects!");
-            return -1;
+            uniques.add(num);
         }
+
+        return num;
     }
+
 
     public void addUnloadedPlayer(CharacterPacket packet) {
         unLoadedPlayersToAdd.add(packet);

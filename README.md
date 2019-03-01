@@ -19,6 +19,7 @@ Network
 - In-game chat
 - Player inventory
 - Basic queueing system that can store messages until the client is ready to accept them
+- Basic projectile system
 
 
 TODO
@@ -29,6 +30,19 @@ TODO
 - authenticating packets based on timestamps, etc.
 - split server into LoginServer and GameServer
     - split client into launcher and game
+- replace the NetworkedComponent class with IDComponent
+- write more gc friendly code
+- Code Reform - use `synchronized`
+
+    Gameplay
+        - death and simple combat mechanics
+        - mana system
+        - npc dialogue and basic storyline mechanics
+
+Bugs
+----
+- sometimes the client side collision detection will make the character get stuck
+- other players don't show the idle animation
 
 
 Mobile

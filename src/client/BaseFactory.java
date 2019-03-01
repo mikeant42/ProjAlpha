@@ -186,5 +186,10 @@ public class BaseFactory implements EntityFactory {
         return entity;
     }
 
+    @Spawns("roaming")
+    public Entity newRoaming(SpawnData data) {
+        return newNothing(data);
+    }
+
 
 }

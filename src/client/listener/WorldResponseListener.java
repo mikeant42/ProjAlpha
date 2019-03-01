@@ -32,13 +32,13 @@ public class WorldResponseListener extends Listener {
         if (object instanceof Network.RemoveGameObject) {
             Network.RemoveGameObject obj = (Network.RemoveGameObject)object;
             handler.removeGameObject(obj.uid);
-            System.out.println("remopving obj");
+            System.out.println("Main obj");
         }
 
         if (object instanceof Network.ObjectPositionUpdate) {
             Network.ObjectPositionUpdate update = (Network.ObjectPositionUpdate)object;
             handler.updateObjectLocal(update.uid, update.x, update.y);
-            System.out.println("updating pos");
+            //System.out.println("updating pos");
         }
     }
 }
