@@ -1,8 +1,11 @@
 package server;
 
+import com.almasb.fxgl.parser.tiled.TiledMap;
+import com.almasb.fxgl.parser.tiled.TiledObject;
 import shared.*;
 import shared.objects.Fish;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class GameMap {
@@ -16,8 +19,9 @@ public class GameMap {
 
     private AlphaServer server;
 
-    private MapType mapType;
+    private int mapID;
 
+    // idea - this list manages multiple maps
     private List<GameObject> objects = new ArrayList<>();
 
     private List<GameObject> objectsToRemove = new ArrayList<>();
@@ -29,21 +33,43 @@ public class GameMap {
 
     private ProjectileManager projectileManager;
 
+    private TiledMap map;
+
+    private List<TiledObject> staticCollisions = new ArrayList<>();
+
 
     // 128 is the limit of the number of game objects in one map
     //private int[] uniqueObjects = new int[objectLimit];
     private List<Integer> uniques = new ArrayList<>();
+
+    private AlphaCollision collision;
 
     public GameMap(AlphaServer server) { // pass in the old npc handler
         this.npcHandler = new NPCHandler();
 
         this.server = server;
 
-        this.mapType = MapType.STARTER; // This is going to be important later
+        this.mapID = 1;
+
+        try {
+            map = AlphaUtil.parseWorld("src/assets/json/ult.xml");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        addCollidables();
 
         create();
 
         projectileManager = new ProjectileManager(this);
+
+        collision = new AlphaCollision(new AlphaCollisionHandler() {
+            @Override
+            public void handleStaticCollision(TiledObject object, GameObject projectile) {
+                removeGameObject(projectile);
+                System.out.println("world collision");
+            }
+        });
 
 
 //        int maxX = 500;
@@ -65,7 +91,7 @@ public class GameMap {
         object.setX(200);
         object.setY(200);
         object.setUniqueGameId(assignUniqueId());
-//        object.setOnUse(new ObjectUseHandler() {
+//        object.setOnUse(new AlphaCollisionHandler() {
 //            @Override
 //            public void onUse(CharacterPacket packet) {
 //
@@ -73,6 +99,16 @@ public class GameMap {
 //        });
         addGameObject(object);
 
+    }
+
+    private void addCollidables() {
+        for (TiledObject object : map.getLayerByName("collision").getObjects()) {
+            // add collidable objects to server
+            // we get server-side collisidon detection
+            // this is necessary if we have objects that interact with the environment
+            staticCollisions.add(object);
+
+        }
     }
 
     public void create() {
@@ -114,6 +150,8 @@ public class GameMap {
 
         projectileManager.update();
 
+        // every so often check if the player is somewhere he shouldnt be
+
 
         for (CharacterPacket packet : unLoadedPlayers) {
             if (packet.isLoaded) {
@@ -128,6 +166,8 @@ public class GameMap {
         }
 
         for (GameObject object : objects) {
+
+            collision.handleStaticCollisions(staticCollisions, object);
 
             // player vs object collision
             for (CharacterPacket packet : server.getLoggedIn()) {
@@ -148,13 +188,13 @@ public class GameMap {
                     }
 
 
-                    System.out.println("collision");
                 }
             }
 
             for (NPCBehavior behavior : npcHandler.getNPCs()) {
                 if (AlphaCollision.doesProjectileCollide(object, behavior.getData())) {
                     System.out.println("projectile-npc collision");
+                    removeGameObject(object);
                 }
             }
         }
@@ -182,6 +222,13 @@ public class GameMap {
         objectsToAdd.add(object);
 
         server.sendToAllTCP(object);
+    }
+
+    /*
+    Useful method
+     */
+    public void markUnloaded(CharacterPacket packet) {
+
     }
 
     public void updateObjectPosition(GameObject object) {
@@ -228,9 +275,6 @@ public class GameMap {
         unLoadedPlayersToAdd.add(packet);
     }
 
-    public MapType getMapType() {
-        return mapType;
-    }
 
     public NPCHandler getNPCHandler() {
         return npcHandler;
@@ -238,5 +282,9 @@ public class GameMap {
 
     public void addProjectile(Network.AddProjectile packet) {
         projectileManager.addProjectile(packet);
+    }
+
+    public int getMapID() {
+        return mapID;
     }
 }

@@ -2,7 +2,6 @@ package shared;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import server.GameMap;
 import shared.objects.Fish;
 
 // This class is a convenient place to keep things common to both the client and server.
@@ -32,7 +31,6 @@ public class Network {
         kryo.register(EntityType.class);
         kryo.register(NPCPacket.class);
         kryo.register(UpdateNPC.class);
-        kryo.register(ObjectUseHandler.class);
         kryo.register(GameObject.class);
         kryo.register(GameObject[].class);
         kryo.register(UserChat.class);

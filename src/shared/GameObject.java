@@ -21,7 +21,7 @@ public class GameObject {
 
     public GameObject(int id) {
         this.id = id;
-//        setOnUse(new ObjectUseHandler() {
+//        setOnUse(new AlphaCollisionHandler() {
 //            @Override
 //            public void onUse(CharacterPacket packet) {
 //                System.out.println("hello");
@@ -30,7 +30,7 @@ public class GameObject {
     }
 
     public GameObject() {
-//        setOnUse(new ObjectUseHandler() {
+//        setOnUse(new AlphaCollisionHandler() {
 //            @Override
 //            public void onUse(CharacterPacket packet) {
 //                System.out.println("hello");

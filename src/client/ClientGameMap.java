@@ -8,6 +8,7 @@ import com.almasb.fxgl.parser.tiled.TMXParser;
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
+import shared.AlphaUtil;
 import shared.CharacterPacket;
 import shared.GameObject;
 import shared.Network;
@@ -69,7 +70,7 @@ public class ClientGameMap {
             public void run() {
                 if (id == 1) {
                     try {
-                        map = parseWorld("src/assets/json/ult.xml");/////
+                        map = AlphaUtil.parseWorld("src/assets/json/ult.xml");/////
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -77,6 +78,10 @@ public class ClientGameMap {
 
                 }
 
+
+                // This is where all of the pre-game, post-login stuff occurs
+                // this isMapLoaded flag alerts the server that we are ready to recieve information
+                // this could become a general-use flag to stop the server from sending info
 
 
                 FXGL.getApp().getGameWorld().setLevelFromMap(map);
@@ -95,17 +100,7 @@ public class ClientGameMap {
         });
     }
 
-    private TiledMap parseWorld(String file) throws FileNotFoundException{
-        File initialFile = new File(file);
-        InputStream targetStream = new FileInputStream(initialFile);
 
-
-        TMXParser parser = new TMXParser();
-        TiledMap map = parser.parse(targetStream);
-//        map.getLayerByName("Treetop").setDraworder("topdown");
-
-        return map;
-    }
 
 
 

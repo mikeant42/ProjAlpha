@@ -3,9 +3,18 @@ package shared;
 import client.AnimatedMovementComponent;
 import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
 
+import java.util.List;
+
 public class AlphaCollision {
+
+    private AlphaCollisionHandler handler;
+
+    public AlphaCollision(AlphaCollisionHandler handler) {
+        this.handler = handler;
+    }
     public static CollisionHandler setClientCollision(EntityType player, EntityType hut) {
         return new CollisionHandler(EntityType.LOCAL_PLAYER, EntityType.COLLIDE) {
 
@@ -87,15 +96,6 @@ public class AlphaCollision {
     public static boolean doesCollide(GameObject object, CharacterPacket packet) {
         int playerWidth = 40;
         int playerHeight = 40;
-//
-//        if(packet.x < object.getX() + object.getWidth() &&
-//                packet.x + playerWidth > object.getX() &&
-//                packet.y < object.getY() + playerHeight &&
-//                packet.y + playerHeight > object.getY())
-//        {
-//            return true;
-//        }
-//        return false;
 
         return doesCollide(packet.x, packet.y, object.getX(), object.getY(), playerWidth, playerHeight, object.getWidth(), object.getHeight());
     }
@@ -103,7 +103,19 @@ public class AlphaCollision {
     public static boolean doesProjectileCollide(GameObject object, Network.NPCPacket packet) {
         int projectileWidth = 10;
         int projectileHeight = 10;
+
         return doesCollide(packet.x, packet.y, object.getX(), object.getY(), projectileWidth, projectileHeight, object.getWidth(), object.getHeight());
+    }
+
+
+    public void handleStaticCollisions(List<TiledObject> staticCollisions, GameObject projectile) {
+        for (TiledObject object : staticCollisions) {
+            boolean collides = doesCollide(object.getX(), object.getY(), projectile.getX(), projectile.getY(), object.getWidth(), object.getHeight(),
+                    projectile.getWidth(), projectile.getHeight());
+            if (collides) {
+                handler.handleStaticCollision(object, projectile);
+            }
+        }
     }
 
 //    public Tuple<Integer, Integer> calculateProjectileMove(Network.AddProjectile projectile, double time) {

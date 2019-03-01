@@ -17,7 +17,7 @@ public class WorldListener extends Listener {
         if (object instanceof Network.WorldQuery) {
             Network.WorldQuery query = (Network.WorldQuery)object;
 
-            query.map = 1;
+            query.map = handler.getServer().getMap().getMapID(); // eventually the player will have it on him in the db
 
             handler.getServer().sendToTCP(c.getID(), query);
             handler.getServer().setIsLoaded(c.getID(), true);
