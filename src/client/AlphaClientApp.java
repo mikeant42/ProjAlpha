@@ -1,15 +1,12 @@
 package client;
 
-import client.render.ProjectileComponent;
 import client.ui.LoginController;
 import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.listener.ExitListener;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.*;
-import com.almasb.fxgl.parser.tiled.*;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
@@ -20,13 +17,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import shared.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import shared.collision.AlphaCollision;
 
 
 public class AlphaClientApp extends GameApplication {

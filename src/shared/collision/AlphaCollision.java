@@ -1,10 +1,14 @@
-package shared;
+package shared.collision;
 
 import client.AnimatedMovementComponent;
 import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
+import shared.CharacterPacket;
+import shared.EntityType;
+import shared.GameObject;
+import shared.Network;
 
 import java.util.List;
 

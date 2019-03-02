@@ -3,6 +3,8 @@ package server;
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import shared.*;
+import shared.collision.AlphaCollision;
+import shared.collision.AlphaCollisionHandler;
 import shared.objects.Fish;
 
 import java.io.FileNotFoundException;
@@ -132,7 +134,7 @@ public class GameMap {
      */
     public void update() {
         for (NPCBehavior behavior : npcHandler.getNPCs()) {
-            server.sendToAllTCP(behavior.formUpdate());
+            server.sendToAllReady(behavior.formUpdate());
         }
 
     }
@@ -226,7 +228,7 @@ public class GameMap {
     public void addGameObject(GameObject object) {
         objectsToAdd.add(object);
 
-        server.sendToAllTCP(object);
+        server.sendToAllReady(object);
     }
 
     /*
@@ -255,22 +257,25 @@ public class GameMap {
     }
 
     private void deAllocateId(int id) {
-        uniques.remove(new Integer(id));
-        System.out.println(uniques.contains(id));
+        synchronized (uniques) {
+            uniques.remove(new Integer(id));
+        }
     }
 
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
     // if you gen too many ids this will cause a stackoverflow
     public int assignUniqueId() {
-        int num = ThreadLocalRandom.current().nextInt(AlphaServer.PLAYER_COUNT, objectLimit + 1);
+        synchronized (uniques) {
+            int num = ThreadLocalRandom.current().nextInt(AlphaServer.PLAYER_COUNT, objectLimit + 1);
 
-        if (uniques.contains(num)) {
-            num = assignUniqueId();
-        } else {
-            uniques.add(num);
+            if (uniques.contains(num)) {
+                num = assignUniqueId();
+            } else {
+                uniques.add(num);
+            }
+
+            return num;
         }
-
-        return num;
     }
 
 

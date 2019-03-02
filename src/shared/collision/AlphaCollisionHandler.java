@@ -1,6 +1,7 @@
-package shared;
+package shared.collision;
 
 import com.almasb.fxgl.parser.tiled.TiledObject;
+import shared.GameObject;
 
 public abstract class AlphaCollisionHandler {
     public AlphaCollisionHandler() {}

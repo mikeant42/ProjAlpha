@@ -1,5 +1,6 @@
 package server;
 
+
 import com.esotericsoftware.kryonet.Server;
 import shared.*;
 
@@ -138,14 +139,14 @@ public class AlphaServer extends Server {
     public void sendWithQueue(int id, Object o, boolean queue) {
 //        for (CharacterPacket packet : loggedIn) {
 //            if (packet.uid == uid) {
-                if (queue) {
-                    messagesToAddQueue.add(new Tuple<>(id, o));
-                    System.out.println("hello");
-                } else {
-                    sendToTCP(id, o);
-                }
-         //   }
-       // }
+        if (queue) {
+            messagesToAddQueue.add(new Tuple<>(id, o));
+            System.out.println("hello");
+        } else {
+            sendToTCP(id, o);
+        }
+        //   }
+        // }
     }
 
     public void sendToAllReadyExcept(int i, Object o) {

@@ -139,8 +139,10 @@ public class ClientGameMap {
 
     public void removeNetworkedEntity(int id) {
         if (id == clientHandler.getId()) {
-            System.err.println("Removing our own player!");
+            System.err.println("Attempting to remove our own player!");
+            return;
         }
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
