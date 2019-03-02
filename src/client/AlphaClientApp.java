@@ -192,12 +192,12 @@ public class AlphaClientApp extends GameApplication {
             protected void onActionBegin() {
                 if (gameMap.isMapLoaded() && getGameState().getInt("state") == Data.AlphaGameState.FIGHTING) {
                     Input input = getInput();
-                    SpawnData data = new SpawnData(gameMap.getPlayer().getX(), gameMap.getPlayer().getY());
-                    data.put("mouseX", input.getMouseXWorld());
-                    data.put("mouseY", input.getMouseYWorld());
-                    System.out.println(input.getMouseXWorld( ));
-                    System.out.println(input.getMouseYWorld());
-                    data.put("name", Names.Spell.TORNADO);
+//                    SpawnData data = new SpawnData(gameMap.getPlayer().getX(), gameMap.getPlayer().getY());
+//                    data.put("mouseX", input.getMouseXWorld());
+//                    data.put("mouseY", input.getMouseYWorld());
+//                    System.out.println(input.getMouseXWorld( ));
+//                    System.out.println(input.getMouseYWorld());
+//                    data.put("name", Names.Spell.TORNADO);
                    // getGameWorld().spawn("projectile", data);
                     clientHandler.sendProjectile(gameMap.getPlayer().getX(), gameMap.getPlayer().getY(), input.getMouseXWorld(), input.getMouseYWorld());
 
@@ -241,8 +241,8 @@ public class AlphaClientApp extends GameApplication {
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.COLLIDE));
-        //getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollision(EntityType.PLAYER, EntityType.PROJECTILE));
-       //dw getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollisionNPC(EntityType.NPC, EntityType.PROJECTILE));
+       // getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollision(EntityType.PLAYER, EntityType.PROJECTILE));
+       // getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollisionNPC(EntityType.NPC, EntityType.PROJECTILE));
     }
 
 

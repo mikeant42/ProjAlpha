@@ -26,6 +26,9 @@ public class WorldListener extends Listener {
         if (object instanceof Network.AddProjectile) {
             Network.AddProjectile gameObject = (Network.AddProjectile) object;
             handler.getServer().getMap().addProjectile(gameObject);
+
+            //handler.getServer().sendToAllReady(gameObject);
+            handler.getServer().sendToAllReady(gameObject);
         }
     }
 }

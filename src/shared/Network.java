@@ -88,8 +88,13 @@ public class Network {
         public EntityType type;
         public int moveState;
 
-        public CombatObject combat;
         public String name;
+        public boolean interactable;
+        public boolean trader;
+    }
+
+    static public class Monster extends NPCPacket {
+        public CombatObject combatObject;
     }
 
     static public class UpdateNPC {

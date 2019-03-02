@@ -5,10 +5,10 @@ import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
-import shared.CharacterPacket;
-import shared.EntityType;
-import shared.GameObject;
-import shared.Network;
+import server.NPC;
+import server.*;
+import server.ProjectileManager;
+import shared.*;
 
 import java.util.List;
 
@@ -104,11 +104,25 @@ public class AlphaCollision {
         return doesCollide(packet.x, packet.y, object.getX(), object.getY(), playerWidth, playerHeight, object.getWidth(), object.getHeight());
     }
 
-    public static boolean doesProjectileCollide(GameObject object, Network.NPCPacket packet) {
+    public static boolean doesCollide(Projectile projectile, CharacterPacket packet) {
+        int playerWidth = 40;
+        int playerHeight = 40;
+
+        return doesCollide(packet.x, packet.y, projectile.x, projectile.y, playerWidth, playerHeight, projectile.width, projectile.height);
+    }
+
+    public static boolean doesCollide(Projectile projectile, NPC npc) {
+        int npcWidth = 40;
+        int npcHeight = 40;
+
+        return doesCollide(npc.getX(), npc.getY(), projectile.x, projectile.y, npcWidth, npcHeight, projectile.width, projectile.height);
+    }
+
+    public static boolean doesProjectileCollide(GameObject object, NPC npc) {
         int projectileWidth = 10;
         int projectileHeight = 10;
 
-        return doesCollide(packet.x, packet.y, object.getX(), object.getY(), projectileWidth, projectileHeight, object.getWidth(), object.getHeight());
+        return doesCollide(npc.getX(), npc.getY(), object.getX(), object.getY(), projectileWidth, projectileHeight, object.getWidth(), object.getHeight());
     }
 
 

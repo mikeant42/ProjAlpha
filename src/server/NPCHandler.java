@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NPCHandler {
-    private List<NPCBehavior> npcs = new ArrayList<>();
+    private List<NPC> npcs = new ArrayList<>();
 
     private Thread npcThread;
 
@@ -16,20 +16,20 @@ public class NPCHandler {
 
     }
 
-    protected void addNPC(NPCBehavior npc, int uid) {
-        npc.getData().uid = uid;
+    protected void addNPC(NPC npc, int uid) {
+        npc.getPacket().uid = uid;
         npcs.add(npc);
     }
 
     protected void removeNPC(int id) {
-        for (NPCBehavior npc : npcs) {
-            if (npc.getData().uid == id) {
+        for (NPC npc : npcs) {
+            if (npc.getPacket().uid == id) {
                 npcs.remove(npc);
             }
         }
     }
 
-    public List<NPCBehavior> getNPCs() {
+    public List<NPC> getNPCs() {
         return npcs;
     }
 

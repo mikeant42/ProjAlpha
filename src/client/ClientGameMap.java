@@ -209,6 +209,22 @@ public class ClientGameMap {
         });
     }
 
+    public void addProjectile(Network.AddProjectile projectile) {
+        System.out.println("should add");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                SpawnData data = new SpawnData(projectile.originX, projectile.originY);
+                data.put("mouseX", projectile.destinationX);
+                data.put("mouseY", projectile.destinationY);
+                data.put("name", "tornado");
+
+                FXGL.getApp().getGameWorld().spawn("projectile", data);
+            }
+        });
+
+    }
+
     public void addGameObject(GameObject object) {
         Platform.runLater(new Runnable() {
             @Override
@@ -363,15 +379,15 @@ public class ClientGameMap {
         }
 
 
-        for (GameObject object : objectsHere) {
-            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
-            if (optEnt.isPresent()) {
-                Entity entity = optEnt.get();
-
-                entity.setX(object.getX());
-                entity.setY(object.getY());
-            }
-        }
+//        for (GameObject object : objectsHere) {
+//            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
+//            if (optEnt.isPresent()) {
+//                Entity entity = optEnt.get();
+//
+//                entity.setX(object.getX());
+//                entity.setY(object.getY());
+//            }
+//        }
 
 //        for (GameObject object : clientHandler.getObjects()) {
 //            if (!isObjectHere(object.getUniqueGameId())) {

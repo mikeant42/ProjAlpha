@@ -35,10 +35,15 @@ public class WorldResponseListener extends Listener {
             System.out.println("Main obj");
         }
 
-        if (object instanceof Network.ObjectPositionUpdate) {
-            Network.ObjectPositionUpdate update = (Network.ObjectPositionUpdate)object;
-            handler.updateObjectLocal(update.uid, update.x, update.y);
-            //System.out.println("updating pos");
+//        if (object instanceof Network.ObjectPositionUpdate) {
+//            Network.ObjectPositionUpdate update = (Network.ObjectPositionUpdate)object;
+//            handler.updateObjectLocal(update.uid, update.x, update.y);
+//            //System.out.println("updating pos");
+//        }
+
+        if (object instanceof Network.AddProjectile) {
+            Network.AddProjectile projectile = (Network.AddProjectile)object;
+            handler.getAlphaClientApp().getActiveWorld().addProjectile(projectile);
         }
     }
 }

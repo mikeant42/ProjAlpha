@@ -4,15 +4,14 @@ import shared.*;
 
 public class NPCBehavior {
 
-    private Network.NPCPacket data;
+    //private Network.NPCPacket data;
 
     private int state = Data.MovementState.STANDING;
-
-    private Network.UpdateNPC updateNPC;
 
     private int bounds; // We need this so the npc doesn't wander far from where he was spawned
     private float x,y;
     private float lastX, lastY;
+    private float spawnX, spawnY;
 
     float speed = 0.9f;
 
@@ -20,24 +19,20 @@ public class NPCBehavior {
 
     private boolean isStatic = false;
 
-    private String name;
-
-
-    public NPCBehavior(EntityType entityType, int x, int y) {
-        data = new Network.NPCPacket();
-        data.type = entityType;
+    public NPCBehavior(float spawnX, float spawnY) {
+//        data = new Network.NPCPacket();
+//        data.type = entityType;
 
         // data.x, data.y are our spawn coords
-        data.x = x;
-        data.y = y;
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
 
-        lastX = x;
-        lastY = y;
+        lastX = spawnX;
+        lastY = spawnY;
 
-        this.x = x;
-        this.y = y;
+        this.x = spawnX;
+        this.y = spawnY;
 
-        updateNPC = new Network.UpdateNPC();
 
         bounds = 50;
 
@@ -81,25 +76,25 @@ public class NPCBehavior {
 
     public void moveRight(float speed) {
         float xr = x + speed;
-        if (Math.abs(xr - data.x) <= bounds)
+        if (Math.abs(xr - spawnX) <= bounds)
             x = xr;
     }
 
     public void moveLeft(float speed) {
         float xr = x - speed;
-        if (Math.abs(xr - data.x) <= bounds)
+        if (Math.abs(xr - spawnY) <= bounds)
             x = xr;
     }
 
     public void moveUp(float speed) {
         float yr = y - speed;
-        if (Math.abs(yr - data.y) <= bounds)
+        if (Math.abs(yr - spawnX) <= bounds)
             y = yr;
     }
 
     public void moveDown(float speed) {
         float yr = y + speed;
-        if (Math.abs(yr - data.y) <= bounds)
+        if (Math.abs(yr - spawnY) <= bounds)
             y = yr;
     }
 
@@ -118,24 +113,6 @@ public class NPCBehavior {
 
     public void setState(int state) {
         this.state = state;
-    }
-
-
-    public Network.NPCPacket getData() {
-        return data;
-    }
-
-    // This would only be implemented for dynamic npcs. Static npcs should have all interactive code on the client
-    public void onCollisionWithPlayer(CharacterPacket packet) {
-    }
-
-    public Network.UpdateNPC formUpdate() {
-        updateNPC.x =  x;
-        updateNPC.y =  y;
-        updateNPC.uid = data.uid;
-        updateNPC.moveState = state;
-
-        return updateNPC;
     }
 
     public int getBounds() {
@@ -162,4 +139,11 @@ public class NPCBehavior {
         isStatic = aStatic;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 }

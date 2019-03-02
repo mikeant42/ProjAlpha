@@ -2,18 +2,11 @@ package server;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import javafx.geometry.Point2D;
-import shared.GameObject;
-import shared.IDs;
-import shared.Names;
-import shared.Network;
+import shared.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Projectile {
-    public GameObject object;
-    public Network.AddProjectile projectile;
-}
 
 public class ProjectileManager {
     private List<Projectile> projectilesToAdd = new ArrayList<>();
@@ -30,16 +23,15 @@ public class ProjectileManager {
     public void addProjectile(Network.AddProjectile projectile) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
+        projectile1.uid = map.assignUniqueId();
 
-        GameObject projObject = new GameObject(IDs.Spell.TORNADO);
-        projObject.setProjectile(true);
-        projObject.setX(projectile.originX);
-        projObject.setY(projectile.originY);
-        projObject.setName(Names.Spell.TORNADO);
-        projObject.setUniqueGameId(map.assignUniqueId());
-        map.addGameObject(projObject);
-
-        projectile1.object = projObject;
+//        GameObject projObject = new GameObject(IDs.Spell.TORNADO);
+//        projObject.setProjectile(true);
+//        projObject.setX(projectile.originX);
+//        projObject.setY(projectile.originY);
+//        projObject.setName(Names.Spell.TORNADO);
+//        projObject.setUniqueGameId(map.assignUniqueId());
+//        map.addGameObject(projObject);
 
         projectilesToAdd.add(projectile1);
 
@@ -56,26 +48,29 @@ public class ProjectileManager {
 
 
         for (Projectile projectile : projectiles) {
-            // compute path for projectile
+            // compute path for projectisle
             //projectile.object.setX(projectile.object.getX()+0.5);
 
-            Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
+            Point2D newPosition = FXGLMath.lerp(projectile.x, projectile.y,
                     projectile.projectile.destinationX, projectile.projectile.destinationY, 0.08);
 
 //            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
 //
-                projectile.object.setX(newPosition.getX());
-                projectile.object.setY(newPosition.getY());
+//                projectile.object.setX(newPosition.getX());
+//                projectile.object.setY(newPosition.getY());
 
-                map.updateObjectPosition(projectile.object);
+                projectile.x = newPosition.getX();
+                projectile.y = newPosition.getY();
+
+//                map.updateObjectPosition(projectile.object);
 //                // if projectile is too old delete it
 //            }
         }
     }
 
-    public int getSource(GameObject object) {
+    public int getSource(int uid) {
         for (int i = 0; i < projectiles.size(); i++) {
-            if (projectiles.get(i).object.getUniqueGameId() == object.getUniqueGameId()) {
+            if (projectiles.get(i).uid == uid) {
                 return projectiles.get(i).projectile.sourceUser;
             }
         }
@@ -85,11 +80,13 @@ public class ProjectileManager {
 
     public void remove(int uid) {
         for (Projectile projectile : projectiles) {
-            if (uid == projectile.object.getUniqueGameId()) {
+            if (uid == projectile.uid) {
                 projectilesToRemove.add(projectile);
-                System.out.println("removing projectile");
             }
         }
     }
 
+    public List<Projectile> getProjectiles() {
+        return projectiles;
+    }
 }

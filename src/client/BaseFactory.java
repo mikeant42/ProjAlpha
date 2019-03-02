@@ -166,16 +166,15 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("projectile")
     public Entity newProjectile(SpawnData data) {
-        System.out.println("hello");
         String fileName = "spell/" + data.get("name") + ".png";
         AnimationChannel channel = new AnimationChannel(fileName, 4,256/4, 64, Duration.seconds(1), 0, 3);
         Entity entity =  Entities.builder()
                 .from(data)
-                .bbox(new HitBox(BoundingShape.box(25,25)))
-                //dsd.with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
+                .bbox(new HitBox(BoundingShape.box(15,15))) // these need to be the same as the projectile
+                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
                 .with(new CollidableComponent(true))
-                .with(new NetworkedComponent(data.get("uid"), handler))
-                .with(new IDComponent("object", data.get("uid")))
+                //.with(new NetworkedComponent(data.get("uid"), handler))
+                //.with(new IDComponent("object", data.get("uid")))
                 .viewFromAnimatedTexture(new AnimatedTexture(channel))
                 .type(EntityType.PROJECTILE)
                 //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))

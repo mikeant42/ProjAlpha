@@ -16,7 +16,7 @@ public class GameMap {
     There is one of these per map. Each one holds positions of npc, random loot, and all objects residing on the server
      */
 
-    private int objectLimit = 128;
+    private int objectLimit = 512;
 
     private NPCHandler npcHandler;
 
@@ -111,8 +111,11 @@ public class GameMap {
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
             if (object.getType().equals("roaming")) {
                 if (object.getName().equals("googon")) {
-                    RoamingBehavior behavior = new RoamingBehavior(object.getX(), object.getY());
-                    npcHandler.addNPC(behavior, assignUniqueId());
+                    NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
+                    npc.setInteractable(true);
+                    npc.setBehavior(BehaviorType.ROAMING);
+                    //RoamingBehavior behavior = new RoamingBehavior(object.getX(), object.getY());
+                    npcHandler.addNPC(npc, assignUniqueId());
                 }
             }
         }
@@ -133,8 +136,8 @@ public class GameMap {
     This is a server update
      */
     public void update() {
-        for (NPCBehavior behavior : npcHandler.getNPCs()) {
-            server.sendToAllReady(behavior.formUpdate());
+        for (NPC npc : npcHandler.getNPCs()) {
+            server.sendToAllReady(npc.formUpdate());
         }
 
     }
@@ -168,17 +171,20 @@ public class GameMap {
             }
         }
 
-        for (NPCBehavior behavior : npcHandler.getNPCs()) {
-            behavior.update();
-        }
+        for (CharacterPacket packet : server.getLoggedIn()) {
 
-        for (GameObject object : objects) {
+            for (Projectile projectile : projectileManager.getProjectiles()) {
+                if (AlphaCollision.doesCollide(projectile, packet)) {
+                    if (projectileManager.getSource(projectile.uid) != packet.id) { // the user cant harm himself with a spell
+                        projectileManager.remove(projectile.uid);
+                        System.out.println("collision");
+                    }
+                }
 
-            collision.handleStaticCollisions(staticCollisions, object);
+            }
 
-            // player vs object collision
-            for (CharacterPacket packet : server.getLoggedIn()) {
 
+            for (GameObject object : objects) {
                 if (AlphaCollision.doesCollide(object, packet)) {
 
                     if (!object.isProjectile()) {
@@ -186,26 +192,61 @@ public class GameMap {
                         removeGameObject(object);
                         addInventory(packet.id, object);
                         System.out.println("picking up non projhectile");
-                    } else if (object.isProjectile()) {
-                        if (projectileManager.getSource(object) != packet.id) { // the user cant harm himself with a spell
-                            removeGameObject(object);
-                            projectileManager.remove(object.getUniqueGameId());
-                        }
-
                     }
-
-
                 }
-            }
 
-            for (NPCBehavior behavior : npcHandler.getNPCs()) {
-                if (AlphaCollision.doesProjectileCollide(object, behavior.getData())) {
-                    System.out.println("projectile-npc collision");
-                    removeGameObject(object);
-                }
+
+
             }
         }
+
+        for (NPC behavior : npcHandler.getNPCs()) {
+            for (Projectile projectile : projectileManager.getProjectiles()) {
+                if (AlphaCollision.doesCollide(projectile, behavior)) {
+                    projectileManager.remove(projectile.uid);
+                    System.out.println("proj-npc collision");
+                }
+
+            }
+            behavior.update();
+        }
+
+
     }
+
+
+
+//        for (GameObject object : objects) {
+//
+//            collision.handleStaticCollisions(staticCollisions, object);
+//
+//            // player vs object collision
+//            for (CharacterPacket packet : server.getLoggedIn()) {
+//
+//                if (AlphaCollision.doesCollide(object, packet)) {
+//
+//                    if (!object.isProjectile()) {
+//                        // when player runs over an object, he adds it to his inventory
+//                        removeGameObject(object);
+//                        addInventory(packet.id, object);
+//                        System.out.println("picking up non projhectile");
+//                    }
+//
+//
+//
+//                }
+//            }
+
+//            for (NPC npc : npcHandler.getNPCs()) {
+//                if (AlphaCollision.doesProjectileCollide(object, npc)) {
+//                    System.out.println("projectile-npc collision");
+//                    removeGameObject(object);
+//                }
+//            }
+
+
+      //  }
+    //}
 
     public void addInventory(int cid, GameObject object) {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
@@ -215,8 +256,8 @@ public class GameMap {
 
     private void onCharacterAdd(CharacterPacket packet) {
         // We also have to spawn all the npcs in his level
-        for (NPCBehavior npcBehavior : npcHandler.getNPCs()) {
-            server.sendWithQueue(packet.id, npcBehavior.getData(), true);
+        for (NPC npc : npcHandler.getNPCs()) {
+            server.sendWithQueue(packet.id, npc.getPacket(), true);
         }
 
         for (GameObject object : objects) {
@@ -257,11 +298,13 @@ public class GameMap {
     }
 
     private void deAllocateId(int id) {
+        // sync needed bacause these can be called from another thread
         synchronized (uniques) {
             uniques.remove(new Integer(id));
         }
     }
 
+    // IT ASSIGNED DUPLICATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FIX FIX
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
     // if you gen too many ids this will cause a stackoverflow
     public int assignUniqueId() {
