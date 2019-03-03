@@ -141,7 +141,7 @@ public class AlphaServer extends Server {
 //            if (packet.uid == uid) {
         if (queue) {
             messagesToAddQueue.add(new Tuple<>(id, o));
-            System.out.println("hello");
+            System.out.println("Message added to queue");
         } else {
             sendToTCP(id, o);
         }

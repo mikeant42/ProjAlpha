@@ -144,4 +144,9 @@ public class Network {
         public int uid;
         public double x,y;
     }
+
+    static public class UpdateCombat {
+        public CombatObject object;
+        public int id;
+    }
 }

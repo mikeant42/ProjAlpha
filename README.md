@@ -24,20 +24,20 @@ Network
 
 TODO
 ----
+- dialogue system
 - once in a while client sends entire game world. Server checks and corrects anything out of sync
 - lag compensation / client side prediction / resyncing after lost or delayed packets
 - use udp port for real time packets, e.g. movement
 - authenticating packets based on timestamps, etc.
 - split server into LoginServer and GameServer
-    - split client into launcher and game
+- split client into launcher and game
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
-- Code Reform - use `synchronized`
 
-    Gameplay
-        - death and simple combat mechanics
-        - mana system
-        - npc dialogue and basic storyline mechanics
+- Gameplay
+   - death and simple combat mechanics
+   - mana system
+   - npc dialogue and basic storyline mechanics
 
 Bugs
 ----

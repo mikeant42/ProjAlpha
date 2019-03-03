@@ -153,17 +153,6 @@ public class BaseFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("")
-    public Entity newNothing(SpawnData data) {
-        System.err.println("WARNING: an object with no spawn type has spawned.");
-        return Entities.builder()
-                .from(data)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .type(EntityType.COLLIDE)
-                .with(new CollidableComponent(true))
-                .build();
-    }
-
     @Spawns("projectile")
     public Entity newProjectile(SpawnData data) {
         String fileName = "spell/" + data.get("name") + ".png";
@@ -182,12 +171,9 @@ public class BaseFactory implements EntityFactory {
                 //.with(new CollidableComponent(true))
                 .build();
         entity.setRenderLayer(RenderLayer.TOP);
-        return entity;
-    }
+        entity.setProperty("doesOwn", data.get("doesOwn"));
 
-    @Spawns("roaming")
-    public Entity newRoaming(SpawnData data) {
-        return newNothing(data);
+        return entity;
     }
 
 

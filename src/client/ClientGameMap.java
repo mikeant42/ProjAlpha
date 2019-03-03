@@ -218,6 +218,11 @@ public class ClientGameMap {
                 data.put("mouseX", projectile.destinationX);
                 data.put("mouseY", projectile.destinationY);
                 data.put("name", "tornado");
+                if (projectile.sourceUser == clientHandler.getId()) {
+                    data.put("doesOwn", true);
+                } else {
+                    data.put("doesOwn", false);
+                }
 
                 FXGL.getApp().getGameWorld().spawn("projectile", data);
             }

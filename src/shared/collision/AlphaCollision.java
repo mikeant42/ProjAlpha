@@ -54,7 +54,21 @@ public class AlphaCollision {
     }
 
     public static CollisionHandler setProjectileCollision(EntityType player, EntityType hut) {
-        return new CollisionHandler(EntityType.PLAYER, EntityType.PROJECTILE) {
+        return new CollisionHandler(player, hut) {
+
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                if (!hut.getProperties().getBoolean("doesOwn")) {
+                    hut.removeFromWorld();
+                }
+            }
+
+
+        };
+    }
+
+    public static CollisionHandler setOtherPlayerProjectileCollision(EntityType player, EntityType hut) {
+        return new CollisionHandler(player, hut) {
 
             @Override
             protected void onCollision(Entity player, Entity hut) {
@@ -66,7 +80,7 @@ public class AlphaCollision {
     }
 
     public static CollisionHandler setProjectileCollisionNPC(EntityType player, EntityType hut) {
-        return new CollisionHandler(EntityType.NPC, EntityType.PROJECTILE) {
+        return new CollisionHandler(player, hut) {
 
             @Override
             protected void onCollision(Entity player, Entity hut) {

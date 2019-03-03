@@ -21,3 +21,9 @@ Map architecture like this
 
 
 - If i have the time i will add scripting to the game, so i can set the npc locations in a script and not in the code
+
+Projectiles
+----
+The client sends data needed to calculate the projectile to the server, which relays to all clients. Both the server and
+the client calculate the projectile code and deal with collisions. The server is authorative, and declares if its a real hit.
+The server and client both simulate the projectile based on one piece of data AddProjectile.
