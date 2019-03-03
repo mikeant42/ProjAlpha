@@ -160,10 +160,10 @@ public class BaseFactory implements EntityFactory {
         Entity entity =  Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(15,15))) // these need to be the same as the projectile
-                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
+                //.with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
                 .with(new CollidableComponent(true))
-                //.with(new NetworkedComponent(data.get("uid"), handler))
-                //.with(new IDComponent("object", data.get("uid")))
+                .with(new NetworkedComponent(data.get("uid"), handler))
+                .with(new IDComponent("object", data.get("uid")))
                 .viewFromAnimatedTexture(new AnimatedTexture(channel))
                 .type(EntityType.PROJECTILE)
                 //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
@@ -171,7 +171,7 @@ public class BaseFactory implements EntityFactory {
                 //.with(new CollidableComponent(true))
                 .build();
         entity.setRenderLayer(RenderLayer.TOP);
-        entity.setProperty("doesOwn", data.get("doesOwn"));
+        //entity.setProperty("doesOwn", data.get("doesOwn"));
 
         return entity;
     }

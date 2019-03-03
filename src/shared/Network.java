@@ -43,9 +43,7 @@ public class Network {
         kryo.register(AddProjectile.class);
         kryo.register(ObjectPositionUpdate.class);
         kryo.register(UpdatePlayerCombat.class);
-
-        
-
+        kryo.register(UpdateNPCCombat.class);
     }
 
     static public class Login {
@@ -94,6 +92,8 @@ public class Network {
         public String name;
         public boolean interactable;
         public boolean trader;
+
+        public CombatObject combat;
     }
 
     static public class Monster extends NPCPacket {
@@ -149,6 +149,11 @@ public class Network {
     }
 
     static public class UpdatePlayerCombat {
+        public CombatObject object;
+        public int id;
+    }
+
+    static public class UpdateNPCCombat {
         public CombatObject object;
         public int id;
     }

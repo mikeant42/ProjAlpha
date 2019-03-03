@@ -126,7 +126,7 @@ public class AlphaCollision {
         return doesCollide(npc.getX(), npc.getY(), projectile.x, projectile.y, npcWidth, npcHeight, projectile.width, projectile.height);
     }
 
-    public static boolean doesProjectileCollide(GameObject object, NPC npc) {
+    public static boolean doesCollide(GameObject object, NPC npc) {
         int projectileWidth = 10;
         int projectileHeight = 10;
 

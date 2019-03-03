@@ -28,7 +28,7 @@ public class WorldListener extends Listener {
             handler.getServer().getMap().addProjectile(gameObject);
 
             //handler.getServer().sendToAllReady(gameObject);
-            handler.getServer().sendToAllReady(gameObject);
+           // handler.getServer().sendToAllReady(gameObject);
         }
 
         if (object instanceof Network.UpdatePlayerCombat) {

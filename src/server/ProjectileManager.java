@@ -23,15 +23,17 @@ public class ProjectileManager {
     public void addProjectile(Network.AddProjectile projectile) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
-        projectile1.uid = map.assignUniqueId();
+       // projectile1.uid = map.assignUniqueId();
 
-//        GameObject projObject = new GameObject(IDs.Spell.TORNADO);
-//        projObject.setProjectile(true);
-//        projObject.setX(projectile.originX);
-//        projObject.setY(projectile.originY);
-//        projObject.setName(Names.Spell.TORNADO);
-//        projObject.setUniqueGameId(map.assignUniqueId());
-//        map.addGameObject(projObject);
+        GameObject projObject = new GameObject(IDs.Spell.TORNADO);
+        projObject.setProjectile(true);
+        projObject.setX(projectile.originX);
+        projObject.setY(projectile.originY);
+        projObject.setName(Names.Spell.TORNADO);
+        projObject.setUniqueGameId(map.assignUniqueId());
+        map.addGameObject(projObject);
+
+        projectile1.object = projObject;
 
         projectilesToAdd.add(projectile1);
 
@@ -51,26 +53,32 @@ public class ProjectileManager {
             // compute path for projectisle
             //projectile.object.setX(projectile.object.getX()+0.5);
 
-            Point2D newPosition = FXGLMath.lerp(projectile.x, projectile.y,
+            Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
                     projectile.projectile.destinationX, projectile.projectile.destinationY, 0.02);
 
 //            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
+
+            //if (projectile.object.getX()-newPosition.getX() < 0.08 && projectile.object.getY()-newPosition.getY() < 0.08) {
+            //    map.removeGameObject(projectile.object.getUniqueGameId());
+          //      projectilesToRemove.add(projectile);
+           // } else {
 //
-//                projectile.object.setX(newPosition.getX());
-//                projectile.object.setY(newPosition.getY());
+                projectile.object.setX(newPosition.getX());
+                projectile.object.setY(newPosition.getY());
 
-                projectile.x = newPosition.getX();
-                projectile.y = newPosition.getY();
+//                projectile.x = newPosition.getX();
+//                projectile.y = newPosition.getY();
 
-//                map.updateObjectPosition(projectile.object);
+                map.updateObjectPosition(projectile.object);
 //                // if projectile is too old delete it
 //            }
+           // }
         }
     }
 
     public int getSource(int uid) {
         for (int i = 0; i < projectiles.size(); i++) {
-            if (projectiles.get(i).uid == uid) {
+            if (projectiles.get(i).object.getUniqueGameId() == uid) {
                 return projectiles.get(i).projectile.sourceUser;
             }
         }

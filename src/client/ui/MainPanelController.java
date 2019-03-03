@@ -183,6 +183,7 @@ public class MainPanelController implements UIController {
         if (selected <= grid*grid) { // if its a valid selection
             if (slotTaken(selected) && userInvent != null) {
                 userInvent.getObjectSlot(selected).use(handler.getCharacterPacket());
+                handler.sendHealthUpdate();
                 System.out.println(userInvent.getObjectSlot(selected).getUniqueGameId() + " is being used");
                 // if it heals update the server on new character health
 

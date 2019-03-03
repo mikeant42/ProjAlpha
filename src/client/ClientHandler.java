@@ -208,6 +208,7 @@ public class ClientHandler {
             if (object1.getUniqueGameId() == uid) {
                 object1.setX(x);
                 object1.setY(y);
+                //sdSystem.out.println("updating pos");
             }
         }
     }
@@ -229,6 +230,16 @@ public class ClientHandler {
             characterPacket.combat = object;
         }
         alphaClientApp.getActiveWorld().updatePlayerCombat(id, object);
+    }
+
+    public void updateNPCHealth(int uid, CombatObject object) {
+        for (NPCPacket packet : npcs) {
+            if (uid == packet.uid) {
+                packet.combat = object;
+            }
+        }
+
+        alphaClientApp.getActiveWorld().updateNPCCombat(uid, object);
     }
 
     public void sendHealthUpdate() {

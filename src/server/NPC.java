@@ -1,6 +1,7 @@
 package server;
 
 import shared.CharacterPacket;
+import shared.CombatObject;
 import shared.EntityType;
 import shared.Network;
 
@@ -27,6 +28,10 @@ public class NPC {
         packet.type = EntityType.NPC;
         packet.x = spawnX;
         packet.y = spawnY;
+
+        packet.combat = new CombatObject();
+        packet.combat.setHealth(100);
+        packet.combat.setMana(100); // the npc shoulnt need mana
 
         this.spawnX = spawnX;
         this.spawnY = spawnY;

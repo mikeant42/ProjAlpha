@@ -1,7 +1,7 @@
 package shared;
 
 public class Projectile {
-    //public GameObject object;
+    public GameObject object;
     public double x,y;
     public Network.AddProjectile projectile;
     public int width = 15;

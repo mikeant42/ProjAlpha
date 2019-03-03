@@ -171,25 +171,74 @@ public class GameMap {
             }
         }
 
-        for (CharacterPacket packet : server.getLoggedIn()) {
+        for (GameObject object : objects) {
+            collision.handleStaticCollisions(staticCollisions, object);
 
-            for (Projectile projectile : projectileManager.getProjectiles()) {
-                if (AlphaCollision.doesCollide(projectile, packet)) {
-                    if (projectile.projectile.sourceUser != packet.id) { // the user cant harm himself with a spell
-                        projectileManager.remove(projectile.uid);
-                        System.out.println("collision " + projectile.x + " , " + projectile.y);
+            for (CharacterPacket packet : server.getLoggedIn()) {
+                if (AlphaCollision.doesCollide(object, packet)) {
 
-                        // test
-                        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
-                        combat.id = packet.id;
-                        packet.combat.setHealth(packet.combat.getHealth()-10);
-                        combat.object = packet.combat;
-                        server.sendToAllReady(combat);
+                    if (!object.isProjectile()) {
+                        // when player runs over an object, he adds it to his inventory
+                        removeGameObject(object);
+                        addInventory(packet.id, object);
+                        System.out.println("picking up non projhectile");
+                    } else {
+                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.id) { // the user cant harm himself with a spell
+                            projectileManager.remove(object.getUniqueGameId());
+                            removeGameObject(object);
+
+                            // test
+                            Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+                            combat.id = packet.id;
+                            packet.combat.setHealth(packet.combat.getHealth()-10);
+                            combat.object = packet.combat;
+                            server.sendToAllReady(combat);
+
+                        }
 
                     }
                 }
-
             }
+
+            for (NPC npc : npcHandler.getNPCs()) {
+                if (AlphaCollision.doesCollide(object, npc) && object.isProjectile()) {
+                    projectileManager.remove(object.getUniqueGameId());
+                    removeGameObject(object);
+
+                    Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
+                    combat.id = npc.getPacket().uid;
+                    npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth()-10);
+                    combat.object = npc.getPacket().combat;
+                    server.sendToAllReady(combat);
+
+                    System.out.println("proj-npc collision");
+                }
+
+                npc.update();
+            }
+
+
+        }
+
+        //for (CharacterPacket packet : server.getLoggedIn()) {
+
+            //for (Projectile projectile : projectileManager.getProjectiles()) {
+//                if (AlphaCollision.doesCollide(projectile, packet)) {
+//                    if (projectile.projectile.sourceUser != packet.id) { // the user cant harm himself with a spell
+//                        projectileManager.remove(projectile.uid);
+//                        System.out.println("collision " + projectile.x + " , " + projectile.y);
+//
+//                        // test
+//                        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+//                        combat.id = packet.id;
+//                        packet.combat.setHealth(packet.combat.getHealth()-10);
+//                        combat.object = packet.combat;
+//                        server.sendToAllReady(combat);
+//
+//                    }
+//                }
+
+           // }
 
 
 //            for (GameObject object : objects) {
@@ -200,24 +249,38 @@ public class GameMap {
 //                        removeGameObject(object);
 //                        addInventory(packet.id, object);
 //                        System.out.println("picking up non projhectile");
+//                    } else {
+//                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.id) { // the user cant harm himself with a spell
+//                            projectileManager.remove(object.getUniqueGameId());
+//                            removeGameObject(object);
+//
+//                             // test
+//                            Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+//                            combat.id = packet.id;
+//                            packet.combat.setHealth(packet.combat.getHealth()-10);
+//                            combat.object = packet.combat;
+//                            server.sendToAllReady(combat);
+//
+//                        }
+//
 //                    }
 //                }
 //
 //
 //
 //            }
-        }
-
-        for (NPC behavior : npcHandler.getNPCs()) {
-            for (Projectile projectile : projectileManager.getProjectiles()) {
-                if (AlphaCollision.doesCollide(projectile, behavior)) {
-                    projectileManager.remove(projectile.uid);
-                    System.out.println("proj-npc collision");
-                }
-
-            }
-            behavior.update();
-        }
+//        }
+//
+//        for (NPC npc : npcHandler.getNPCs()) {
+//            for (GameObject object : objects) {
+//                if (AlphaCollision.doesCollide(object, npc)) {
+//                    projectileManager.remove(object.getUniqueGameId());
+//                    System.out.println("proj-npc collision");
+//                }
+//
+//            }
+//            npc.update();
+//        }
 
 
     }
@@ -311,6 +374,14 @@ public class GameMap {
 
        objectsToRemove.add(object);
        deAllocateId(object.getUniqueGameId());
+    }
+
+    public void removeGameObject(int uid) {
+        for (GameObject object : objects) {
+            if (object.getUniqueGameId() == uid) {
+                removeGameObject(object);
+            }
+        }
     }
 
     private void deAllocateId(int id) {

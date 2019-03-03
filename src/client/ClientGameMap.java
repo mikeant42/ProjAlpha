@@ -203,26 +203,26 @@ public class ClientGameMap {
         });
     }
 
-    public void addProjectile(Network.AddProjectile projectile) {
-        System.out.println("should add");
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                SpawnData data = new SpawnData(projectile.originX, projectile.originY);
-                data.put("mouseX", projectile.destinationX);
-                data.put("mouseY", projectile.destinationY);
-                data.put("name", "tornado");
-                if (projectile.sourceUser == clientHandler.getId()) {
-                    data.put("doesOwn", true);
-                } else {
-                    data.put("doesOwn", false);
-                }
-
-                FXGL.getApp().getGameWorld().spawn("projectile", data);
-            }
-        });
-
-    }
+//    public void addProjectile(Network.AddProjectile projectile) {
+//        System.out.println("should add");
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                SpawnData data = new SpawnData(projectile.originX, projectile.originY);
+//                data.put("mouseX", projectile.destinationX);
+//                data.put("mouseY", projectile.destinationY);
+//                data.put("name", "tornado");
+//                if (projectile.sourceUser == clientHandler.getId()) {
+//                    data.put("doesOwn", true);
+//                } else {
+//                    data.put("doesOwn", false);
+//                }
+//
+//                FXGL.getApp().getGameWorld().spawn("projectile", data);
+//            }
+//        });
+//
+//    }
 
     public void addGameObject(GameObject object) {
         Platform.runLater(new Runnable() {
@@ -267,18 +267,32 @@ public class ClientGameMap {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("player", id);
-                if (optEnt.isPresent()) {
-                    Entity entity = optEnt.get();
-                    if (entity.hasComponent(CombatComponent.class)) {
-                        entity.getComponent(CombatComponent.class).setCombatObject(object);
-                    } else {
-                        entity.addComponent(new CombatComponent(object));
-                        entity.addComponent(new OverlayHealthComponent(Color.GREEN));
-                    }
-                }
+                updateCombatLocal("player", id, object);
             }
         });
+    }
+
+    public void updateNPCCombat(int id, CombatObject object) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateCombatLocal("npc", id, object);
+            }
+        });
+    }
+
+
+    private void updateCombatLocal(String type, int id, CombatObject object) {
+        Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID(type, id);
+        if (optEnt.isPresent()) {
+            Entity entity = optEnt.get();
+            if (entity.hasComponent(CombatComponent.class)) {
+                entity.getComponent(CombatComponent.class).setCombatObject(object);
+            } else {
+                entity.addComponent(new CombatComponent(object));
+                entity.addComponent(new OverlayHealthComponent(Color.GREEN));
+            }
+        }
     }
 
 
@@ -397,15 +411,16 @@ public class ClientGameMap {
         }
 
 
-//        for (GameObject object : objectsHere) {
-//            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
-//            if (optEnt.isPresent()) {
-//                Entity entity = optEnt.get();
-//
-//                entity.setX(object.getX());
-//                entity.setY(object.getY());
-//            }
-//        }
+        for (GameObject object : objectsHere) {
+            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
+            if (optEnt.isPresent()) {
+                Entity entity = optEnt.get();
+
+                System.out.println("entity pos upf");
+                entity.setX(object.getX());
+                entity.setY(object.getY());
+            }
+        }
 
 //        for (GameObject object : clientHandler.getObjects()) {
 //            if (!isObjectHere(object.getUniqueGameId())) {
