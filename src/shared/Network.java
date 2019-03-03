@@ -42,6 +42,9 @@ public class Network {
         kryo.register(CombatObject.class);
         kryo.register(AddProjectile.class);
         kryo.register(ObjectPositionUpdate.class);
+        kryo.register(UpdatePlayerCombat.class);
+
+        
 
     }
 
@@ -145,8 +148,9 @@ public class Network {
         public double x,y;
     }
 
-    static public class UpdateCombat {
+    static public class UpdatePlayerCombat {
         public CombatObject object;
         public int id;
     }
+
 }

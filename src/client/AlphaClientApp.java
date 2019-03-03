@@ -1,11 +1,11 @@
 package client;
 
+import client.render.AnimatedMovementComponent;
 import client.ui.LoginController;
 import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.listener.ExitListener;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.settings.GameSettings;
 import com.almasb.fxgl.ui.Position;
@@ -242,7 +242,7 @@ public class AlphaClientApp extends GameApplication {
         //getPhysicsWorld().setGravity(1,1);
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.COLLIDE));
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollision(EntityType.LOCAL_PLAYER, EntityType.PROJECTILE));
-        getPhysicsWorld().addCollisionHandler(AlphaCollision.setOtherPlayerProjectileCollision(EntityType.PLAYER, EntityType.PROJECTILE));
+       // getPhysicsWorld().addCollisionHandler(AlphaCollision.setOtherPlayerProjectileCollision(EntityType.PLAYER, EntityType.PROJECTILE));
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setProjectileCollisionNPC(EntityType.NPC, EntityType.PROJECTILE));
     }
 
@@ -270,6 +270,7 @@ public class AlphaClientApp extends GameApplication {
         if (gameMap.isMapLoaded()) {
             hpBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getHealth());
 
+            System.out.println(getTick());
             gameMap.update();
 
         }

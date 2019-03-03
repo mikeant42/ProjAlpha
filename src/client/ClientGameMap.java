@@ -1,23 +1,17 @@
 package client;
 
-import client.render.Camera;
+import client.render.*;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.parser.tiled.TMXParser;
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
-import shared.AlphaUtil;
-import shared.CharacterPacket;
-import shared.GameObject;
-import shared.Network;
+import javafx.scene.paint.Color;
+import shared.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,6 +257,25 @@ public class ClientGameMap {
                     data.put("ID", packet.uid);
                     FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
                     npcsToAdd.add(packet);
+                }
+            }
+        });
+    }
+
+    // untested code!!
+    public void updatePlayerCombat(int id, CombatObject object) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("player", id);
+                if (optEnt.isPresent()) {
+                    Entity entity = optEnt.get();
+                    if (entity.hasComponent(CombatComponent.class)) {
+                        entity.getComponent(CombatComponent.class).setCombatObject(object);
+                    } else {
+                        entity.addComponent(new CombatComponent(object));
+                        entity.addComponent(new OverlayHealthComponent(Color.GREEN));
+                    }
                 }
             }
         });

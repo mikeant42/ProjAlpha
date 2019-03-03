@@ -1,13 +1,11 @@
 package shared.collision;
 
-import client.AnimatedMovementComponent;
+import client.render.AnimatedMovementComponent;
 import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
 import server.NPC;
-import server.*;
-import server.ProjectileManager;
 import shared.*;
 
 import java.util.List;
@@ -94,10 +92,6 @@ public class AlphaCollision {
 
 
     private static boolean doesCollide(double pos1X, double pos1Y, double pos2X, double pos2Y, int pos1Width, int pos1Height, int pos2Width, int pos2Height) {
-        int playerWidth = 40;
-        int playerHeight = 40;
-        // packet - pos1, object - pos2
-
         if(pos1X < pos2X + pos2Width &&
                 pos1X + pos1Width > pos2X &&
                 pos1Y < pos2Y + pos1Height &&
@@ -112,14 +106,14 @@ public class AlphaCollision {
     Server side collision is simple
      */
     public static boolean doesCollide(GameObject object, CharacterPacket packet) {
-        int playerWidth = 40;
+        int playerWidth = 35;
         int playerHeight = 40;
 
         return doesCollide(packet.x, packet.y, object.getX(), object.getY(), playerWidth, playerHeight, object.getWidth(), object.getHeight());
     }
 
     public static boolean doesCollide(Projectile projectile, CharacterPacket packet) {
-        int playerWidth = 40;
+        int playerWidth = 35;
         int playerHeight = 40;
 
         return doesCollide(packet.x, packet.y, projectile.x, projectile.y, playerWidth, playerHeight, projectile.width, projectile.height);

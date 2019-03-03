@@ -1,7 +1,7 @@
 package client;
 
+import client.render.AnimatedMovementComponent;
 import com.almasb.fxgl.entity.component.Component;
-import shared.Data;
 import shared.EntityType;
 
 public class NetworkedComponent extends Component {
@@ -9,7 +9,7 @@ public class NetworkedComponent extends Component {
     private int id;
     private ClientHandler handler;
     private boolean moveFlag = true;
-    private AnimatedMovementComponent movementComponent;
+    private client.render.AnimatedMovementComponent movementComponent;
     private boolean syncMovement = true;
 
     public NetworkedComponent(int id, ClientHandler handler) {

@@ -30,5 +30,13 @@ public class WorldListener extends Listener {
             //handler.getServer().sendToAllReady(gameObject);
             handler.getServer().sendToAllReady(gameObject);
         }
+
+        if (object instanceof Network.UpdatePlayerCombat) {
+            Network.UpdatePlayerCombat combat = (Network.UpdatePlayerCombat)object;
+
+            handler.getServer().getMap().updatePlayerHealthServer(combat.id, combat.object);
+
+            handler.getServer().sendToAllReady(object);
+        }
     }
 }

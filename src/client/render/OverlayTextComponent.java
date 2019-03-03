@@ -1,4 +1,4 @@
-package client;
+package client.render;
 
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.component.Component;

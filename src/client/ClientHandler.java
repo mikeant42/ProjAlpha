@@ -4,13 +4,16 @@ import client.listener.CharacterResponseListener;
 import client.listener.LoginResponseListener;
 import client.listener.NPCResponseListener;
 import client.listener.WorldResponseListener;
+import client.render.CombatComponent;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.CharacterPacket;
+import shared.CombatObject;
 import shared.GameObject;
 import shared.Network;
 import shared.Network.*;
+import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -214,6 +217,25 @@ public class ClientHandler {
         chat.message = message;
         chat.cid = characterPacket.id;
         client.sendTCP(chat);
+    }
+
+    public void updatePlayerHealth(int id, CombatObject object) {
+        for (CharacterPacket packet : otherPlayers) {
+            if (id == packet.id) {
+                packet.combat = object;
+            }
+        }
+        if (id == getId()) {
+            characterPacket.combat = object;
+        }
+        alphaClientApp.getActiveWorld().updatePlayerCombat(id, object);
+    }
+
+    public void sendHealthUpdate() {
+        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+        combat.object = characterPacket.combat;
+        combat.id = getId();
+        client.sendTCP(combat);
     }
 
     public void sendProjectile(double oX, double oY, double x, double y) {

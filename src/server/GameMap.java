@@ -175,29 +175,37 @@ public class GameMap {
 
             for (Projectile projectile : projectileManager.getProjectiles()) {
                 if (AlphaCollision.doesCollide(projectile, packet)) {
-                    if (projectileManager.getSource(projectile.uid) != packet.id) { // the user cant harm himself with a spell
+                    if (projectile.projectile.sourceUser != packet.id) { // the user cant harm himself with a spell
                         projectileManager.remove(projectile.uid);
-                        System.out.println("collision");
+                        System.out.println("collision " + projectile.x + " , " + projectile.y);
+
+                        // test
+                        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+                        combat.id = packet.id;
+                        packet.combat.setHealth(packet.combat.getHealth()-10);
+                        combat.object = packet.combat;
+                        server.sendToAllReady(combat);
+
                     }
                 }
 
             }
 
 
-            for (GameObject object : objects) {
-                if (AlphaCollision.doesCollide(object, packet)) {
-
-                    if (!object.isProjectile()) {
-                        // when player runs over an object, he adds it to his inventory
-                        removeGameObject(object);
-                        addInventory(packet.id, object);
-                        System.out.println("picking up non projhectile");
-                    }
-                }
-
-
-
-            }
+//            for (GameObject object : objects) {
+//                if (AlphaCollision.doesCollide(object, packet)) {
+//
+//                    if (!object.isProjectile()) {
+//                        // when player runs over an object, he adds it to his inventory
+//                        removeGameObject(object);
+//                        addInventory(packet.id, object);
+//                        System.out.println("picking up non projhectile");
+//                    }
+//                }
+//
+//
+//
+//            }
         }
 
         for (NPC behavior : npcHandler.getNPCs()) {
@@ -286,6 +294,14 @@ public class GameMap {
         update.y = object.getY();
         server.sendToAllTCP(update);
 
+    }
+
+    public void updatePlayerHealthServer(int id, CombatObject object) {
+        for (CharacterPacket packet : server.getLoggedIn()) {
+            if (id == packet.id) {
+                packet.combat = object;
+            }
+        }
     }
 
     public void removeGameObject(GameObject object) {

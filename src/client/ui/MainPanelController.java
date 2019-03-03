@@ -184,6 +184,7 @@ public class MainPanelController implements UIController {
             if (slotTaken(selected) && userInvent != null) {
                 userInvent.getObjectSlot(selected).use(handler.getCharacterPacket());
                 System.out.println(userInvent.getObjectSlot(selected).getUniqueGameId() + " is being used");
+                // if it heals update the server on new character health
 
                 drop(selected);
             } else {

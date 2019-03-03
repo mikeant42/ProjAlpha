@@ -1,5 +1,6 @@
-package client;
+package client.render;
 
+import client.MovementComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;

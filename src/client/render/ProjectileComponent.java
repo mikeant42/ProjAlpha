@@ -1,6 +1,5 @@
 package client.render;
 
-import client.OverlayTextComponent;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.component.Component;
@@ -46,7 +45,7 @@ public class ProjectileComponent extends Component {
 
 
         getEntity().getPositionComponent().setValue(FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
-                destination.getX(), destination.getY(), 0.08));
+                destination.getX(), destination.getY(), 0.02));
         //FXGLMath.ler
 
         // Otherwise, continue next frame

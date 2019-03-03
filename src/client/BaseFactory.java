@@ -1,16 +1,15 @@
 package client;
 
+import client.render.AnimatedMovementComponent;
+import client.render.CombatComponent;
 import client.render.ProjectileComponent;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
-import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import shared.EntityType;
 
@@ -83,6 +82,7 @@ public class BaseFactory implements EntityFactory {
 
         player.addComponent(new IDComponent("player", data.get("ID")));
         player.addComponent(new NetworkedComponent(data.get("ID"), handler));
+        player.addComponent(new CombatComponent(handler.getCharacterPacket().combat));
         //player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
 //        System.out.println(player.getBoundingBoxComponent().getMaxXWorld());

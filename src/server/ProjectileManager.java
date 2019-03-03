@@ -52,7 +52,7 @@ public class ProjectileManager {
             //projectile.object.setX(projectile.object.getX()+0.5);
 
             Point2D newPosition = FXGLMath.lerp(projectile.x, projectile.y,
-                    projectile.projectile.destinationX, projectile.projectile.destinationY, 0.08);
+                    projectile.projectile.destinationX, projectile.projectile.destinationY, 0.02);
 
 //            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
 //
