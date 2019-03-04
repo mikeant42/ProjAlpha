@@ -52,6 +52,9 @@ public class MainPanelController implements UIController {
     @FXML
     private ListView<String> chatView;
 
+    @FXML
+    private ImageView inventoryBackground;
+
     private ObservableList<String> chatLog = FXCollections.observableArrayList();
 
     private int grid = (int)Math.sqrt(Inventory.INVENT_SIZE); // 4x4, 3x3
@@ -75,7 +78,7 @@ public class MainPanelController implements UIController {
 
     private ClientHandler handler;
 
-    private Image defaultImage = FXGL.getAssetLoader().loadImage("ui/box.png");
+    private Image defaultImage = FXGL.getAssetLoader().loadImage("ui/default.png");
 
     public MainPanelController() {
 
@@ -93,6 +96,10 @@ public class MainPanelController implements UIController {
         }
 
         goldLabel.setText("" + userInvent.getGold());
+
+        inventoryBackground.setImage(FXGL.getAssetLoader().loadImage("ui/invent.png"));
+        //inventoryBackground.setRotate(90);
+
     }
 
     public void addItem(GameObject object) {

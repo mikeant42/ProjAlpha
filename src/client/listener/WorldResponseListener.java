@@ -21,6 +21,7 @@ public class WorldResponseListener extends Listener {
 
             //handler.getAlphaClientApp().setMap(query.map); // NEED to use object queue
             handler.setLatestWorldID(((Network.WorldQuery) object).map);
+
         }
 
 

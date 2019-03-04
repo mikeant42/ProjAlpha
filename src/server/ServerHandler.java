@@ -22,6 +22,8 @@ import shared.Network.*;
 public class ServerHandler {
 
     private AlphaServer server;
+    private boolean running = true;
+    private int tick = 0;
 
 
     public ServerHandler() throws IOException {
@@ -50,12 +52,21 @@ public class ServerHandler {
             @Override
             public void run() {
                 Log.NONE();
-                while (!Thread.currentThread().isInterrupted()) {
-                    try {
+                double ns = 1000000000.0 / 60.0;
+                double delta = 0;
+
+                long lastTime = System.nanoTime();
+                long timer = System.currentTimeMillis();
+
+                while (running) {
+                    long now = System.nanoTime();
+                    delta += (now - lastTime) / ns;
+                    lastTime = now;
+
+                    while (delta >= 1) {
+                        tick();
                         server.getMap().updateAction();
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
+                        delta--;
                     }
                 }
             }
@@ -66,6 +77,10 @@ public class ServerHandler {
         Log.TRACE();
 
 //    }
+    }
+
+    private void tick() {
+        tick++;
     }
 
 

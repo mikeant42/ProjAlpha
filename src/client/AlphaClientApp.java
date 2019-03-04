@@ -68,10 +68,10 @@ public class AlphaClientApp extends GameApplication {
          panelControl = new MainPanelController();
         mainPanel = getAssetLoader().loadUI("mainpanel.fxml", panelControl);
 
+
+        mainPanel.getRoot().getStylesheets().add("assets/ui/modena_dark.css");
+
         getGameScene().addUI(loginScreen);
-
-
-
 
 
     }
@@ -126,7 +126,6 @@ public class AlphaClientApp extends GameApplication {
                 getGameScene().addUINodes(pane);
 
                 getGameState().setValue("state", Data.AlphaGameState.FIGHTING);
-
 
 
 

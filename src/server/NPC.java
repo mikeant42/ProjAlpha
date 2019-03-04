@@ -1,9 +1,6 @@
 package server;
 
-import shared.CharacterPacket;
-import shared.CombatObject;
-import shared.EntityType;
-import shared.Network;
+import shared.*;
 
 enum BehaviorType {
     ROAMING, STANDING
@@ -57,6 +54,10 @@ public class NPC {
         switch (behavior) {
             case ROAMING:
                 this.behavior = new RoamingBehavior(spawnX, spawnY);
+                return;
+            case STANDING:
+                this.behavior = new NPCBehavior(spawnX, spawnY);
+                this.behavior.setAllowedToMove(false);
         }
     }
 
@@ -80,6 +81,10 @@ public class NPC {
         updateNPC.moveState = behavior.getState();
 
         return updateNPC;
+    }
+
+    public boolean shouldUpdate() {
+        return !(behavior.getState() == Data.MovementState.STANDING);
     }
 
     public float getX() {

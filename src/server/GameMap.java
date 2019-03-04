@@ -16,7 +16,7 @@ public class GameMap {
     There is one of these per map. Each one holds positions of npc, random loot, and all objects residing on the server
      */
 
-    private int objectLimit = 512;
+    private int objectLimit = 1024;
 
     private NPCHandler npcHandler;
 
@@ -136,9 +136,9 @@ public class GameMap {
     This is a server update
      */
     public void update() {
-        for (NPC npc : npcHandler.getNPCs()) {
-            server.sendToAllReady(npc.formUpdate());
-        }
+//        for (NPC npc : npcHandler.getNPCs()) {
+//            server.sendToAllReady(npc.formUpdate());
+//        }
 
     }
 
@@ -212,6 +212,10 @@ public class GameMap {
                     server.sendToAllReady(combat);
 
                     System.out.println("proj-npc collision");
+                }
+
+                if (npc.shouldUpdate()) {
+                    server.sendToAllReady(npc.formUpdate());
                 }
 
                 npc.update();
@@ -373,7 +377,7 @@ public class GameMap {
         server.sendToAllReady(packet);
 
        objectsToRemove.add(object);
-       deAllocateId(object.getUniqueGameId());
+       //deAllocateId(object.getUniqueGameId());
     }
 
     public void removeGameObject(int uid) {
@@ -384,12 +388,12 @@ public class GameMap {
         }
     }
 
-    private void deAllocateId(int id) {
-        // sync needed bacause these can be called from another thread
-        synchronized (uniques) {
-            uniques.remove(new Integer(id));
-        }
-    }
+//    private void deAllocateId(int id) {
+//        // sync needed bacause these can be called from another thread
+//        synchronized (uniques) {
+//            uniques.remove(new Integer(id));
+//        }
+//    }
 
     // IT ASSIGNED DUPLICATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FIX FIX
     // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids

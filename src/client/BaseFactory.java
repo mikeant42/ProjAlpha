@@ -72,7 +72,7 @@ public class BaseFactory implements EntityFactory {
 
         Entity player = Entities.builder()
                 .at(data.getX(), data.getY())
-                .bbox(new HitBox(BoundingShape.box(35,40)))
+                .bbox(new HitBox(BoundingShape.box(35,15)))
                 .with(new CollidableComponent(true))
                 .build();
         player.setType(EntityType.LOCAL_PLAYER);
@@ -114,7 +114,7 @@ public class BaseFactory implements EntityFactory {
                 //.viewFromNode(new Rectangle(25, 25, Color.BLUE))
                 //.build()
                 //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
-                .bbox(new HitBox(BoundingShape.box(35, 40)))
+                .bbox(new HitBox(BoundingShape.box(35, 15)))
                 .with(new CollidableComponent(true))
                 .type(EntityType.NPC)
                 .build();

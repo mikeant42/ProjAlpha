@@ -25,6 +25,7 @@ Network
 TODO
 ----
 - dialogue system
+- npc spawning system
 - once in a while client sends entire game world. Server checks and corrects anything out of sync
 - lag compensation / client side prediction / resyncing after lost or delayed packets
 - use udp port for real time packets, e.g. movement
@@ -34,17 +35,13 @@ TODO
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
 
-- Gameplay
-   - death and simple combat mechanics
-   - mana system
-   - npc dialogue and basic storyline mechanics
 
 Bugs
 ----
+- a strange bug where the npcs dont update unless a projectile is fired (maybe something to do with tcp??)
 - sometimes the client side collision detection will make the character get stuck
 - other players don't show the idle animation
 - npcs "twitch" a little when they choose to remain idle (RoamingBehavior)
-- horrible "delay" between the projectile collision. it needs to be fixed
 
 
 Mobile

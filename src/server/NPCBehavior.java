@@ -13,7 +13,7 @@ public class NPCBehavior {
     private float lastX, lastY;
     private float spawnX, spawnY;
 
-    float speed = 0.9f;
+    float speed = 0.4f;
 
     private boolean allowedToMove = true;
 
@@ -145,5 +145,13 @@ public class NPCBehavior {
 
     public float getY() {
         return y;
+    }
+
+    public boolean isAllowedToMove() {
+        return allowedToMove;
+    }
+
+    public void setAllowedToMove(boolean allowedToMove) {
+        this.allowedToMove = allowedToMove;
     }
 }
