@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.GameObject;
 import shared.Network;
+import sun.nio.ch.Net;
 
 public class WorldListener extends Listener {
     private ServerHandler handler;
@@ -20,7 +21,12 @@ public class WorldListener extends Listener {
             query.map = handler.getServer().getMap().getMapID(); // eventually the player will have it on him in the db
 
             handler.getServer().sendToTCP(c.getID(), query);
-            handler.getServer().setIsLoaded(c.getID(), true);
+            //handler.getServer().setIsLoaded(c.getID(), true);
+        }
+
+        if (object instanceof Network.ReadyToRecieve) {
+            Network.ReadyToRecieve readyToRecieve = (Network.ReadyToRecieve)object;
+            handler.getServer().setIsLoaded(readyToRecieve.cid, readyToRecieve.ready);
         }
 
         if (object instanceof Network.AddProjectile) {

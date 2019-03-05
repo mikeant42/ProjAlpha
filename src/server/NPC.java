@@ -2,10 +2,6 @@ package server;
 
 import shared.*;
 
-enum BehaviorType {
-    ROAMING, STANDING
-}
-
 public class NPC {
     private NPCBehavior behavior;
 
@@ -30,6 +26,8 @@ public class NPC {
         packet.combat.setHealth(100);
         packet.combat.setMana(100); // the npc shoulnt need mana
 
+        packet.name = name;
+
         this.spawnX = spawnX;
         this.spawnY = spawnY;
     }
@@ -51,6 +49,7 @@ public class NPC {
     }
 
     public void setBehavior(BehaviorType behavior) {
+        packet.behaviorType = behavior;
         switch (behavior) {
             case ROAMING:
                 this.behavior = new RoamingBehavior(spawnX, spawnY);

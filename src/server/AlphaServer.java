@@ -41,7 +41,7 @@ public class AlphaServer extends Server {
                 if (message.x.intValue() == packet.id && packet.isLoaded) {
                     sendToTCP(packet.id, message.y);
                     removeMessageFromQueue(message);
-                    System.out.println("message!");
+                    System.out.println("message! " + message.y.getClass());
                 }
             }
         }
@@ -127,7 +127,7 @@ public class AlphaServer extends Server {
             if (packet.isLoaded) {
                 sendToTCP(packet.id, o);
             } else if (queue) {
-                messagesToAddQueue.add(new Tuple<>(packet.id, o));
+                sendWithQueue(packet.id, o , queue);
             }
         }
     }

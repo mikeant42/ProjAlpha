@@ -105,6 +105,13 @@ public class ClientHandler {
         }
     }
 
+    public void sendReady(boolean ready) {
+        Network.ReadyToRecieve readyToRecieve = new Network.ReadyToRecieve();
+        readyToRecieve.cid = getId();
+        readyToRecieve.ready = ready;
+        client.sendTCP(readyToRecieve);
+    }
+
     protected void removePlayerLocal(int id) {
         for (CharacterPacket packet : otherPlayers) {
             if (packet.id == id) {

@@ -51,39 +51,13 @@ public class AlphaCollision {
 
     }
 
-    public static CollisionHandler setProjectileCollision(EntityType player, EntityType hut) {
+
+    public static CollisionHandler setDialogueCollision(EntityType player, EntityType hut) {
         return new CollisionHandler(player, hut) {
 
             @Override
             protected void onCollision(Entity player, Entity hut) {
-                if (!hut.getProperties().getBoolean("doesOwn")) {
-                    hut.removeFromWorld();
-                }
-            }
 
-
-        };
-    }
-
-    public static CollisionHandler setOtherPlayerProjectileCollision(EntityType player, EntityType hut) {
-        return new CollisionHandler(player, hut) {
-
-            @Override
-            protected void onCollision(Entity player, Entity hut) {
-                hut.removeFromWorld();
-            }
-
-
-        };
-    }
-
-    public static CollisionHandler setProjectileCollisionNPC(EntityType player, EntityType hut) {
-        return new CollisionHandler(player, hut) {
-
-            @Override
-            protected void onCollision(Entity player, Entity hut) {
-                System.out.println("collision");
-                hut.removeFromWorld();
             }
 
 

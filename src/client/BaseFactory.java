@@ -102,7 +102,7 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("Roaming NPC")
     public Entity spawnRoamingNPC(SpawnData data) {
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/googon.png", 48, 64, 3);
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/"+data.get("name")+".png", 48, 64, 3);
         movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
         movementComponent.setRight(3,5);
@@ -125,6 +125,41 @@ public class BaseFactory implements EntityFactory {
 
         npc.addComponent(new IDComponent("npc", data.get("ID")));
         npc.addComponent(movementComponent);
+
+        return npc;
+    }
+
+    @Spawns("Standing NPC")
+    public Entity spawnStandingNPC(SpawnData data) {
+//        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/googon.png", 48, 64, 3);
+//        movementComponent.setIdle(7,8);
+//        movementComponent.setForward(0,2);
+//        movementComponent.setRight(3,5);
+//        movementComponent.setBack(6,8);
+//        movementComponent.setLeft(9,11);
+
+        Entity npc = Entities.builder()
+                .at(data.getX(), data.getY())
+                //.viewFromNode(new Rectangle(25, 25, Color.BLUE))
+                //.build()
+                //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
+                .bbox(new HitBox(BoundingShape.box(35, 15)))
+                .with(new CollidableComponent(true))
+                .viewFromTexture("npc/" + data.get("name") + ".png")
+                .type(EntityType.NPC)
+                .build();
+
+
+
+        npc.setRenderLayer(RenderLayer.TOP);
+
+        if ((boolean)data.get("interactable") == true) {
+            npc.setType(EntityType.INTERACTABLE_NPC);
+        }
+
+
+        npc.addComponent(new IDComponent("npc", data.get("ID")));
+        //npc.addComponent(movementComponent);
 
         return npc;
     }

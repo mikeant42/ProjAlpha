@@ -56,6 +56,8 @@ public class ClientGameMap {
 
         setMap(clientHandler.getLatestWorldID());
 
+        clientHandler.sendReady(true);
+
 
 
     }
@@ -255,14 +257,25 @@ public class ClientGameMap {
                     System.out.println("Spawning npc " + packet.uid);
                     SpawnData data = new SpawnData(packet.x, packet.y);
                     data.put("ID", packet.uid);
-                    FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
+                    data.put("name", packet.name);
+
+                    if (packet.behaviorType == BehaviorType.ROAMING) {
+                        FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
+                    } else if (packet.behaviorType == BehaviorType.STANDING) {
+                        // only standing npcs can trade and dialogue
+                        data.put("interactable", packet.interactable);
+                        data.put("trader", packet.trader);
+
+                        FXGL.getApp().getGameWorld().spawn("Standing NPC", data);
+                    }
+
                     npcsToAdd.add(packet);
                 }
             }
         });
     }
 
-    // untested code!!
+
     public void updatePlayerCombat(int id, CombatObject object) {
         Platform.runLater(new Runnable() {
             @Override
@@ -395,16 +408,18 @@ public class ClientGameMap {
 //                npcsHere.add(packet);
 //            }
 
-            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.uid);
-            if (optEnt.isPresent()) {
-                Entity entity = optEnt.get();
+            if (packet.behaviorType != BehaviorType.STANDING) {
+                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.uid);
+                if (optEnt.isPresent()) {
+                    Entity entity = optEnt.get();
 //            List<Entity> entities = FXGL.getApp().getGameWorld().getEntitiesByType(EntityType.NPC);
 //            for (Entity entity : entities) {
-                //if (packet.uid == entity.getInt("ID")) {
+                    //if (packet.uid == entity.getInt("ID")) {
                     entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                     entity.setX(packet.x);
                     entity.setY(packet.y);
-                //}
+                    //}
+                }
             }
 
 

@@ -44,11 +44,18 @@ public class Network {
         kryo.register(ObjectPositionUpdate.class);
         kryo.register(UpdatePlayerCombat.class);
         kryo.register(UpdateNPCCombat.class);
+        kryo.register(BehaviorType.class);
+        kryo.register(ReadyToRecieve.class);
     }
 
     static public class Login {
         public String name;
         public String pass;
+    }
+
+    static public class ReadyToRecieve {
+        public int cid;
+        public boolean ready;
     }
 
     static public class RegistrationRequired {
@@ -88,6 +95,7 @@ public class Network {
         public int uid;
         public EntityType type;
         public int moveState;
+        public BehaviorType behaviorType;
 
         public String name;
         public boolean interactable;

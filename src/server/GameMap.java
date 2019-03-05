@@ -62,8 +62,6 @@ public class GameMap {
 
         addCollidables();
 
-        create();
-
         projectileManager = new ProjectileManager(this);
 
         collision = new AlphaCollision(new AlphaCollisionHandler() {
@@ -109,27 +107,17 @@ public class GameMap {
         staticCollisions.addAll(map.getLayerByName("collision").getObjects());
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
-            if (object.getType().equals("roaming")) {
-                if (object.getName().equals("googon")) {
-                    NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
-                    npc.setInteractable(true);
-                    npc.setBehavior(BehaviorType.ROAMING);
-                    //RoamingBehavior behavior = new RoamingBehavior(object.getX(), object.getY());
-                    npcHandler.addNPC(npc, assignUniqueId());
-                }
+            if (object.getName().equals("googon")) {
+                NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
+                npc.setBehavior(BehaviorType.ROAMING);
+                npcHandler.addNPC(npc, assignUniqueId());
+            } else if (object.getName().equals("watcher")) {
+                NPC npc = new NPC("watcher", (float)object.getX(), (float)object.getY());
+                npc.setInteractable(true);
+                npc.setBehavior(BehaviorType.STANDING);
+                npcHandler.addNPC(npc, assignUniqueId());
             }
         }
-    }
-
-    public void create() {
-//        RoamingBehavior behavior = new RoamingBehavior(500, 500);
-//        npcHandler = new NPCHandler();
-//        npcHandler.addNPC(behavior, assignUniqueId());
-//
-//        RoamingBehavior behavior2 = new RoamingBehavior(500, 200);
-//        behavior2.stopMoving();
-//        npcHandler.addNPC(behavior2, assignUniqueId());
-
     }
 
     /*
@@ -214,7 +202,7 @@ public class GameMap {
                     System.out.println("proj-npc collision");
                 }
 
-                if (npc.shouldUpdate()) {
+                if (npc.shouldUpdate() && npc.getPacket().behaviorType != BehaviorType.STANDING) {
                     server.sendToAllReady(npc.formUpdate());
                 }
 
