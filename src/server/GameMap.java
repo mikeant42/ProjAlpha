@@ -40,6 +40,10 @@ public class GameMap {
 
     private List<TiledObject> staticCollisions = new ArrayList<>();
 
+    private boolean updateInternal = true;
+
+    int tick = 0;
+
 
     // 128 is the limit of the number of game objects in one map
     //private int[] uniqueObjects = new int[objectLimit];
@@ -120,20 +124,13 @@ public class GameMap {
         }
     }
 
-    /*
-    This is a server update
-     */
-    public void update() {
-//        for (NPC npc : npcHandler.getNPCs()) {
-//            server.sendToAllReady(npc.formUpdate());
-//        }
-
-    }
 
     /*
-    This updates in another thread for non-networking updates
+    This updates in another thread
      */
-    public void updateAction() {
+    public void updateAction(int tick) {
+        this.tick = tick;
+
         objects.addAll(objectsToAdd);
         objects.removeAll(objectsToRemove);
 
@@ -146,7 +143,8 @@ public class GameMap {
         unLoadedPlayers.removeAll(unLoadedPlayersToRemove);
         unLoadedPlayersToRemove.clear();
 
-        projectileManager.update();
+
+        projectileManager.update(tick);
 
         // every so often check if the player is somewhere he shouldnt be
 
@@ -189,6 +187,7 @@ public class GameMap {
             }
 
             for (NPC npc : npcHandler.getNPCs()) {
+                npc.update();
                 if (AlphaCollision.doesCollide(object, npc) && object.isProjectile()) {
                     projectileManager.remove(object.getUniqueGameId());
                     removeGameObject(object);
@@ -206,7 +205,8 @@ public class GameMap {
                     server.sendToAllReady(npc.formUpdate());
                 }
 
-                npc.update();
+
+
             }
 
 
@@ -331,6 +331,7 @@ public class GameMap {
 
     public void addGameObject(GameObject object) {
         objectsToAdd.add(object);
+        updateInternal = true;
 
         server.sendToAllReady(object);
     }
@@ -365,6 +366,7 @@ public class GameMap {
         server.sendToAllReady(packet);
 
        objectsToRemove.add(object);
+       updateInternal = true;
        //deAllocateId(object.getUniqueGameId());
     }
 
@@ -374,6 +376,7 @@ public class GameMap {
                 removeGameObject(object);
             }
         }
+        updateInternal = true;
     }
 
 //    private void deAllocateId(int id) {
@@ -403,6 +406,7 @@ public class GameMap {
 
     public void addUnloadedPlayer(CharacterPacket packet) {
         unLoadedPlayersToAdd.add(packet);
+        updateInternal = true;
     }
 
 
@@ -411,7 +415,7 @@ public class GameMap {
     }
 
     public void addProjectile(Network.AddProjectile packet) {
-        projectileManager.addProjectile(packet);
+        projectileManager.addProjectile(packet, tick);
     }
 
     public int getMapID() {

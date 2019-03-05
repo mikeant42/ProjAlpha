@@ -13,6 +13,7 @@ public class ProjectileManager {
     private List<Projectile> projectilesToRemove = new ArrayList<>();
     private List<Projectile> projectiles;
     private GameMap map;
+    public static final int LIFESPAN_IN_TICKS = 100;
 
     public ProjectileManager(GameMap map) {
         projectiles = new ArrayList<>();
@@ -20,9 +21,10 @@ public class ProjectileManager {
         this.map = map;
     }
 
-    public void addProjectile(Network.AddProjectile projectile) {
+    public void addProjectile(Network.AddProjectile projectile, int tick) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
+        projectile1.tickCreated = tick;
        // projectile1.uid = map.assignUniqueId();
 
         GameObject projObject = new GameObject(IDs.Spell.TORNADO);
@@ -41,7 +43,7 @@ public class ProjectileManager {
         // also need to add corresponding gameobject to all of the clients
     }
 
-    public void update() {
+    public void update(int tick) {
         projectiles.addAll(projectilesToAdd);
         projectilesToAdd.clear();
 
@@ -50,29 +52,33 @@ public class ProjectileManager {
 
 
         for (Projectile projectile : projectiles) {
-            // compute path for projectisle
-            //projectile.object.setX(projectile.object.getX()+0.5);
+            if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
+                // compute path for projectisle
+                //projectile.object.setX(projectile.object.getX()+0.5);
 
-            Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
-                    projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
+                Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
+                        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
 
-//            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
+    //            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
 
-            //if (projectile.object.getX()-newPosition.getX() < 0.08 && projectile.object.getY()-newPosition.getY() < 0.08) {
-            //    map.removeGameObject(projectile.object.getUniqueGameId());
-          //      projectilesToRemove.add(projectile);
-           // } else {
-//
-                projectile.object.setX(newPosition.getX());
-                projectile.object.setY(newPosition.getY());
+                //if (projectile.object.getX()-newPosition.getX() < 0.08 && projectile.object.getY()-newPosition.getY() < 0.08) {
+                //    map.removeGameObject(projectile.object.getUniqueGameId());
+              //      projectilesToRemove.add(projectile);
+               // } else {
+    //
+                    projectile.object.setX(newPosition.getX());
+                    projectile.object.setY(newPosition.getY());
 
-//                projectile.x = newPosition.getX();
-//                projectile.y = newPosition.getY();
+    //                projectile.x = newPosition.getX();
+    //                projectile.y = newPosition.getY();
 
-                map.updateObjectPosition(projectile.object);
-//                // if projectile is too old delete it
-//            }
-           // }
+                    map.updateObjectPosition(projectile.object);
+    //                // if projectile is too old delete it
+    //            }
+               // }
+            } else {
+                map.removeGameObject(projectile.object.getUniqueGameId());
+            }
         }
     }
 

@@ -46,6 +46,7 @@ public class Network {
         kryo.register(UpdateNPCCombat.class);
         kryo.register(BehaviorType.class);
         kryo.register(ReadyToRecieve.class);
+        kryo.register(MonsterPacket.class);
     }
 
     static public class Login {
@@ -104,7 +105,7 @@ public class Network {
         public CombatObject combat;
     }
 
-    static public class Monster extends NPCPacket {
+    static public class MonsterPacket extends NPCPacket {
         public CombatObject combatObject;
     }
 

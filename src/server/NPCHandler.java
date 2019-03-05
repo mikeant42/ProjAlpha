@@ -6,6 +6,7 @@ import java.util.List;
 public class NPCHandler {
     private List<NPC> npcs = new ArrayList<>();
 
+
     private Thread npcThread;
 
     public NPCHandler() {

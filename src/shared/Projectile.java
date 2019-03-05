@@ -7,4 +7,5 @@ public class Projectile {
     public int width = 15;
     public int height = 15;
     public int uid;
+    public int tickCreated;
 }

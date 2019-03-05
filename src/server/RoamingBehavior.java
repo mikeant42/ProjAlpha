@@ -28,12 +28,12 @@ public class RoamingBehavior extends NPCBehavior {
     private int chooseRandomDirection() {
         Random r = new Random();
 
-//        int[] randDir = new int[5];
-//        randDir[0] = NPCState.STANDING;
-//        randDir[1] = NPCState.RUNNING_FORWARD;
-//        randDir[2] = NPCState.RUNNING_BACK;
-//        randDir[3] = NPCState.RUNNING_LEFT;
-//        randDir[4] = NPCState.RUNNING_RIGHT;
+        int[] randDir = new int[5];
+        randDir[0] = Data.MovementState.STANDING;
+        randDir[1] = Data.MovementState.RUNNING_FORWARD;
+        randDir[2] = Data.MovementState.RUNNING_BACK;
+        randDir[3] = Data.MovementState.RUNNING_LEFT;
+        randDir[4] = Data.MovementState.RUNNING_RIGHT;
 
         int choice = r.nextInt(5);
 

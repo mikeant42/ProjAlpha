@@ -36,6 +36,7 @@ public class AlphaServer extends Server {
         messagesToAddQueue.clear();
         messageToRemoveQueue.clear();
 
+        // we need to make sure that this doesnt get too large
         for (CharacterPacket packet : loggedIn) {
             for (Tuple<Integer, Object> message : messageQueue) {
                 if (message.x.intValue() == packet.id && packet.isLoaded) {
@@ -46,7 +47,7 @@ public class AlphaServer extends Server {
             }
         }
 
-        map.update();
+
     }
 
     public void logIn (ServerHandler.CharacterConnection c, CharacterPacket character) {

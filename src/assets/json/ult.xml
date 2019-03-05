@@ -27,34 +27,13 @@
   <object id="48" type="collide" x="3" y="901" width="127" height="53"/>
  </objectgroup>
  <objectgroup name="spawn">
-  <object id="51" name="googon" type="roaming" x="864" y="800">
+  <object id="53" name="googon" type="roaming" x="768" y="288">
    <point/>
   </object>
-  <object id="53" name="googon" type="roaming" x="640" y="736">
+  <object id="56" name="googon" type="roaming" x="608" y="288">
    <point/>
   </object>
-  <object id="54" name="googon" type="roaming" x="992" y="672">
-   <point/>
-  </object>
-  <object id="55" name="googon" type="roaming" x="832" y="608">
-   <point/>
-  </object>
-  <object id="56" name="googon" type="roaming" x="672" y="800">
-   <point/>
-  </object>
-  <object id="57" name="googon" type="roaming" x="768" y="768">
-   <point/>
-  </object>
-  <object id="58" name="googon" type="roaming" x="928" y="736">
-   <point/>
-  </object>
-  <object id="59" name="googon" type="roaming" x="704" y="672">
-   <point/>
-  </object>
-  <object id="60" name="googon" type="roaming" x="768" y="640">
-   <point/>
-  </object>
-  <object id="61" name="googon" type="roaming" x="928" y="608">
+  <object id="57" name="googon" type="roaming" x="896" y="288">
    <point/>
   </object>
   <object id="62" name="watcher" x="448" y="416">

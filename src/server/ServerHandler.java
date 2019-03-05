@@ -65,7 +65,7 @@ public class ServerHandler {
 
                     while (delta >= 1) {
                         tick();
-                        server.getMap().updateAction();
+                        server.getMap().updateAction(tick);
                         delta--;
                     }
                 }
