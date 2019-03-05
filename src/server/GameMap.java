@@ -112,7 +112,7 @@ public class GameMap {
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
             if (object.getName().equals("googon")) {
-                NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
+                NPC npc = new NPC("snake", (float)object.getX(), (float)object.getY());
                 npc.setBehavior(BehaviorType.ROAMING);
                 npcHandler.addNPC(npc, assignUniqueId());
             } else if (object.getName().equals("watcher")) {
@@ -187,7 +187,6 @@ public class GameMap {
             }
 
             for (NPC npc : npcHandler.getNPCs()) {
-                npc.update();
                 if (AlphaCollision.doesCollide(object, npc) && object.isProjectile()) {
                     projectileManager.remove(object.getUniqueGameId());
                     removeGameObject(object);
@@ -201,15 +200,19 @@ public class GameMap {
                     System.out.println("proj-npc collision");
                 }
 
-                if (npc.shouldUpdate() && npc.getPacket().behaviorType != BehaviorType.STANDING) {
-                    server.sendToAllReady(npc.formUpdate());
-                }
-
 
 
             }
 
 
+        }
+
+        for (NPC npc : npcHandler.getNPCs()) {
+            npc.update();
+            if (npc.shouldUpdate()) {
+                server.sendToAllReady(npc.formUpdate());
+                System.out.println("updating npcs");
+            }
         }
 
         //for (CharacterPacket packet : server.getLoggedIn()) {

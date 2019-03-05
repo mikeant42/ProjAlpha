@@ -102,7 +102,7 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("Roaming NPC")
     public Entity spawnRoamingNPC(SpawnData data) {
-        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/"+data.get("name")+".png", 48, 64, 3);
+        AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("npc/"+data.get("name")+".png", 96, 96, 3);
         movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
         movementComponent.setRight(3,5);

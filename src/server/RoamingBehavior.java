@@ -4,6 +4,7 @@ import shared.Data;
 import shared.EntityType;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RoamingBehavior extends NPCBehavior {
     // These are all for timing when he chooses to make a decision-
@@ -26,7 +27,7 @@ public class RoamingBehavior extends NPCBehavior {
     }
 
     private int chooseRandomDirection() {
-        Random r = new Random();
+        Random r = ThreadLocalRandom.current();
 
         int[] randDir = new int[5];
         randDir[0] = Data.MovementState.STANDING;

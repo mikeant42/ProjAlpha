@@ -53,29 +53,13 @@ public class ProjectileManager {
 
         for (Projectile projectile : projectiles) {
             if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
-                // compute path for projectisle
-                //projectile.object.setX(projectile.object.getX()+0.5);
-
                 Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
                         projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
 
-    //            if (!newPosition.equals(new Point2D(projectile.object.getX(), projectile.object.getY()))) {
-
-                //if (projectile.object.getX()-newPosition.getX() < 0.08 && projectile.object.getY()-newPosition.getY() < 0.08) {
-                //    map.removeGameObject(projectile.object.getUniqueGameId());
-              //      projectilesToRemove.add(projectile);
-               // } else {
-    //
                     projectile.object.setX(newPosition.getX());
                     projectile.object.setY(newPosition.getY());
 
-    //                projectile.x = newPosition.getX();
-    //                projectile.y = newPosition.getY();
-
                     map.updateObjectPosition(projectile.object);
-    //                // if projectile is too old delete it
-    //            }
-               // }
             } else {
                 map.removeGameObject(projectile.object.getUniqueGameId());
             }
