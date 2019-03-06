@@ -1,7 +1,7 @@
 package server;
 
+import server.npc.NPCBehavior;
 import shared.Data;
-import shared.EntityType;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
