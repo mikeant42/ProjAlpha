@@ -1,4 +1,4 @@
-package server;
+package server.npc;
 
 import shared.*;
 

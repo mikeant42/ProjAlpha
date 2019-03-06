@@ -21,7 +21,7 @@ public class ProjectileManager {
         this.map = map;
     }
 
-    public void addProjectile(Network.AddProjectile projectile, int tick) {
+    public void addProjectile(Network.AddProjectile projectile, long tick) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
         projectile1.tickCreated = tick;
@@ -43,7 +43,13 @@ public class ProjectileManager {
         // also need to add corresponding gameobject to all of the clients
     }
 
-    public void update(int tick) {
+    /*
+    new design
+    - send out a smaller number of packets by lowering the server "fps"
+    - use ticks on client to interpolate
+     */
+
+    public void update(long tick) {
         projectiles.addAll(projectilesToAdd);
         projectilesToAdd.clear();
 

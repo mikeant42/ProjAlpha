@@ -5,7 +5,7 @@ import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
-import server.NPC;
+import server.npc.NPC;
 import shared.*;
 
 import java.util.List;

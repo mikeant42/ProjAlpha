@@ -46,6 +46,7 @@ public class AnimatedMovementComponent extends MovementComponent {
         animLeft = new AnimationChannel(file, framesPerRow, frameWidth, frameHeight,Duration.seconds(1), leftStart, leftEnd);
 
         texture = new AnimatedTexture(animIdle);
+        System.out.println(texture.getHeight());
 
 
         entity.setView(texture);
@@ -64,12 +65,12 @@ public class AnimatedMovementComponent extends MovementComponent {
             texture.loopAnimationChannel(animRight);
         }
 
-        // If no inputs are registering, its safe to move idle
         if (!isMoving()) {
-            if (texture.getAnimationChannel() != animIdle)
+            if (texture.getAnimationChannel() != animIdle) {
                 texture.loopAnimationChannel(animIdle);
-            animationSpeed = 0;
-            setState(Data.MovementState.STANDING);
+                animationSpeed = 0;
+                setState(Data.MovementState.STANDING);
+            }
         }
 
         // update this before movementcomponent, or else will cause animation problems

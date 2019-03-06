@@ -20,6 +20,8 @@ public class MovementComponent extends Component {
     private int state = Data.MovementState.STANDING;
     private Point2D previousPos = new Point2D(0,0);
 
+    private boolean isMoving = false;
+
     public MovementComponent() {
         this.moveFactor = moveFactor;
 
@@ -29,6 +31,11 @@ public class MovementComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        if (previousPos.equals(getEntity().getPosition())) {
+            isMoving = false;
+        } else {
+            isMoving = true;
+        }
         if (getEntity().getPosition().equals(previousPos)) { // If we haven't moved, we must be standing
             state = Data.MovementState.STANDING;
         }
@@ -88,7 +95,7 @@ public class MovementComponent extends Component {
     }
 
     public boolean isMoving() {
-        return !(state == Data.MovementState.STANDING);
+        return isMoving;
     }
 
 }

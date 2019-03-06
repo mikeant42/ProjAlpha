@@ -218,12 +218,14 @@ public class AlphaClientApp extends GameApplication {
 
         UserAction tab = new UserAction("Tab") {
             public void onActionBegin() {
-                if (panelOpen) {
-                    getGameScene().removeUI(mainPanel);
-                    panelOpen = false;
-                } else {
-                    getGameScene().addUI(mainPanel);
-                    panelOpen = true;
+                if (gameMap.isMapLoaded()) {
+                    if (panelOpen) {
+                        getGameScene().removeUI(mainPanel);
+                        panelOpen = false;
+                    } else {
+                        getGameScene().addUI(mainPanel);
+                        panelOpen = true;
+                    }
                 }
             }
         };
@@ -271,7 +273,7 @@ public class AlphaClientApp extends GameApplication {
 
 
             //System.out.println(getTick());
-            gameMap.update();
+            gameMap.update(getTick());
 
         }
     }

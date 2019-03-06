@@ -2,6 +2,8 @@ package server;
 
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
+import server.npc.NPC;
+import server.npc.NPCHandler;
 import shared.*;
 import shared.collision.AlphaCollision;
 import shared.collision.AlphaCollisionHandler;
@@ -42,7 +44,7 @@ public class GameMap {
 
     private boolean updateInternal = true;
 
-    int tick = 0;
+    long tick = 0;
 
 
     // 128 is the limit of the number of game objects in one map
@@ -93,17 +95,19 @@ public class GameMap {
 //            addGameObject(object);
 //        }
 
-        Fish object = new Fish();
-        object.setX(200);
-        object.setY(200);
-        object.setUniqueGameId(assignUniqueId());
+        for (int i = 0; i < 10; i++) {
+            Fish object = new Fish();
+            object.setX(200);
+            object.setY(200);
+            object.setUniqueGameId(assignUniqueId());
 //        object.setOnUse(new AlphaCollisionHandler() {
 //            @Override
 //            public void onUse(CharacterPacket packet) {
 //
 //            }
 //        });
-        addGameObject(object);
+            addGameObject(object);
+        }
 
     }
 
@@ -112,7 +116,7 @@ public class GameMap {
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
             if (object.getName().equals("googon")) {
-                NPC npc = new NPC("snake", (float)object.getX(), (float)object.getY());
+                NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
                 npc.setBehavior(BehaviorType.ROAMING);
                 npcHandler.addNPC(npc, assignUniqueId());
             } else if (object.getName().equals("watcher")) {
@@ -128,7 +132,7 @@ public class GameMap {
     /*
     This updates in another thread
      */
-    public void updateAction(int tick) {
+    public void updateAction(long tick) {
         this.tick = tick;
 
         objects.addAll(objectsToAdd);
@@ -176,7 +180,7 @@ public class GameMap {
                             // test
                             Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
                             combat.id = packet.id;
-                            packet.combat.setHealth(packet.combat.getHealth()-10);
+                            packet.combat.setHealth(packet.combat.getHealth() - 10);
                             combat.object = packet.combat;
                             server.sendToAllReady(combat);
 
@@ -193,13 +197,12 @@ public class GameMap {
 
                     Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
                     combat.id = npc.getPacket().uid;
-                    npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth()-10);
+                    npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth() - 10);
                     combat.object = npc.getPacket().combat;
                     server.sendToAllReady(combat);
 
                     System.out.println("proj-npc collision");
                 }
-
 
 
             }
@@ -211,108 +214,10 @@ public class GameMap {
             npc.update();
             if (npc.shouldUpdate()) {
                 server.sendToAllReady(npc.formUpdate());
-                System.out.println("updating npcs");
             }
         }
 
-        //for (CharacterPacket packet : server.getLoggedIn()) {
-
-            //for (Projectile projectile : projectileManager.getProjectiles()) {
-//                if (AlphaCollision.doesCollide(projectile, packet)) {
-//                    if (projectile.projectile.sourceUser != packet.id) { // the user cant harm himself with a spell
-//                        projectileManager.remove(projectile.uid);
-//                        System.out.println("collision " + projectile.x + " , " + projectile.y);
-//
-//                        // test
-//                        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
-//                        combat.id = packet.id;
-//                        packet.combat.setHealth(packet.combat.getHealth()-10);
-//                        combat.object = packet.combat;
-//                        server.sendToAllReady(combat);
-//
-//                    }
-//                }
-
-           // }
-
-
-//            for (GameObject object : objects) {
-//                if (AlphaCollision.doesCollide(object, packet)) {
-//
-//                    if (!object.isProjectile()) {
-//                        // when player runs over an object, he adds it to his inventory
-//                        removeGameObject(object);
-//                        addInventory(packet.id, object);
-//                        System.out.println("picking up non projhectile");
-//                    } else {
-//                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.id) { // the user cant harm himself with a spell
-//                            projectileManager.remove(object.getUniqueGameId());
-//                            removeGameObject(object);
-//
-//                             // test
-//                            Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
-//                            combat.id = packet.id;
-//                            packet.combat.setHealth(packet.combat.getHealth()-10);
-//                            combat.object = packet.combat;
-//                            server.sendToAllReady(combat);
-//
-//                        }
-//
-//                    }
-//                }
-//
-//
-//
-//            }
-//        }
-//
-//        for (NPC npc : npcHandler.getNPCs()) {
-//            for (GameObject object : objects) {
-//                if (AlphaCollision.doesCollide(object, npc)) {
-//                    projectileManager.remove(object.getUniqueGameId());
-//                    System.out.println("proj-npc collision");
-//                }
-//
-//            }
-//            npc.update();
-//        }
-
-
     }
-
-
-
-//        for (GameObject object : objects) {
-//
-//            collision.handleStaticCollisions(staticCollisions, object);
-//
-//            // player vs object collision
-//            for (CharacterPacket packet : server.getLoggedIn()) {
-//
-//                if (AlphaCollision.doesCollide(object, packet)) {
-//
-//                    if (!object.isProjectile()) {
-//                        // when player runs over an object, he adds it to his inventory
-//                        removeGameObject(object);
-//                        addInventory(packet.id, object);
-//                        System.out.println("picking up non projhectile");
-//                    }
-//
-//
-//
-//                }
-//            }
-
-//            for (NPC npc : npcHandler.getNPCs()) {
-//                if (AlphaCollision.doesProjectileCollide(object, npc)) {
-//                    System.out.println("projectile-npc collision");
-//                    removeGameObject(object);
-//                }
-//            }
-
-
-      //  }
-    //}
 
     public void addInventory(int cid, GameObject object) {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();

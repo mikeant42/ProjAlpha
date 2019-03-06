@@ -23,7 +23,8 @@ public class ServerHandler {
 
     private AlphaServer server;
     private boolean running = true;
-    private int tick = 0;
+    private long tick = 0;
+    private double fakeFPS = 20.0;
 
 
     public ServerHandler() throws IOException {
@@ -48,11 +49,12 @@ public class ServerHandler {
         server.start();
 
         // lets run the npc update method in its own thread
+        // the kryo server update thread cannot be blocked
         Thread npcThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.NONE();
-                double ns = 1000000000.0 / 60.0;
+                double ns = 1000000000.0 / fakeFPS;
                 double delta = 0;
 
                 long lastTime = System.nanoTime();

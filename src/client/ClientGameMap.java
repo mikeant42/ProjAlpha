@@ -45,6 +45,9 @@ public class ClientGameMap {
 
     private Camera camera;
 
+    private boolean needsChange = true;
+    private int changeTick = 0;
+
 
     public ClientGameMap() {
     }
@@ -313,7 +316,7 @@ public class ClientGameMap {
         return isMapLoaded;
     }
 
-    public void update() {
+    public void update(long tick) {
         playersHere.addAll(playersToAdd);
         playersToAdd.clear();
 
@@ -353,6 +356,8 @@ public class ClientGameMap {
 
 
         if (!clientHandler.getOtherPlayers().isEmpty()) {
+
+
 
             for (CharacterPacket packet : playersHere) {
 
@@ -432,8 +437,8 @@ public class ClientGameMap {
                 Entity entity = optEnt.get();
 
                 System.out.println("entity pos upf");
-                entity.setX(object.getX());
-                entity.setY(object.getY());
+                entity.setX(object.getX()/0.5);
+                entity.setY(object.getY()/0.5);
             }
         }
 

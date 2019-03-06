@@ -20,6 +20,7 @@ Network
 - Player inventory
 - Basic queueing system that can store messages until the client is ready to accept them
 - Basic projectile system
+- Server designed to read map file and spawn npcs in the "spawn" layer
 
 
 TODO
@@ -34,6 +35,12 @@ TODO
 - split client into launcher and game
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
+
+
+Optimizations
+----
+- only update and broadcast npc if its within a certain distance to any player
+- only send npc/player/projectile data to players near it
 
 
 Bugs

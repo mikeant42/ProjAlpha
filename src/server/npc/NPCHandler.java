@@ -1,4 +1,4 @@
-package server;
+package server.npc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ public class NPCHandler {
 
     }
 
-    protected void addNPC(NPC npc, int uid) {
+    public void addNPC(NPC npc, int uid) {
         npc.getPacket().uid = uid;
         npcs.add(npc);
     }
 
-    protected void removeNPC(int id) {
+    public void removeNPC(int id) {
         for (NPC npc : npcs) {
             if (npc.getPacket().uid == id) {
                 npcs.remove(npc);
