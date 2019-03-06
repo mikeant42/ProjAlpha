@@ -47,6 +47,7 @@ public class CharacterCommandListener extends Listener {
 
             handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             handler.getServer().sendToAllReadyExcept(updateCharacter.id, updateCharacter);
+            System.out.println(c.getReturnTripTime());
         }
 
         if (object instanceof Network.UserChat) {

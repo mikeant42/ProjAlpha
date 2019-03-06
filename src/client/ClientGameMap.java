@@ -2,6 +2,7 @@ package client;
 
 import client.render.*;
 import com.almasb.fxgl.app.FXGL;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.parser.tiled.TiledMap;
@@ -47,6 +48,9 @@ public class ClientGameMap {
 
     private boolean needsChange = true;
     private int changeTick = 0;
+
+    private double interpolationConstant = 0.5;
+    private double snappingDistance = 1;
 
 
     public ClientGameMap() {
@@ -264,7 +268,7 @@ public class ClientGameMap {
 
                     if (packet.behaviorType == BehaviorType.ROAMING) {
                         FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
-                    } else if (packet.behaviorType == BehaviorType.STANDING) {
+                    } else if (packet.behaviorType == BehaviorType.STATIC) {
                         // only standing npcs can trade and dialogue
                         data.put("interactable", packet.interactable);
                         data.put("trader", packet.trader);
@@ -316,7 +320,7 @@ public class ClientGameMap {
         return isMapLoaded;
     }
 
-    public void update(long tick) {
+    public void update(double dtf, long tick) {
         playersHere.addAll(playersToAdd);
         playersToAdd.clear();
 
@@ -369,7 +373,7 @@ public class ClientGameMap {
                     //System.out.println(entity.getPosition());
                     Network.UserChat entityChat = getChatMsg(packet.id);
 
-                    if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
+                    //if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
                         // We found the dude we need to update
 
                         if (entityChat != null) {
@@ -383,15 +387,36 @@ public class ClientGameMap {
 
                         }
 
-                        if (entity.hasComponent(AnimatedMovementComponent.class)) {
-                            entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
-                            int moveState = packet.moveState;
-                            entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
-                            entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                        if (entity.getX() == packet.x && entity.getY() == packet.y) {
+                            entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                        } else {
+
+                            // this block occurs whenever we recieve an update
+                            if (entity.hasComponent(AnimatedMovementComponent.class)) {
+                                entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+
+                                double distanceX = entity.getX() - packet.x;
+                                double distanceY = entity.getY() - packet.y;
+                                if (distanceX < snappingDistance) {
+                                    entity.setX(packet.x);
+                                } else {
+                                    entity.setX(distanceX * dtf * interpolationConstant);
+                                }
+
+                                if (distanceY < snappingDistance) {
+                                    entity.setY(packet.y);
+                                } else {
+                                    entity.setY(distanceY * dtf * interpolationConstant);
+                                }
+
+//                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
+//                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                            }
+
                         }
 
 
-                    }
+                    //}
 
 
                 }
@@ -404,26 +429,48 @@ public class ClientGameMap {
 
 
 
-        for (Network.NPCPacket packet : npcsHere) {
-//            if (!isNPCHere(packet.uid)) {
-//                System.out.println("Spawning npc " + packet.uid);
-//                SpawnData data = new SpawnData(packet.x, packet.y);
-//                data.put("ID", packet.uid);
-//                FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
-//                npcsHere.add(packet);
-//            }
+        // idea
+        // have an array of ints, each uid,  that need updating
+        // loop through that list instead of the entire list of packets
 
-            if (packet.behaviorType != BehaviorType.STANDING) {
+
+        for (Network.NPCPacket packet : npcsHere) {
+
+            if (packet.behaviorType != BehaviorType.STATIC) {
                 Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.uid);
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
-//            List<Entity> entities = FXGL.getApp().getGameWorld().getEntitiesByType(EntityType.NPC);
-//            for (Entity entity : entities) {
-                    //if (packet.uid == entity.getInt("ID")) {
-                    entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
-                    entity.setX(packet.x);
-                    entity.setY(packet.y);
-                    //}
+                    if ((int)entity.getX() == (int)packet.x && (int)entity.getX() == (int)packet.y) {
+                        entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                        System.out.println("npc is standing still");
+                    } else {
+                        entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+//                        entity.setX(packet.x);
+//                        entity.setY(packet.y);
+
+                        // this block occurs whenever we recieve an update
+                        if (entity.hasComponent(AnimatedMovementComponent.class)) {
+                            entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+
+                            double distanceX = entity.getX() - packet.x;
+                            double distanceY = entity.getY() - packet.y;
+                            if (distanceX < snappingDistance) {
+                                entity.setX(packet.x);
+                            } else {
+                                entity.setX(distanceX * dtf * interpolationConstant);
+                            }
+
+                            if (distanceY < snappingDistance) {
+                                entity.setY(packet.y);
+                            } else {
+                                entity.setY(distanceY * dtf * interpolationConstant);
+                            }
+
+//                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
+//                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+                        }
+                    }
+
                 }
             }
 
@@ -437,23 +484,11 @@ public class ClientGameMap {
                 Entity entity = optEnt.get();
 
                 System.out.println("entity pos upf");
-                entity.setX(object.getX()/0.5);
-                entity.setY(object.getY()/0.5);
+                entity.setX(object.getX());
+                entity.setY(object.getY());
             }
         }
 
-//        for (GameObject object : clientHandler.getObjects()) {
-//            if (!isObjectHere(object.getUniqueGameId())) {
-//                SpawnData data = new SpawnData(object.getX(), object.getY());
-//                data.put("ID", object.getId());
-//                data.put("uid", object.getUniqueGameId());
-//                data.put("name", object.getName());
-//
-//                FXGL.getApp().getGameWorld().spawn("Gameobject", data);
-//
-//                objectsHere.add(object);
-//            }
-//        }
 
 
         messagesToAdd.clear();

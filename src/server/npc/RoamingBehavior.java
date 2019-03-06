@@ -16,7 +16,7 @@ public class RoamingBehavior extends NPCBehavior {
 
 
 
-    public RoamingBehavior(float x, float y) {
+    public RoamingBehavior(double x, double y) {
         super(x, y);
 
 

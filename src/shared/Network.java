@@ -91,8 +91,8 @@ public class Network {
     }
 
     static public class NPCPacket {
-        public float x;
-        public float y;
+        public double x;
+        public double y;
         public int uid;
         public EntityType type;
         public int moveState;
@@ -110,8 +110,8 @@ public class Network {
     }
 
     static public class UpdateNPC {
-        public float x;
-        public float y;
+        public double x;
+        public double y;
         public int uid;
         public int moveState;
     }
@@ -132,14 +132,6 @@ public class Network {
         public String message;
         public int cid;
     }
-
-//    static public class GameObjectPacket {
-//        public int uid;
-//        public int itemLevel;
-//        public String name;
-//        public String desc;
-//        public float x,y;
-//    }
 
     static public class WorldQuery {
         public int map;

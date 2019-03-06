@@ -9,9 +9,9 @@ public class NPCBehavior {
     private int state = Data.MovementState.STANDING;
 
     private int bounds; // We need this so the npc doesn't wander far from where he was spawned
-    private float x,y;
-    private float lastX, lastY;
-    private float spawnX, spawnY;
+    private double x,y;
+    private double lastX, lastY;
+    private double spawnX, spawnY;
 
     float speed = 0.4f;
 
@@ -19,7 +19,7 @@ public class NPCBehavior {
 
     private boolean isStatic = false;
 
-    public NPCBehavior(float spawnX, float spawnY) {
+    public NPCBehavior(double spawnX, double spawnY) {
 //        data = new Network.NPCPacket();
 //        data.type = entityType;
 
@@ -75,25 +75,25 @@ public class NPCBehavior {
     }
 
     public void moveRight(float speed) {
-        float xr = x + speed;
+        double xr = x + speed;
         if (Math.abs(xr - spawnX) <= bounds)
             x = xr;
     }
 
     public void moveLeft(float speed) {
-        float xr = x - speed;
+        double xr = x - speed;
         if (Math.abs(xr - spawnY) <= bounds)
             x = xr;
     }
 
     public void moveUp(float speed) {
-        float yr = y - speed;
+        double yr = y - speed;
         if (Math.abs(yr - spawnX) <= bounds)
             y = yr;
     }
 
     public void moveDown(float speed) {
-        float yr = y + speed;
+        double yr = y + speed;
         if (Math.abs(yr - spawnY) <= bounds)
             y = yr;
     }
@@ -139,11 +139,11 @@ public class NPCBehavior {
         isStatic = aStatic;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
@@ -153,5 +153,13 @@ public class NPCBehavior {
 
     public void setAllowedToMove(boolean allowedToMove) {
         this.allowedToMove = allowedToMove;
+    }
+
+    public double getLastX() {
+        return lastX;
+    }
+
+    public double getLastY() {
+        return lastY;
     }
 }

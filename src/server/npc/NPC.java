@@ -10,10 +10,10 @@ public class NPC {
 
     private String name;
 
-    private float spawnX, spawnY;
+    private double spawnX, spawnY;
 
 
-    public NPC(String name, float spawnX, float spawnY) {
+    public NPC(String name, double spawnX, double spawnY) {
         this.name = name;
         packet = new Network.NPCPacket();
         updateNPC = new Network.UpdateNPC();
@@ -54,7 +54,7 @@ public class NPC {
             case ROAMING:
                 this.behavior = new RoamingBehavior(spawnX, spawnY);
                 return;
-            case STANDING:
+            case STATIC:
                 this.behavior = new NPCBehavior(spawnX, spawnY);
                 this.behavior.setAllowedToMove(false);
         }
@@ -86,11 +86,11 @@ public class NPC {
         return !(behavior.getState() == Data.MovementState.STANDING);
     }
 
-    public float getX() {
+    public double getX() {
         return behavior.getX();
     }
 
-    public float getY() {
+    public double getY() {
         return behavior.getY();
     }
 

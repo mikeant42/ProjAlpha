@@ -36,6 +36,16 @@ TODO
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
 
+Rewrite packet code oop
+Entity
+- has x,y
+
+CharacterPckt extends Entity
+GameObject extends Entity
+NPCPacket extends Entity
+for entity : entities
+    if entity instanceof Gameobject...
+
 
 Optimizations
 ----
@@ -45,9 +55,8 @@ Optimizations
 
 Bugs
 ----
-- a strange bug where the npcs dont update unless a projectile is fired (maybe something to do with tcp??)
 - sometimes the client side collision detection will make the character get stuck
-- other players don't show the idle animation
+- other npcs don't show the idle animation
 - npcs "twitch" a little when they choose to remain idle (RoamingBehavior)
 
 

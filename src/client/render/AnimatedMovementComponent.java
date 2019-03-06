@@ -65,12 +65,12 @@ public class AnimatedMovementComponent extends MovementComponent {
             texture.loopAnimationChannel(animRight);
         }
 
-        if (!isMoving()) {
-            if (texture.getAnimationChannel() != animIdle) {
+        if (getState() == Data.MovementState.STANDING) {
+            if (texture.getAnimationChannel() != animIdle)
                 texture.loopAnimationChannel(animIdle);
-                animationSpeed = 0;
-                setState(Data.MovementState.STANDING);
-            }
+            animationSpeed = 0;
+            
+
         }
 
         // update this before movementcomponent, or else will cause animation problems

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.esotericsoftware.kryonet.Connection;
 
 
+import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import shared.CharacterPacket;
@@ -42,7 +43,7 @@ public class ServerHandler {
         Network.register(server);
 
         server.addListener(new LoginListener(this));
-        server.addListener(new CharacterCommandListener(this));
+        server.addListener(new Listener.ThreadedListener(new CharacterCommandListener(this)));
         server.addListener(new WorldListener(this));
 
         server.bind(Network.port);
@@ -54,23 +55,50 @@ public class ServerHandler {
             @Override
             public void run() {
                 Log.NONE();
-                double ns = 1000000000.0 / fakeFPS;
-                double delta = 0;
 
-                long lastTime = System.nanoTime();
-                long timer = System.currentTimeMillis();
+                long now;
+                long updateTime;
+                long wait;
+
+                final int TARGET_FPS = 60;
+                final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
                 while (running) {
-                    long now = System.nanoTime();
-                    delta += (now - lastTime) / ns;
-                    lastTime = now;
+                    now = System.nanoTime();
 
-                    while (delta >= 1) {
-                        tick();
-                        server.getMap().updateAction(tick);
-                        delta--;
+                    tick();
+                    server.getMap().updateAction(tick);
+
+                    updateTime = System.nanoTime() - now;
+                    wait = (OPTIMAL_TIME - updateTime) / 1000000;
+
+                    try {
+                        Thread.sleep(wait);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
+
                 }
+
+//
+//                double ns = 1000000000.0 / fakeFPS;
+//                double delta = 0;
+//
+//                long lastTime = System.nanoTime();
+//                long timer = System.currentTimeMillis();
+//
+//                while (running) {
+//                    long now = System.nanoTime();
+//                    delta += (now - lastTime) / ns;
+//                    lastTime = now;
+//
+//                    while (delta >= 1) {
+//                        tick();
+//                        server.getMap().updateAction(tick);
+//                        delta--;
+//                    }
+//                }
             }
         });
         npcThread.run();

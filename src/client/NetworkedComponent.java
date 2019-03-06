@@ -51,7 +51,7 @@ public class NetworkedComponent extends Component {
     public void update() {
         if (ClientHandler.LOGIN_STATUS) {
 //            if (getEntity().getType().equals(EntityType.PLAYER) && !getEntity().getComponent(AnimatedMovementComponent.class).isMoving()) {
-//                movementComponent.setState(Data.MovementState.STANDING);
+//                movementComponent.setState(Data.MovementState.STATIC);
 //                System.out.println("other player isnt moving");
 //            }
 

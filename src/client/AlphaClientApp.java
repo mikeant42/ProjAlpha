@@ -273,7 +273,7 @@ public class AlphaClientApp extends GameApplication {
 
 
             //System.out.println(getTick());
-            gameMap.update(getTick());
+            gameMap.update(dtf, getTick());
 
         }
     }

@@ -18,10 +18,9 @@ public class NPCResponseListener extends Listener {
         if (object instanceof Network.NPCPacket) {
             Network.NPCPacket packet = (Network.NPCPacket)object;
             System.out.println("npcs added");
-            if (!handler.hasNPC(packet.uid)) {
-                handler.getNpcs().add(packet);
-                handler.getAlphaClientApp().getActiveWorld().addNPC(packet);
-            }
+            handler.getNpcs().add(packet);
+            // if statement here
+            handler.getAlphaClientApp().getActiveWorld().addNPC(packet);
         }
 
         if (object instanceof Network.UpdateNPC) {

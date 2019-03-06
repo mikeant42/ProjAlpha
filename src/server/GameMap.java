@@ -116,13 +116,13 @@ public class GameMap {
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
             if (object.getName().equals("googon")) {
-                NPC npc = new NPC("googon", (float)object.getX(), (float)object.getY());
+                NPC npc = new NPC("googon", object.getX(), object.getY());
                 npc.setBehavior(BehaviorType.ROAMING);
                 npcHandler.addNPC(npc, assignUniqueId());
             } else if (object.getName().equals("watcher")) {
-                NPC npc = new NPC("watcher", (float)object.getX(), (float)object.getY());
+                NPC npc = new NPC("watcher", object.getX(), object.getY());
                 npc.setInteractable(true);
-                npc.setBehavior(BehaviorType.STANDING);
+                npc.setBehavior(BehaviorType.STATIC);
                 npcHandler.addNPC(npc, assignUniqueId());
             }
         }
@@ -195,6 +195,8 @@ public class GameMap {
                     projectileManager.remove(object.getUniqueGameId());
                     removeGameObject(object);
 
+                    // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
+
                     Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
                     combat.id = npc.getPacket().uid;
                     npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth() - 10);
@@ -211,10 +213,11 @@ public class GameMap {
         }
 
         for (NPC npc : npcHandler.getNPCs()) {
-            npc.update();
+
             if (npc.shouldUpdate()) {
                 server.sendToAllReady(npc.formUpdate());
             }
+            npc.update();
         }
 
     }

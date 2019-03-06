@@ -95,11 +95,12 @@ public class ClientHandler {
 
     }
 
-    public void updateNPC(float x, float y, int move, int id) {
+    public void updateNPC(double x, double y, int move, int id) {
         for (NPCPacket packet : npcs) {
             if (id == packet.uid) {
                 packet.x = x;
                 packet.y = y;
+                System.out.println(packet.x + " " + packet.y);
                 packet.moveState = move;
             }
         }
