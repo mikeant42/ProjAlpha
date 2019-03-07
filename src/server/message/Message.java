@@ -1,6 +1,7 @@
-package server;
+package server.message;
 
 
+import server.AlphaServer;
 
 public class Message {
     private int id;
@@ -26,17 +27,17 @@ public class Message {
         this.excludeID = 0;
     }
 
-    // bug - sendtoallexcept does not work
+    //
     // solution - make a ExcludingMessage class extending Message, modify alpha messaging queue
     public void send(AlphaServer server) {
         if (sendToAll) {
             if (excludeID != 0) {
-                server.sendToAllExceptTCP(excludeID, content);
+                server.sendToAllExcept(content, excludeID);
             } else {
-                server.sendToAllReady(content, wait);
+                server.sendToAll(content);
             }
         } else {
-            server.sendWithQueue(id, content, wait);
+            server.sendToTCP(id, content);
         }
     }
 

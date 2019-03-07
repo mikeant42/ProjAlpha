@@ -2,9 +2,8 @@ package server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import shared.GameObject;
+import server.message.Message;
 import shared.Network;
-import sun.nio.ch.Net;
 
 public class WorldListener extends Listener {
     private ServerHandler handler;
@@ -21,7 +20,7 @@ public class WorldListener extends Listener {
             query.map = handler.getServer().getMap().getMapID(); // eventually the player will have it on him in the db
 
            // handler.getServer().sendToTCP(c.getID(), query);
-            handler.getServer().getMap().queueMessage(new Message(c.getID(), query, false));
+            handler.getServer().getMap().queueMessage(new server.message.Message(c.getID(), query, false));
             //handler.getServer().setIsLoaded(c.getID(), true);
         }
 

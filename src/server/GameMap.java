@@ -2,6 +2,7 @@ package server;
 
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
+import server.message.Message;
 import server.npc.NPC;
 import server.npc.NPCHandler;
 import shared.*;
@@ -138,8 +139,8 @@ public class GameMap {
         // this code will only run ~10 times a second
 
         for (Message packet : objectsToSend) {
-            packet.send(server);
-            objectsToSend.remove(packet);
+                packet.send(server);
+                objectsToSend.remove(packet);
         }
 
     }
@@ -361,11 +362,15 @@ public class GameMap {
     }
 
     public void queueMessage(Message message) {
-        try {
-            objectsToSend.put(message);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.err.println("The queue is blocking, probably because there are too many queued messages");
+        if (message.isWait()) {
+            server.addMessageToQueue(message);
+        } else {
+            try {
+                objectsToSend.put(message);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.err.println("The queue is blocking, probably because there are too many queued messages");
+            }
         }
     }
 }

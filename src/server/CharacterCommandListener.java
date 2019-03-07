@@ -2,9 +2,9 @@ package server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import server.message.Message;
 import shared.CharacterPacket;
 import shared.Network;
-import sun.nio.ch.Net;
 
 public class CharacterCommandListener extends Listener {
     private ServerHandler handler;
@@ -30,7 +30,10 @@ public class CharacterCommandListener extends Listener {
             System.out.println("og uid " + c.getID());
             System.out.println("Server recieved, client " + msg.id + " is quitting.");
 
-            handler.getServer().sendToAllReadyExcept(c.getID(), msg);
+
+            Message data = new Message(msg, false);
+            data.setExcludeID(c.getID());
+            handler.getServer().addMessageToQueue(data);
         }
 
 
@@ -47,7 +50,7 @@ public class CharacterCommandListener extends Listener {
 
             handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             //handler.getServer().sendToAllReadyExcept(updateCharacter.id, updateCharacter);
-            Message message = new Message(updateCharacter, false);
+            server.message.Message message = new server.message.Message(updateCharacter, false);
             message.setExcludeID(updateCharacter.id);
             handler.getServer().getMap().queueMessage(message);
 

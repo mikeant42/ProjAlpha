@@ -2,21 +2,23 @@ package server;
 
 
 import com.esotericsoftware.kryonet.Server;
+import server.message.Message;
 import shared.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class AlphaServer extends Server {
 
     private HashSet<CharacterPacket> loggedIn = new HashSet();
     private GameMap map; // List<GameMap>
 
-    private List<Tuple<Integer, Object>> messageQueue = new ArrayList<>();
-    private List<Tuple<Integer, Object>> messagesToAddQueue = new ArrayList<>();
-    private List<Tuple<Integer, Object>> messageToRemoveQueue = new ArrayList<>();
+
+    private BlockingQueue<Message> serverMessagePool = new ArrayBlockingQueue<>(10000);
 
 
     // this number is used to make sure that objects dont acquire player ids
@@ -30,20 +32,20 @@ public class AlphaServer extends Server {
     public void update(int i) throws IOException {
         super.update(i);
 
-        messageQueue.addAll(messagesToAddQueue);
-        messageQueue.removeAll(messageToRemoveQueue);
-
-        messagesToAddQueue.clear();
-        messageToRemoveQueue.clear();
-
-        // we need to make sure that this doesnt get too large
-        // limitation of this system = cant send to any "except" - maybe implement the message system
+        // we are assuming all objects in this pool are queued
         for (CharacterPacket packet : loggedIn) {
-            for (Tuple<Integer, Object> message : messageQueue) {
-                if (message.x.intValue() == packet.id && packet.isLoaded) {
-                    sendToTCP(packet.id, message.y);
-                    removeMessageFromQueue(message);
-                    System.out.println("message! " + message.y.getClass());
+            for (Message message : serverMessagePool) {
+                if (message.getId() == packet.id) {
+                    if (packet.isLoaded) {
+                        message.send(this);
+                        serverMessagePool.remove(message);
+                        System.out.println("message! " + message.getContent().getClass());
+                    }
+                } else if (message.isSendToAll()) {
+                    if (packet.isLoaded) {
+                        message.send(this);
+                        serverMessagePool.remove(message);
+                    }
                 }
             }
         }
@@ -126,63 +128,27 @@ public class AlphaServer extends Server {
     public GameMap getMap() {
         return map;
     }
+    
 
-    public void sendToAllReady(Object o, boolean queue) {
+    public void sendToAll(Object object) {
         for (CharacterPacket packet : loggedIn) {
-            if (packet.isLoaded) {
+            sendToTCP(packet.id, object);
+        }
+    }
+
+    public void sendToAllExcept(Object o, int id) {
+        for(CharacterPacket packet : loggedIn) {
+            if (id != packet.id) {
                 sendToTCP(packet.id, o);
-            } else if (queue) {
-                sendWithQueue(packet.id, o , queue);
             }
         }
     }
 
-    public void sendToAllReady(Object o) {
-        sendToAllReady(o, false);
-    }
-
-    public void sendWithQueue(int id, Object o, boolean queue) {
-//        for (CharacterPacket packet : loggedIn) {
-//            if (packet.uid == uid) {
-        if (queue) {
-            messagesToAddQueue.add(new Tuple<>(id, o));
-            System.out.println("Message added to queue");
-        } else {
-            sendToTCP(id, o);
+    public void addMessageToQueue(Message message) {
+        try {
+            serverMessagePool.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        //   }
-        // }
-    }
-
-    public void sendWithQueueExcept(int id, Object o, boolean queue) {
-        if (queue) {
-            messagesToAddQueue.add(new Tuple<>(id, o));
-            System.out.println("Message added to queue");
-        } else {
-            sendToTCP(id, o);
-        }
-    }
-
-    public void sendToAllReadyExcept(int i, Object o) {
-        sendToAllReadyExcept(i, o, false);
-    }
-
-    public void sendToAllReadyExcept(int i, Object o, boolean queue) {
-        for (CharacterPacket packet : loggedIn) {
-            if (packet.isLoaded && packet.id != i) {
-                sendToTCP(packet.id, o);
-            } else if (queue && packet.id != i) {
-                messagesToAddQueue.add(new Tuple<>(packet.id, o));
-                System.out.println("hello");
-            }
-        }
-    }
-
-    protected void removeMessageFromQueue(Tuple<Integer, Object> msg) {
-        messageToRemoveQueue.add(msg);
-    }
-
-    public List<Tuple<Integer, Object>> getMessageQueue() {
-        return messageQueue;
     }
 }
