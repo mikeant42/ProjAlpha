@@ -138,11 +138,7 @@ public class GameMap {
         // this code will only run ~10 times a second
 
         for (Message packet : objectsToSend) {
-            if (packet.isSendToAll()) {
-                server.sendToAllReady(packet.getContent());
-            } else {
-                server.sendWithQueue(packet.getId(), packet.getContent(), packet.isWait());
-            }
+            packet.send(server);
             objectsToSend.remove(packet);
         }
 
@@ -182,7 +178,7 @@ public class GameMap {
         }
 
         for (GameObject object : objects) {
-            
+
             collision.handleStaticCollisions(staticCollisions, object);
 
             for (CharacterPacket packet : server.getLoggedIn()) {
@@ -203,7 +199,8 @@ public class GameMap {
                             combat.id = packet.id;
                             packet.combat.setHealth(packet.combat.getHealth() - 10);
                             combat.object = packet.combat;
-                            server.sendToAllReady(combat);
+
+                            queueMessage(new Message(combat, false));
 
                         }
 
@@ -222,7 +219,8 @@ public class GameMap {
                     combat.id = npc.getPacket().uid;
                     npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth() - 10);
                     combat.object = npc.getPacket().combat;
-                    server.sendToAllReady(combat);
+
+                    queueMessage(new Message(combat, false));
 
                     System.out.println("proj-npc collision");
                 }
@@ -236,7 +234,8 @@ public class GameMap {
         for (NPC npc : npcHandler.getNPCs()) {
 
             if (npc.shouldUpdate()) {
-                server.sendToAllReady(npc.formUpdate());
+                //server.sendToAllReady(npc.formUpdate());
+                queueMessage(new Message(npc.formUpdate(), false));
             }
             npc.update();
         }
@@ -246,17 +245,20 @@ public class GameMap {
     public void addInventory(int cid, GameObject object) {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
         inventoryItem.object = object;
-        server.sendToTCP(cid, inventoryItem);
+        //server.sendToTCP(cid, inventoryItem);
+        queueMessage(new Message(cid, inventoryItem, false));
     }
 
     private void onCharacterAdd(CharacterPacket packet) {
         // We also have to spawn all the npcs in his level
         for (NPC npc : npcHandler.getNPCs()) {
-            server.sendWithQueue(packet.id, npc.getPacket(), true);
+            //server.sendWithQueue(packet.id, npc.getPacket(), true);
+            queueMessage(new Message(packet.id, npc.getPacket(), true));
         }
 
         for (GameObject object : objects) {
-            server.sendWithQueue(packet.id, object, true);
+            //server.sendWithQueue(packet.id, object, true);
+            queueMessage(new Message(packet.id, object, true));
         }
 
     }
@@ -266,7 +268,8 @@ public class GameMap {
         updateInternal = true;
 
         System.out.println("adding obj");
-        server.sendToAllReady(object);
+        //server.sendToAllReady(object);`
+        queueMessage(new Message(object, false));
     }
 
     /*
@@ -281,7 +284,8 @@ public class GameMap {
         update.uid = object.getUniqueGameId();
         update.x = object.getX();
         update.y = object.getY();
-        server.sendToAllTCP(update);
+        //server.sendToAllTCP(update);
+        queueMessage(new Message(update, false));
 
     }
 
@@ -296,7 +300,8 @@ public class GameMap {
     public void removeGameObject(GameObject object) {
         Network.RemoveGameObject packet = new Network.RemoveGameObject();
         packet.uid = object.getUniqueGameId();
-        server.sendToAllReady(packet);
+        //server.sendToAllReady(packet);
+        queueMessage(new Message(packet, false));
 
        objectsToRemove.add(object);
        updateInternal = true;
@@ -355,12 +360,12 @@ public class GameMap {
         return mapID;
     }
 
-//    public void sendMessage(Message message) {
-//        try {
-//            objectsToSend.put(message);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            System.err.println("The queue is blocking, probably because there are too many queued messages");
-//        }
-//    }
+    public void queueMessage(Message message) {
+        try {
+            objectsToSend.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.err.println("The queue is blocking, probably because there are too many queued messages");
+        }
+    }
 }

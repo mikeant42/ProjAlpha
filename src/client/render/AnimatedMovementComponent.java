@@ -69,7 +69,7 @@ public class AnimatedMovementComponent extends MovementComponent {
             if (texture.getAnimationChannel() != animIdle)
                 texture.loopAnimationChannel(animIdle);
             animationSpeed = 0;
-            
+
 
         }
 

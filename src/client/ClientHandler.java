@@ -100,7 +100,6 @@ public class ClientHandler {
             if (id == packet.uid) {
                 packet.x = x;
                 packet.y = y;
-                System.out.println(packet.x + " " + packet.y);
                 packet.moveState = move;
             }
         }

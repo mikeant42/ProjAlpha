@@ -27,7 +27,7 @@ public class ServerHandler {
     private long tick = 0;
     private long fakeFPS = 60;
     private long broadcastTick = 0;
-    private int broadcastTickBuffer = 50; // every x internal ticks we send an update to the clients
+    private int broadcastTickBuffer = 20; // every x internal ticks we send an update to the clients
 
 
     public ServerHandler() throws IOException {
@@ -67,10 +67,11 @@ public class ServerHandler {
                     now = System.nanoTime();
 
                     tick();
-                    if (broadcastTick + broadcastTickBuffer >= tick) {
-                        broadcastTick++;
+                    if (broadcastTick + broadcastTickBuffer == tick) {
+                        broadcastTick = tick;
+                        System.out.println("broadcasting");
                         server.getMap().updateExternal(broadcastTick);
-                        System.out.println("working");
+
                     }
 
                     server.getMap().updateAction(tick);

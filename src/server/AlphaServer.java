@@ -37,6 +37,7 @@ public class AlphaServer extends Server {
         messageToRemoveQueue.clear();
 
         // we need to make sure that this doesnt get too large
+        // limitation of this system = cant send to any "except" - maybe implement the message system
         for (CharacterPacket packet : loggedIn) {
             for (Tuple<Integer, Object> message : messageQueue) {
                 if (message.x.intValue() == packet.id && packet.isLoaded) {
@@ -56,9 +57,8 @@ public class AlphaServer extends Server {
             if (other.id != c.getID()) {
                 Network.AddCharacter addCharacter = new Network.AddCharacter();
                 addCharacter.character = other;
-                //c.sendTCP(addCharacter);
-                //map.sendMessage(new Message(c.getID(), addCharacter, true, false));
-                sendWithQueue(c.getID(), addCharacter, true);
+
+                map.queueMessage(new Message(c.getID(), addCharacter, true));
                 System.out.println("Client " + other.id + " added to client " + c.getID());
             }
         }
@@ -69,12 +69,15 @@ public class AlphaServer extends Server {
         success.success = true;
         //success.uid = c.getID();
         success.packet = character;
-        sendToTCP(c.getID(), success);
+        map.queueMessage(new Message(c.getID(), success, false));
         addLoggedIn(character);
 
         Network.AddCharacter addC = new Network.AddCharacter();
         addC.character = character;
-        sendToAllReadyExcept(c.getID(), addC, true); // Don't add the client's own player to his "other player" stack
+        //sendToAllReadyExcept(c.getID(), addC, true); // Don't add the client's own player to his "other player" stack
+        Message message = new Message(addC, true);
+        message.setExcludeID(c.getID());
+        map.queueMessage(message);
 
 //        for (CharacterPacket packet : getLoggedIn()) {
 //            System.out.println("Client " + packet.uid);
@@ -149,6 +152,15 @@ public class AlphaServer extends Server {
         }
         //   }
         // }
+    }
+
+    public void sendWithQueueExcept(int id, Object o, boolean queue) {
+        if (queue) {
+            messagesToAddQueue.add(new Tuple<>(id, o));
+            System.out.println("Message added to queue");
+        } else {
+            sendToTCP(id, o);
+        }
     }
 
     public void sendToAllReadyExcept(int i, Object o) {

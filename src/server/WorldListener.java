@@ -20,7 +20,8 @@ public class WorldListener extends Listener {
 
             query.map = handler.getServer().getMap().getMapID(); // eventually the player will have it on him in the db
 
-            handler.getServer().sendToTCP(c.getID(), query);
+           // handler.getServer().sendToTCP(c.getID(), query);
+            handler.getServer().getMap().queueMessage(new Message(c.getID(), query, false));
             //handler.getServer().setIsLoaded(c.getID(), true);
         }
 
@@ -42,7 +43,8 @@ public class WorldListener extends Listener {
 
             handler.getServer().getMap().updatePlayerHealthServer(combat.id, combat.object);
 
-            handler.getServer().sendToAllReady(object);
+            //handler.getServer().sendToAllReady(object);
+            handler.getServer().getMap().queueMessage(new Message(object, false));
         }
     }
 }

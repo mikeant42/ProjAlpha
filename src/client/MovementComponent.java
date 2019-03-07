@@ -36,9 +36,9 @@ public class MovementComponent extends Component {
         } else {
             isMoving = true;
         }
-        if (getEntity().getPosition().equals(previousPos)) { // If we haven't moved, we must be standing
-            state = Data.MovementState.STANDING;
-        }
+//        if (getEntity().getPosition().equals(previousPos)) { // If we haven't moved, we must be standing
+//            state = Data.MovementState.STANDING;
+//        }
         previousPos = getEntity().getPosition();
 
         speed = (int)(tpf * moveFactor);

@@ -49,8 +49,9 @@ public class ClientGameMap {
     private boolean needsChange = true;
     private int changeTick = 0;
 
-    private double interpolationConstant = 1.5;
-    private double snappingDistance = 1.5;
+    // these are for players and npcs
+    private double interpolationConstant = 0.08;
+    private double snappingDistance = 0.8;
 
 
     public ClientGameMap() {
@@ -388,19 +389,20 @@ public class ClientGameMap {
                         }
 
                         if (entity.getX() == packet.x && entity.getY() == packet.y) {
-                            entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                            //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
                         } else {
 
                             // this block occurs whenever we recieve an update
                             if (entity.hasComponent(AnimatedMovementComponent.class)) {
 
+                                entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
                                 double distanceX = entity.getX() - packet.x;
                                 double distanceY = entity.getY() - packet.y;
                                 if (distanceX < snappingDistance && distanceY < snappingDistance) {
                                     entity.setX(packet.x);
                                     entity.setY(packet.y);
-                                    entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+
                                 } else {
                                     //entity.setX(distanceX * dtf * interpolationConstant);
                                     //entity.setY(distanceY * dtf * interpolationConstant);
@@ -440,7 +442,7 @@ public class ClientGameMap {
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
                     if ((int)entity.getX() == (int)packet.x && (int)entity.getX() == (int)packet.y) {
-                        entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                        //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
                         System.out.println("npc is standing still");
                     } else {
                         entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
