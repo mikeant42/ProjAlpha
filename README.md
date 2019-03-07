@@ -36,6 +36,10 @@ TODO
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
 
+Create "shadow" projectile on client that is the real server object
+Create projectile which you see on the screen
+Interpolate between the position of the server object and the shadow projectile. This will introduce client prediction.
+
 Rewrite packet code oop
 Entity
 - has x,y

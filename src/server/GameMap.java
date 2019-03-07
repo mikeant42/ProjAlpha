@@ -11,6 +11,8 @@ import shared.objects.Fish;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameMap {
@@ -35,6 +37,9 @@ public class GameMap {
     private List<CharacterPacket> unLoadedPlayers = new ArrayList<>();
     private List<CharacterPacket> unLoadedPlayersToAdd = new ArrayList<>();
     private List<CharacterPacket> unLoadedPlayersToRemove = new ArrayList<>();
+
+    // this is the entire stack of data the gamemap sends out each time it broadcasts to the client
+    private BlockingQueue<Message> objectsToSend = new ArrayBlockingQueue<Message>(10000);
 
     private ProjectileManager projectileManager;
 
@@ -128,6 +133,21 @@ public class GameMap {
         }
     }
 
+    public void updateExternal(long broadcastTick) {
+        // this is the code broadcasting to the clients
+        // this code will only run ~10 times a second
+
+        for (Message packet : objectsToSend) {
+            if (packet.isSendToAll()) {
+                server.sendToAllReady(packet.getContent());
+            } else {
+                server.sendWithQueue(packet.getId(), packet.getContent(), packet.isWait());
+            }
+            objectsToSend.remove(packet);
+        }
+
+    }
+
 
     /*
     This updates in another thread
@@ -162,6 +182,7 @@ public class GameMap {
         }
 
         for (GameObject object : objects) {
+            
             collision.handleStaticCollisions(staticCollisions, object);
 
             for (CharacterPacket packet : server.getLoggedIn()) {
@@ -244,6 +265,7 @@ public class GameMap {
         objectsToAdd.add(object);
         updateInternal = true;
 
+        System.out.println("adding obj");
         server.sendToAllReady(object);
     }
 
@@ -332,4 +354,13 @@ public class GameMap {
     public int getMapID() {
         return mapID;
     }
+
+//    public void sendMessage(Message message) {
+//        try {
+//            objectsToSend.put(message);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            System.err.println("The queue is blocking, probably because there are too many queued messages");
+//        }
+//    }
 }

@@ -25,7 +25,9 @@ public class ServerHandler {
     private AlphaServer server;
     private boolean running = true;
     private long tick = 0;
-    private double fakeFPS = 20.0;
+    private long fakeFPS = 60;
+    private long broadcastTick = 0;
+    private int broadcastTickBuffer = 50; // every x internal ticks we send an update to the clients
 
 
     public ServerHandler() throws IOException {
@@ -49,9 +51,8 @@ public class ServerHandler {
         server.bind(Network.port);
         server.start();
 
-        // lets run the npc update method in its own thread
-        // the kryo server update thread cannot be blocked
-        Thread npcThread = new Thread(new Runnable() {
+
+        Thread updateThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.NONE();
@@ -60,13 +61,18 @@ public class ServerHandler {
                 long updateTime;
                 long wait;
 
-                final int TARGET_FPS = 60;
-                final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+                final long OPTIMAL_TIME = 1000000000 / fakeFPS;
 
                 while (running) {
                     now = System.nanoTime();
 
                     tick();
+                    if (broadcastTick + broadcastTickBuffer >= tick) {
+                        broadcastTick++;
+                        server.getMap().updateExternal(broadcastTick);
+                        System.out.println("working");
+                    }
+
                     server.getMap().updateAction(tick);
 
                     updateTime = System.nanoTime() - now;
@@ -76,32 +82,70 @@ public class ServerHandler {
                         Thread.sleep(wait);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        System.err.println("thread sleep error");
                     }
 
 
                 }
 
-//
-//                double ns = 1000000000.0 / fakeFPS;
-//                double delta = 0;
-//
-//                long lastTime = System.nanoTime();
-//                long timer = System.currentTimeMillis();
-//
-//                while (running) {
-//                    long now = System.nanoTime();
-//                    delta += (now - lastTime) / ns;
-//                    lastTime = now;
-//
-//                    while (delta >= 1) {
-//                        tick();
-//                        server.getMap().updateAction(tick);
-//                        delta--;
-//                    }
-//                }
             }
         });
-        npcThread.run();
+        updateThread.run();
+
+
+//        // lets run the npc update method in its own thread
+//        // the kryo server update thread cannot be blocked
+//        Thread npcThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.NONE();
+//
+//                long now;
+//                long updateTime;
+//                long wait;
+//
+//                final long OPTIMAL_TIME = 1000000000 / fakeFPS;
+//
+//                while (running) {
+//                    now = System.nanoTime();
+//
+//                    tick();
+//                    server.getMap().updateAction(tick);
+//
+//                    updateTime = System.nanoTime() - now;
+//                    wait = (OPTIMAL_TIME - updateTime) / 1000000;
+//
+//                    try {
+//                        Thread.sleep(wait);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        System.err.println("thread sleep error");
+//                    }
+//
+//
+//                }
+//
+////
+////                double ns = 1000000000.0 / fakeFPS;
+////                double delta = 0;
+////
+////                long lastTime = System.nanoTime();
+////                long timer = System.currentTimeMillis();
+////
+////                while (running) {
+////                    long now = System.nanoTime();
+////                    delta += (now - lastTime) / ns;
+////                    lastTime = now;
+////
+////                    while (delta >= 1) {
+////                        tick();
+////                        server.getMap().updateAction(tick);
+////                        delta--;
+////                    }
+////                }
+//            }
+//        });
+//        npcThread.run();
 
 
         Log.TRACE();

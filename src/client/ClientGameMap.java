@@ -49,8 +49,8 @@ public class ClientGameMap {
     private boolean needsChange = true;
     private int changeTick = 0;
 
-    private double interpolationConstant = 0.5;
-    private double snappingDistance = 1;
+    private double interpolationConstant = 1.5;
+    private double snappingDistance = 1.5;
 
 
     public ClientGameMap() {
@@ -393,21 +393,20 @@ public class ClientGameMap {
 
                             // this block occurs whenever we recieve an update
                             if (entity.hasComponent(AnimatedMovementComponent.class)) {
-                                entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+
 
                                 double distanceX = entity.getX() - packet.x;
                                 double distanceY = entity.getY() - packet.y;
-                                if (distanceX < snappingDistance) {
+                                if (distanceX < snappingDistance && distanceY < snappingDistance) {
                                     entity.setX(packet.x);
+                                    entity.setY(packet.y);
+                                    entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
                                 } else {
-                                    entity.setX(distanceX * dtf * interpolationConstant);
+                                    //entity.setX(distanceX * dtf * interpolationConstant);
+                                    //entity.setY(distanceY * dtf * interpolationConstant);
+                                    entity.setPosition(FXGLMath.lerp(entity.getX(), entity.getY(), packet.x, packet.y, interpolationConstant));
                                 }
 
-                                if (distanceY < snappingDistance) {
-                                    entity.setY(packet.y);
-                                } else {
-                                    entity.setY(distanceY * dtf * interpolationConstant);
-                                }
 
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
@@ -447,28 +446,20 @@ public class ClientGameMap {
                         entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 //                        entity.setX(packet.x);
 //                        entity.setY(packet.y);
-
                         // this block occurs whenever we recieve an update
-                        if (entity.hasComponent(AnimatedMovementComponent.class)) {
-                            entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+                        double distanceX = entity.getX() - packet.x;
+                        double distanceY = entity.getY() - packet.y;
+                        if (distanceX < snappingDistance && distanceY < snappingDistance) {
+                            entity.setX(packet.x);
+                            entity.setY(packet.y);
 
-                            double distanceX = entity.getX() - packet.x;
-                            double distanceY = entity.getY() - packet.y;
-                            if (distanceX < snappingDistance) {
-                                entity.setX(packet.x);
-                            } else {
-                                entity.setX(distanceX * dtf * interpolationConstant);
-                            }
+                        } else {
+                            entity.setPosition(FXGLMath.lerp(entity.getX(), entity.getY(), packet.x, packet.y, interpolationConstant));
 
-                            if (distanceY < snappingDistance) {
-                                entity.setY(packet.y);
-                            } else {
-                                entity.setY(distanceY * dtf * interpolationConstant);
-                            }
+                        }
 
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
-                        }
                     }
 
                 }

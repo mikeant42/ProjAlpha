@@ -57,6 +57,7 @@ public class AlphaServer extends Server {
                 Network.AddCharacter addCharacter = new Network.AddCharacter();
                 addCharacter.character = other;
                 //c.sendTCP(addCharacter);
+                //map.sendMessage(new Message(c.getID(), addCharacter, true, false));
                 sendWithQueue(c.getID(), addCharacter, true);
                 System.out.println("Client " + other.id + " added to client " + c.getID());
             }
