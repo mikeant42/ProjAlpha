@@ -14,6 +14,7 @@ import shared.*;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ClientGameMap {
@@ -29,6 +30,8 @@ public class ClientGameMap {
     private List<CharacterPacket> playersToRemove = new ArrayList<>();
     private List<GameObject> objectsToRemove = new ArrayList<>();
     private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
+
+    private HashMap<Long, GameState> gameStates = new HashMap<>();
 
 
     // chat messages auto-remove
@@ -50,8 +53,8 @@ public class ClientGameMap {
     private int changeTick = 0;
 
     // these are for players and npcs
-    private double interpolationConstant = 0.08;
-    private double snappingDistance = 0.8;
+    private double interpolationConstant = 0.9;
+    private double snappingDistance = 0;
 
 
     public ClientGameMap() {
@@ -95,7 +98,7 @@ public class ClientGameMap {
                 FXGL.getApp().getGameWorld().setLevelFromMap(map);
 
 
-                SpawnData data = new SpawnData(50, 50);
+                SpawnData data = new SpawnData(300, 300);
                 data.put("ID", clientHandler.getId());
                 player = FXGL.getApp().getGameWorld().spawn("localplayer", data);
 
@@ -388,17 +391,42 @@ public class ClientGameMap {
 
                         }
 
+
                         if (entity.getX() == packet.x && entity.getY() == packet.y) {
                             //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+
                         } else {
 
                             // this block occurs whenever we recieve an update
                             if (entity.hasComponent(AnimatedMovementComponent.class)) {
 
+
+
+                                CharacterPacket previousPlayer = new CharacterPacket();
+
+                                if (gameStates.containsKey(tick-20)) {
+                                    List<CharacterPacket> previous = gameStates.get(tick - 20).getPlayers();
+
+                                    if (previous != null) {
+                                        for (CharacterPacket previousPacket : previous) {
+                                            if (packet.id == previousPacket.id) {
+                                                previousPlayer = previousPacket;
+
+                                            }
+                                        }
+                                    }
+
+                                } else {
+
+                                    previousPlayer.x = entity.getX();
+                                    previousPlayer.y = entity.getY();
+                                }
+
+
                                 entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                                double distanceX = entity.getX() - packet.x;
-                                double distanceY = entity.getY() - packet.y;
+                                double distanceX = previousPlayer.x - entity.getX();
+                                double distanceY = previousPlayer.y - entity.getY();
                                 if (distanceX < snappingDistance && distanceY < snappingDistance) {
                                     entity.setX(packet.x);
                                     entity.setY(packet.y);
@@ -406,7 +434,8 @@ public class ClientGameMap {
                                 } else {
                                     //entity.setX(distanceX * dtf * interpolationConstant);
                                     //entity.setY(distanceY * dtf * interpolationConstant);
-                                    entity.setPosition(FXGLMath.lerp(entity.getX(), entity.getY(), packet.x, packet.y, interpolationConstant));
+                                    entity.setPosition(FXGLMath.lerp(previousPlayer.x, previousPlayer.y, entity.getX(), entity.getY(), interpolationConstant));
+                                    System.out.println(distanceX);
                                 }
 
 
@@ -449,15 +478,40 @@ public class ClientGameMap {
 //                        entity.setX(packet.x);
 //                        entity.setY(packet.y);
                         // this block occurs whenever we recieve an update
-                        double distanceX = entity.getX() - packet.x;
-                        double distanceY = entity.getY() - packet.y;
+                        Network.NPCPacket previousNPC = new Network.NPCPacket();
+
+                        if (gameStates.containsKey(tick-20)) {
+                            List<Network.NPCPacket> previous = gameStates.get(tick - 20).getNpcs();
+
+                            if (previous != null) {
+                                for (Network.NPCPacket previousPacket : previous) {
+                                    if (packet.uid == previousPacket.uid) {
+                                        previousNPC = previousPacket;
+
+                                    }
+                                }
+                            }
+
+                        } else {
+
+                            previousNPC.x = entity.getX();
+                            previousNPC.y = entity.getY();
+                        }
+
+
+                        entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+
+                        double distanceX = previousNPC.x - entity.getX();
+                        double distanceY = previousNPC.y - entity.getY();
                         if (distanceX < snappingDistance && distanceY < snappingDistance) {
                             entity.setX(packet.x);
                             entity.setY(packet.y);
 
                         } else {
-                            entity.setPosition(FXGLMath.lerp(entity.getX(), entity.getY(), packet.x, packet.y, interpolationConstant));
-
+                            //entity.setX(distanceX * dtf * interpolationConstant);
+                            //entity.setY(distanceY * dtf * interpolationConstant);
+                            entity.setPosition(FXGLMath.lerp(previousNPC.x, previousNPC.y, entity.getX(), entity.getY(), interpolationConstant));
+                            System.out.println(distanceX);
                         }
 
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
@@ -485,6 +539,12 @@ public class ClientGameMap {
 
 
         messagesToAdd.clear();
+
+        GameState current = new GameState();
+        current.setPlayers(playersHere);
+        current.setNpcs(npcsHere);
+
+        gameStates.put(tick, current);
 
     }
 

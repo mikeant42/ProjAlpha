@@ -27,6 +27,7 @@ public class AlphaCollision {
              */
             @Override
             protected void onCollision(Entity player, Entity hut) {
+
                 if (!(hut.getBoundingBoxComponent().getMinYWorld() < player.getBoundingBoxComponent().getMinYWorld())) {
                     player.getComponent(AnimatedMovementComponent.class).addMove(INVALID_MOVE.DOWN);
                 }
