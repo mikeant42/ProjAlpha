@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.GameObject;
 import shared.Network;
+import shared.Projectile;
 
 public class WorldResponseListener extends Listener {
     private ClientHandler handler;
@@ -28,6 +29,12 @@ public class WorldResponseListener extends Listener {
         if (object instanceof GameObject) {
             GameObject obj = (GameObject)object;
             handler.addGameObject(obj);
+        }
+
+        if (object instanceof Projectile) {
+            Projectile proj = (Projectile)object;
+            handler.addProjectile(proj);
+
         }
 
         if (object instanceof Network.RemoveGameObject) {

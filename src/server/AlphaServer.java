@@ -128,7 +128,7 @@ public class AlphaServer extends Server {
     public GameMap getMap() {
         return map;
     }
-    
+
 
     public void sendToAll(Object object) {
         for (CharacterPacket packet : loggedIn) {

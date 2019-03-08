@@ -8,10 +8,7 @@ import client.render.CombatComponent;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import shared.CharacterPacket;
-import shared.CombatObject;
-import shared.GameObject;
-import shared.Network;
+import shared.*;
 import shared.Network.*;
 import sun.nio.ch.Net;
 
@@ -196,7 +193,14 @@ public class ClientHandler {
 
     public void addGameObject(GameObject obj) {
         objects.add(obj);
+
         alphaClientApp.getActiveWorld().addGameObject(obj);
+    }
+
+    public void addProjectile(Projectile projectile) {
+        objects.add(projectile.object);
+
+        alphaClientApp.getActiveWorld().addProjectile(projectile);
     }
 
     public void removeGameObject(int uid) {

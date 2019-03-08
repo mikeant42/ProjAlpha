@@ -195,7 +195,7 @@ public class BaseFactory implements EntityFactory {
         Entity entity =  Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(15,15))) // these need to be the same as the projectile
-                //.with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY"), 2))
+                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY")))
                 .with(new CollidableComponent(true))
                 .with(new NetworkedComponent(data.get("uid"), handler))
                 .with(new IDComponent("object", data.get("uid")))

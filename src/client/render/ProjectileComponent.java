@@ -10,42 +10,21 @@ import javafx.util.Duration;
 public class ProjectileComponent extends Component {
 
     private Point2D destination;
-    private AnimatedTexture texture;
-    private int timed;
+    private Point2D projectilePosition;
 
-    public ProjectileComponent(double x, double y, int timed) {
+    public ProjectileComponent(double x, double y) {
         destination = new Point2D(x,y);
 
-        this.timed = timed;
     }
 
-    public void setTexture(AnimatedTexture texture) {
-        this.texture = texture;
-    }
 
-    @Override
-    public void onAdded() {
-        FXGL.getApp().getMasterTimer().runOnceAfter(() -> {
-            if (getEntity() != null)
-                getEntity().removeFromWorld();
-            }, Duration.seconds(timed));
-    }
 
     @Override
     public void onUpdate(double dtf) {
-        float timeSinceStarted = 0f;
-
-        timeSinceStarted += dtf;
-
-        // If the object has arrived, stop the coroutine
-        if (getEntity().getPosition().getX() == (destination.getX()) && getEntity().getY() == destination.getY()) {
-            onHit();
-            //System.out.println("hit");
-        }
 
 
-        getEntity().getPositionComponent().setValue(FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
-                destination.getX(), destination.getY(), 0.02));
+        projectilePosition = (FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
+                destination.getX(), destination.getY(), 0.01));
         //FXGLMath.ler
 
         // Otherwise, continue next frame
@@ -54,10 +33,7 @@ public class ProjectileComponent extends Component {
         //getEntity().setPosition(getEntity().getPosition().add(5,5));
     }
 
-    private void onHit() {
-        getEntity().removeFromWorld();
-        System.out.println("endd");
-
-        //getEntity().removeComponent(ProjectileComponent.class);
+    public Point2D getProjectilePosition() {
+        return projectilePosition;
     }
 }

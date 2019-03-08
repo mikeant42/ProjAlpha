@@ -19,7 +19,7 @@ Network
 - In-game chat
 - Player inventory
 - Basic queueing system that can store messages until the client is ready to accept them
-- Basic projectile system, client prediction coming soon
+- Basic projectile system with client side prediction
 - Server designed to read map file and spawn npcs in the "spawn" layer
 
 
@@ -28,21 +28,14 @@ TODO
 - dialogue system
 - npc spawning system
 - once in a while client sends entire game world. Server checks and corrects anything out of sync
-- lag compensation / client side prediction / resyncing after lost or delayed packets
+- resyncing after lost or delayed packets
 - use udp port for real time packets, e.g. movement
 - authenticating packets based on timestamps, etc.
 - split server into LoginServer and GameServer
 - split client into launcher and game
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
-
-Create "shadow" projectile on client that is the real server object
-Create projectile which you see on the screen
-Interpolate between the position of the server object and the shadow projectile. This will introduce client prediction.
-
-Rewrite packet code oop
-Entity
-- has x,y
+- Rewrite packet code oop with a base of x,y,id
 
 CharacterPckt extends Entity
 GameObject extends Entity

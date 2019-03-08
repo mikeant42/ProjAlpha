@@ -273,12 +273,10 @@ public class GameMap {
         queueMessage(new Message(object, false));
     }
 
-    /*
-    Useful method
-     */
-    public void markUnloaded(CharacterPacket packet) {
-
+    public void addGameObjectLocal(GameObject object) {
+        objectsToAdd.add(object);
     }
+
 
     public void updateObjectPosition(GameObject object) {
         Network.ObjectPositionUpdate update = new Network.ObjectPositionUpdate();
@@ -354,7 +352,8 @@ public class GameMap {
     }
 
     public void addProjectile(Network.AddProjectile packet) {
-        projectileManager.addProjectile(packet, tick);
+        Projectile projectile = projectileManager.addProjectile(packet, tick);
+        queueMessage(new Message(projectile, false));
     }
 
     public int getMapID() {

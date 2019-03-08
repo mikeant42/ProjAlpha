@@ -21,7 +21,7 @@ public class ProjectileManager {
         this.map = map;
     }
 
-    public void addProjectile(Network.AddProjectile projectile, long tick) {
+    public Projectile addProjectile(Network.AddProjectile projectile, long tick) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
         projectile1.tickCreated = tick;
@@ -33,14 +33,15 @@ public class ProjectileManager {
         projObject.setY(projectile.originY);
         projObject.setName(Names.Spell.TORNADO);
         projObject.setUniqueGameId(map.assignUniqueId());
-        map.addGameObject(projObject);
+        map.addGameObjectLocal(projObject);
 
         projectile1.object = projObject;
 
         projectilesToAdd.add(projectile1);
 
         System.out.println("added projectile");
-        // also need to add corresponding gameobject to all of the clients
+        return projectile1;
+
     }
 
     /*

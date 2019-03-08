@@ -47,6 +47,7 @@ public class Network {
         kryo.register(BehaviorType.class);
         kryo.register(ReadyToRecieve.class);
         kryo.register(MonsterPacket.class);
+        kryo.register(Projectile.class);
     }
 
     static public class Login {
