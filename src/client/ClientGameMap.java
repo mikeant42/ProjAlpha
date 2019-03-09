@@ -355,6 +355,9 @@ public class ClientGameMap {
     }
 
     public void update(double dtf, long tick) {
+        camera.updateBounds(player);
+
+
         playersHere.addAll(playersToAdd);
         playersToAdd.clear();
 
@@ -471,7 +474,6 @@ public class ClientGameMap {
                                     entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
 
 
-                                    System.out.println(dtf);
 
                                 }
 
@@ -551,7 +553,6 @@ public class ClientGameMap {
                             entity.setPosition(interpolateCharacter(previousNPC.x, previousNPC.y, entity.getPosition(), dtf));
 
 
-                            System.out.println(dtf);
 
                         }
                     }

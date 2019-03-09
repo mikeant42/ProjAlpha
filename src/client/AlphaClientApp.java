@@ -20,6 +20,8 @@ import javafx.scene.paint.Color;
 import shared.*;
 import shared.collision.AlphaCollision;
 
+import java.util.Map;
+
 
 public class AlphaClientApp extends GameApplication {
 
@@ -77,6 +79,11 @@ public class AlphaClientApp extends GameApplication {
 
     }
 
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("playerState", Data.AlphaGameState.FIGHTING);
+    }
+
     /*
     In this method we init the world game for the player.
      */
@@ -114,6 +121,7 @@ public class AlphaClientApp extends GameApplication {
                     // do something with event
                     System.out.println("event handler is working");
                     panelControl.dropAll();
+                    gameMap.getPlayer().setPosition(clientHandler.getCharacterPacket().x, clientHandler.getCharacterPacket().y);
                 };
 
                 getEventBus().addEventHandler(PlayerEvent.DEATH, deathHandler);
@@ -134,7 +142,7 @@ public class AlphaClientApp extends GameApplication {
                 pane.getChildren().add(hpBar);
                 getGameScene().addUINodes(pane);
 
-                getGameState().setValue("state", Data.AlphaGameState.FIGHTING);
+
 
 
 
@@ -198,7 +206,7 @@ public class AlphaClientApp extends GameApplication {
         UserAction click = new UserAction("Click") {
             @Override
             protected void onActionBegin() {
-                if (gameMap.isMapLoaded() && getGameState().getInt("state") == Data.AlphaGameState.FIGHTING) {
+                if (gameMap.isMapLoaded() && getGameState().getInt("playerState") == Data.AlphaGameState.FIGHTING) {
                     Input input = getInput();
 //                    SpawnData data = new SpawnData(gameMap.getPlayer().getX(), gameMap.getPlayer().getY());
 //                    data.put("mouseX", input.getMouseXWorld());

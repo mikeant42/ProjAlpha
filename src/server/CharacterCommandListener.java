@@ -41,9 +41,7 @@ public class CharacterCommandListener extends Listener {
         Create a bounds for character updates
         We only want to update visible characters
 
-        This shouldn't be used to respond!!!!
-        Just update the server's characters internally, then in a main loop the server will update all of the clients
-        at a fixed time.
+        Check against the previous player position to make sure its valid
          */
         if (object instanceof Network.UpdateCharacter) {
             Network.UpdateCharacter updateCharacter = (Network.UpdateCharacter)object;
