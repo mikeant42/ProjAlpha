@@ -170,6 +170,7 @@ public class BaseFactory implements EntityFactory {
         entity = Entities.builder()
                 .from(data)
                 .with(new NetworkedComponent(data.get("uid"), handler))
+                //.with(new IDComponent("object", data.get("uid"))) // this is needed for us to update the object
                 .viewFromTexture("objects/" + data.get("name") + ".png")
                 .build();
 
@@ -195,7 +196,7 @@ public class BaseFactory implements EntityFactory {
         Entity entity =  Entities.builder()
                 .from(data)
                 .bbox(new HitBox(BoundingShape.box(15,15))) // these need to be the same as the projectile
-                .with(new ProjectileComponent(data.get("mouseX"), data.get("mouseY")))
+                .with(new ProjectileComponent(data.get("velX"), data.get("velY")))
                 .with(new CollidableComponent(true))
                 .with(new NetworkedComponent(data.get("uid"), handler))
                 .with(new IDComponent("object", data.get("uid")))

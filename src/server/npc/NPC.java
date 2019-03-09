@@ -11,6 +11,7 @@ public class NPC {
     private String name;
 
     private double spawnX, spawnY;
+    private boolean isEnemy = false;
 
 
     public NPC(String name, double spawnX, double spawnY) {
@@ -22,14 +23,25 @@ public class NPC {
         packet.x = spawnX;
         packet.y = spawnY;
 
-        packet.combat = new CombatObject();
-        packet.combat.setHealth(100);
-        packet.combat.setMana(100); // the npc shoulnt need mana
+
 
         packet.name = name;
 
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+    }
+
+    public void setEnemy(boolean enemy) {
+        isEnemy = enemy;
+        if (enemy) {
+            packet.combat = new CombatObject();
+            packet.combat.setHealth(100);
+            packet.combat.setMana(100); // the npc shoulnt need mana
+            packet.type = EntityType.ENEMY;
+        } else {
+            packet.type = EntityType.NPC;
+            packet.combat = null;
+        }
     }
 
     public boolean isInteractable() {
@@ -46,6 +58,10 @@ public class NPC {
 
     public void setTrader(boolean trader) {
         packet.trader = trader;
+    }
+
+    public boolean isEnemy() {
+        return isEnemy;
     }
 
     public void setBehavior(BehaviorType behavior) {

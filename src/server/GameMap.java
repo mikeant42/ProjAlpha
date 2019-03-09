@@ -123,6 +123,7 @@ public class GameMap {
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
             if (object.getName().equals("googon")) {
                 NPC npc = new NPC("googon", object.getX(), object.getY());
+                npc.setEnemy(true);
                 npc.setBehavior(BehaviorType.ROAMING);
                 npcHandler.addNPC(npc, assignUniqueId());
             } else if (object.getName().equals("watcher")) {
@@ -147,7 +148,7 @@ public class GameMap {
 
 
     /*
-    This updates in another thread
+    This updates in another thread at 60fps
      */
     public void updateAction(long tick) {
         this.tick = tick;
@@ -210,7 +211,7 @@ public class GameMap {
             }
 
             for (NPC npc : npcHandler.getNPCs()) {
-                if (AlphaCollision.doesCollide(object, npc) && object.isProjectile()) {
+                if (npc.isEnemy() &&  object.isProjectile() && AlphaCollision.doesCollide(object, npc)) {
                     projectileManager.remove(object.getUniqueGameId());
                     removeGameObject(object);
 

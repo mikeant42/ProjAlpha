@@ -33,6 +33,7 @@ public class AlphaServer extends Server {
         super.update(i);
 
         // we are assuming all objects in this pool are queued
+        // this update method is NOT in the same thread and does NOT update with the map's broadcast update
         for (CharacterPacket packet : loggedIn) {
             for (Message message : serverMessagePool) {
                 if (message.getId() == packet.id) {
@@ -50,8 +51,8 @@ public class AlphaServer extends Server {
             }
         }
 
-
     }
+
 
     public void logIn (ServerHandler.CharacterConnection c, CharacterPacket character) {
 // Add existing characters to new logged in connection.

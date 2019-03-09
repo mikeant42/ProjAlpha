@@ -91,14 +91,14 @@ public class AlphaCollision {
         int playerWidth = 35;
         int playerHeight = 40;
 
-        return doesCollide(packet.x, packet.y, projectile.x, projectile.y, playerWidth, playerHeight, projectile.width, projectile.height);
+        return doesCollide(packet.x, packet.y, projectile.object.getX(), projectile.object.getY(), playerWidth, playerHeight, projectile.width, projectile.height);
     }
 
     public static boolean doesCollide(Projectile projectile, NPC npc) {
         int npcWidth = 40;
         int npcHeight = 40;
 
-        return doesCollide(npc.getX(), npc.getY(), projectile.x, projectile.y, npcWidth, npcHeight, projectile.width, projectile.height);
+        return doesCollide(npc.getX(), npc.getY(), projectile.object.getX(), projectile.object.getY(), npcWidth, npcHeight, projectile.width, projectile.height);
     }
 
     public static boolean doesCollide(GameObject object, NPC npc) {

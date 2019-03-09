@@ -9,13 +9,16 @@ import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import shared.*;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientGameMap {
 
@@ -31,7 +34,7 @@ public class ClientGameMap {
     private List<GameObject> objectsToRemove = new ArrayList<>();
     private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
 
-    private HashMap<Long, GameState> gameStates = new HashMap<>(); // storing previous gamestates to interpolate
+    private ConcurrentHashMap<Long, GameState> gameStates = new ConcurrentHashMap<>(); // storing previous gamestates to interpolate
 
 
     // chat messages auto-remove
@@ -54,7 +57,9 @@ public class ClientGameMap {
 
     // these are for players and npcs
     private double interpolationConstant = 0.9;
-    private double snappingDistance = 0;
+    private double snappingDistance = 0; // this doesnt seem to work
+
+    private long playerTick = 0;
 
 
     public ClientGameMap() {
@@ -265,8 +270,8 @@ public class ClientGameMap {
                     data.put("ID", projectile.object.getId());
                     data.put("uid", projectile.object.getUniqueGameId());
                     data.put("name", projectile.object.getName());
-                    data.put("mouseX", projectile.projectile.destinationX);
-                    data.put("mouseY", projectile.projectile.destinationY);
+                    data.put("velX", projectile.velX);
+                    data.put("velY", projectile.velY);
 
                     FXGL.getApp().getGameWorld().spawn("projectile", data);
                     System.out.println("adding projectile");
@@ -335,6 +340,14 @@ public class ClientGameMap {
             }
         }
     }
+
+    // this method of interpolation introduces lag - we are seeing what the player was doing instead of what he is
+    private Point2D interpolateCharacter(double x, double y, Point2D end, double dtf) {
+        double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+        return FXGLMath.lerp(x, y, end.getX(), end.getY(), blend);
+    }
+
+
 
 
     public boolean isMapLoaded() {
@@ -409,10 +422,10 @@ public class ClientGameMap {
                         }
 
 
-                        if (entity.getX() == packet.x && entity.getY() == packet.y) {
+                        //if (entity.getX() == packet.x && entity.getY() == packet.y) {
                             //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
-                        } else {
+                        //} else {
 
                             // this block occurs whenever we recieve an update
                             if (entity.hasComponent(AnimatedMovementComponent.class)) {
@@ -422,8 +435,8 @@ public class ClientGameMap {
 
                                 CharacterPacket previousPlayer = new CharacterPacket();
 
-                                if (gameStates.containsKey(tick-20)) {
-                                    List<CharacterPacket> previous = gameStates.get(tick-20).getPlayers();
+                                if (gameStates.containsKey(tick-10)) {
+                                    List<CharacterPacket> previous = gameStates.get(tick-10).getPlayers();
 
                                     if (previous != null) {
                                         for (CharacterPacket previousPacket : previous) {
@@ -438,8 +451,8 @@ public class ClientGameMap {
 
                                 } else {
 
-                                    previousPlayer.x = entity.getX();
-                                    previousPlayer.y = entity.getY();
+                                    previousPlayer.x = packet.x;
+                                    previousPlayer.y = packet.y;
                                 }
 
                                  // maybe i need the tick of when i recieved the information
@@ -447,20 +460,15 @@ public class ClientGameMap {
 
                                 entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                                double distanceX = Math.abs(packet.x - previousPlayer.x);
-                                double distanceY = Math.abs(packet.y - previousPlayer.y);
+                                double distanceX = Math.abs(previousPlayer.x - entity.getX());
+                                double distanceY = Math.abs(previousPlayer.y - entity.getY());
                                 if (distanceX < snappingDistance || distanceY < snappingDistance) {
                                     entity.setX(packet.x);
                                     entity.setY(packet.y);
 
                                 } else {
-                                    //entity.setX(distanceX * dtf * interpolationConstant);
-                                    //entity.setY(distanceY * dtf * interpolationConstant);
                                     double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
-                                    entity.setPosition(FXGLMath.lerp(previousPlayer.x, previousPlayer.y, entity.getX(), entity.getY(), blend));
-                                    //double x = FXGLMath.lerp(previousPlayer.x, packet.x, blend);
-                                    //double y = FXGLMath.lerp(previousPlayer.y, packet.y, blend);
-                                    //entity.setPosition(x,y);
+                                    entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
 
 
                                     System.out.println(dtf);
@@ -472,7 +480,7 @@ public class ClientGameMap {
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
                             }
 
-                        }
+                        //}
 
 
                     //}
@@ -511,8 +519,8 @@ public class ClientGameMap {
                         // this block occurs whenever we recieve an update
                         Network.NPCPacket previousNPC = new Network.NPCPacket();
 
-                        if (gameStates.containsKey(tick-10)) {
-                            List<Network.NPCPacket> previous = gameStates.get(tick-10).getNpcs();
+                        if (gameStates.containsKey(tick-100)) {
+                            List<Network.NPCPacket> previous = gameStates.get(tick-100).getNpcs();
 
                             if (previous != null) {
                                 for (Network.NPCPacket previousPacket : previous) {
@@ -525,28 +533,27 @@ public class ClientGameMap {
 
                         } else {
 
-                            previousNPC.x = entity.getX();
-                            previousNPC.y = entity.getY();
+                            previousNPC.x = packet.x;
+                            previousNPC.y = packet.y;
                         }
 
 
                         entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                        double distanceX = previousNPC.x - entity.getX();
-                        double distanceY = previousNPC.y - entity.getY();
-                        if (distanceX < snappingDistance && distanceY < snappingDistance) {
+                        double distanceX = Math.abs(previousNPC.x - entity.getX());
+                        double distanceY = Math.abs(previousNPC.y - entity.getY());
+                        if (distanceX < snappingDistance || distanceY < snappingDistance) {
                             entity.setX(packet.x);
                             entity.setY(packet.y);
 
                         } else {
-                            //entity.setX(distanceX * dtf * interpolationConstant);
-                            //entity.setY(distanceY * dtf * interpolationConstant);
-                            entity.setPosition(FXGLMath.lerp(previousNPC.x, previousNPC.y, entity.getX(), entity.getY(), interpolationConstant));
-                            System.out.println(distanceX);
-                        }
+                            double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+                            entity.setPosition(interpolateCharacter(previousNPC.x, previousNPC.y, entity.getPosition(), dtf));
 
-//                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
-//                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
+
+                            System.out.println(dtf);
+
+                        }
                     }
 
                 }
@@ -580,6 +587,13 @@ public class ClientGameMap {
         current.setNpcs(npcsHere);
 
         gameStates.put(tick, current);
+
+
+        for (Long state : gameStates.keySet()) {
+            if (state.longValue() < tick-100) { // delete all the old gamestates
+                gameStates.remove(state);
+            }
+        }
 
     }
 

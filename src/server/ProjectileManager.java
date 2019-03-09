@@ -35,6 +35,19 @@ public class ProjectileManager {
         projObject.setUniqueGameId(map.assignUniqueId());
         map.addGameObjectLocal(projObject);
 
+        double tx = projectile.originX - projectile.destinationX;
+        double ty = projectile.originY - projectile.destinationY;
+        double mag = -Math.hypot(tx, ty);
+
+
+
+        tx/=mag;
+        ty/=mag;
+        tx*=projectile1.moveSpeed;
+        ty*=projectile1.moveSpeed;
+        projectile1.velX = tx;
+        projectile1.velY = ty;
+
         projectile1.object = projObject;
 
         projectilesToAdd.add(projectile1);
@@ -44,11 +57,6 @@ public class ProjectileManager {
 
     }
 
-    /*
-    new design
-    - send out a smaller number of packets by lowering the server "fps"
-    - use ticks on client to interpolate
-     */
 
     public void update(long tick) {
         projectiles.addAll(projectilesToAdd);
@@ -60,11 +68,12 @@ public class ProjectileManager {
 
         for (Projectile projectile : projectiles) {
             if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
-                Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
-                        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
+                //Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
+                //        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
 
-                    projectile.object.setX(newPosition.getX());
-                    projectile.object.setY(newPosition.getY());
+
+                    projectile.object.setX(projectile.object.getX()+projectile.velX);
+                    projectile.object.setY(projectile.object.getY()+projectile.velY);
 
                     map.updateObjectPosition(projectile.object);
             } else {
@@ -85,7 +94,7 @@ public class ProjectileManager {
 
     public void remove(int uid) {
         for (Projectile projectile : projectiles) {
-            if (uid == projectile.uid) {
+            if (uid == projectile.object.getUniqueGameId()) {
                 projectilesToRemove.add(projectile);
             }
         }

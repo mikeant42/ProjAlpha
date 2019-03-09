@@ -9,12 +9,13 @@ import javafx.util.Duration;
 
 public class ProjectileComponent extends Component {
 
-    private Point2D destination;
+    private double velX, velY;
     private Point2D projectilePosition;
 
     public ProjectileComponent(double x, double y) {
-        destination = new Point2D(x,y);
-
+        //destination = new Point2D(x,y);
+        velX = x;
+        velY = y;
     }
 
 
@@ -23,11 +24,13 @@ public class ProjectileComponent extends Component {
     public void onUpdate(double dtf) {
 
 
-        projectilePosition = (FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
-                destination.getX(), destination.getY(), 0.01));
+//        projectilePosition = (FXGLMath.lerp(getEntity().getPosition().getX(), getEntity().getPosition().getY(),
+//                destination.getX(), destination.getY(), 0.01));
         //FXGLMath.ler
 
         // Otherwise, continue next frame
+
+        projectilePosition = new Point2D(getEntity().getX()+velX, getEntity().getY()+velY);
 
 
         //getEntity().setPosition(getEntity().getPosition().add(5,5));

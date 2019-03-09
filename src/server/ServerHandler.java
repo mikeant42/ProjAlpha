@@ -70,6 +70,7 @@ public class ServerHandler {
                     if (broadcastTick + broadcastTickBuffer == tick) {
                         broadcastTick = tick;
                         System.out.println("broadcasting");
+
                         server.getMap().updateExternal(broadcastTick);
 
                     }

@@ -14,7 +14,7 @@ public class MovementComponent extends Component {
     }
 
     private double speed;
-    private int moveFactor = 65; //if this moves lower, for some reason, player is unable to move. no idea where the bug is
+    private int moveFactor = 75; //if this moves lower, for some reason, player is unable to move. no idea where the bug is
     private List<INVALID_MOVE> invalidMoves = new ArrayList<>();
 
     private int state = Data.MovementState.STANDING;

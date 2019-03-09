@@ -50,14 +50,14 @@ public class CharacterCommandListener extends Listener {
 
             handler.getServer().updateClient(updateCharacter.id, updateCharacter.x, updateCharacter.y);
             //handler.getServer().sendToAllReadyExcept(updateCharacter.id, updateCharacter);
-            server.message.Message message = new server.message.Message(updateCharacter, false);
+            Message message = new Message(updateCharacter, false);
             message.setExcludeID(updateCharacter.id);
             handler.getServer().getMap().queueMessage(message);
 
             //Message message = new Message(0, updateCharacter, false, true);
            // message.setExcludeID(updateCharacter.id);
            // handler.getServer().getMap().queueMessage(message);
-            System.out.println(c.getReturnTripTime());
+
         }
 
         if (object instanceof Network.UserChat) {
