@@ -1,6 +1,7 @@
 package client.listener;
 
 import client.ClientHandler;
+import client.PlayerEvent;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.Network;
@@ -32,6 +33,22 @@ public class CharacterResponseListener extends Listener {
             return;
         }
 
+        if (object instanceof Network.UpdateCharacterPacket) {
+            Network.UpdateCharacterPacket update = (Network.UpdateCharacterPacket)object;
+            if (update.player.id == handler.getId()) {
+                handler.setCharacterPacket(update.player); // this updates the inventory
+
+                if (update.hasDied) {
+                    // we need to alert everyone that we have died
+                    handler.getAlphaClientApp().getEventBus().fireEvent(new PlayerEvent(PlayerEvent.DEATH));
+                }
+            }
+
+            handler.updatePlayerLocal(update.player.moveState, update.player.x, update.player.y, update.player.id);
+
+            handler.updatePlayerHealth(update.player.id, update.player.combat);
+        }
+
 //        if (ClientHandler.LOGIN_STATUS) {
 //            if (object instanceof Network.UpdateCharacter2) {
 //                Network.UpdateCharacter2 update = (Network.UpdateCharacter2)object;
@@ -45,7 +62,7 @@ public class CharacterResponseListener extends Listener {
             if (object instanceof Network.UpdateCharacter) {
                 Network.UpdateCharacter update = (Network.UpdateCharacter) object;
                 handler.updatePlayerLocal(update.moveState, update.x, update.y, update.id);
-                //FXGL.getEventBus().fireEvent(new MoveEvent(MoveEvent.CHARACTER, update)); // This could need to be run in the main thread ;(
+                //FXGL.getEventBus().fireEvent(new PlayerEvent(PlayerEvent.CHARACTER, update)); // This could need to be run in the main thread ;(
             }
 
 
@@ -58,6 +75,11 @@ public class CharacterResponseListener extends Listener {
                 Network.UserChat chat = (Network.UserChat)object;
                 handler.getAlphaClientApp().addChatMsg(chat);
             }
+
+        if (object instanceof Network.UpdatePlayerCombat) {
+            Network.UpdatePlayerCombat combat = (Network.UpdatePlayerCombat)object;
+            handler.updatePlayerHealth(combat.id, combat.object);
+        }
 
       //  }
 

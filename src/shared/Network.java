@@ -37,7 +37,7 @@ public class Network {
         kryo.register(RemoveGameObject.class);
         kryo.register(Inventory.class);
         kryo.register(AddInventoryItem.class);
-        kryo.register(RemoveInventoryItem.class);
+        kryo.register(UpdatePlayerInventory.class);
         kryo.register(Fish.class);
         kryo.register(CombatObject.class);
         kryo.register(AddProjectile.class);
@@ -48,6 +48,7 @@ public class Network {
         kryo.register(ReadyToRecieve.class);
         kryo.register(MonsterPacket.class);
         kryo.register(Projectile.class);
+        kryo.register(UpdateCharacterPacket.class);
     }
 
     static public class Login {
@@ -121,8 +122,9 @@ public class Network {
         public int uid;
     }
 
-    static public class RemoveInventoryItem {
-        public GameObject object;
+    static public class UpdatePlayerInventory {
+        public Inventory object;
+        public int cid;
     }
 
     static public class AddInventoryItem {
@@ -158,6 +160,11 @@ public class Network {
     static public class UpdateNPCCombat {
         public CombatObject object;
         public int id;
+    }
+
+    static public class UpdateCharacterPacket {
+        public CharacterPacket player;
+        public boolean hasDied;
     }
 
 }

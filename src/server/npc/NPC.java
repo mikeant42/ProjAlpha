@@ -64,6 +64,10 @@ public class NPC {
         return isEnemy;
     }
 
+    public void setUniqueId(int uid) {
+        packet.uid = uid;
+    }
+
     public void setBehavior(BehaviorType behavior) {
         packet.behaviorType = behavior;
         switch (behavior) {

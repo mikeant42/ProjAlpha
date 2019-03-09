@@ -7,20 +7,20 @@ public class NPCHandler {
     private List<NPC> npcs = new ArrayList<>();
 
 
-    private Thread npcThread;
-
     public NPCHandler() {
 
     }
 
     public void update() {
-
+        // should npc respawn
+        // npc drops
     }
 
-    public void addNPC(NPC npc, int uid) {
-        npc.getPacket().uid = uid;
+    public void addNPC(NPC npc) {
         npcs.add(npc);
     }
+
+    public void addSpawnPoint() {}
 
     public void removeNPC(int id) {
         for (NPC npc : npcs) {

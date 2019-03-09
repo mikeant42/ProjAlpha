@@ -102,14 +102,34 @@ public class MainPanelController implements UIController {
 
     }
 
+    public Inventory getUserInvent() {
+        return userInvent;
+    }
+
     public void addItem(GameObject object) {
         for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
             if (!slotTaken(i)) {
-                inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
-                userInvent.addObject(i, object);
+                addItem(object, i);
                 return;
             }
         }
+    }
+
+    private void addItem(GameObject object, int i) {
+        inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
+        userInvent.addObject(i, object);
+    }
+
+    public void dropAll() {
+
+        // loop through both at once ;)
+        for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
+            GameObject object = handler.getCharacterPacket().inventory.objects[i];
+            if (slotTaken(i)) {
+                drop(i);
+            }
+        }
+
     }
 
 
@@ -176,6 +196,8 @@ public class MainPanelController implements UIController {
             }
         }
 
+        handler.sendInventoryUpdate();
+
     }
 
     private void drop(int selected) {
@@ -199,6 +221,8 @@ public class MainPanelController implements UIController {
                 System.err.println("selection is null");
             }
         }
+
+        handler.sendInventoryUpdate();
     }
 
     public void sendChat() {

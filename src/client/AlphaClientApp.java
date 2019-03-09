@@ -12,6 +12,7 @@ import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -108,6 +109,14 @@ public class AlphaClientApp extends GameApplication {
                 panelControl.create(clientHandler);
 
                 gameMap.init(clientHandler);
+
+                EventHandler<PlayerEvent> deathHandler = event -> {
+                    // do something with event
+                    System.out.println("event handler is working");
+                    panelControl.dropAll();
+                };
+
+                getEventBus().addEventHandler(PlayerEvent.DEATH, deathHandler);
 
                 int healthWidth = 200;
 

@@ -60,6 +60,19 @@ public class CharacterCommandListener extends Listener {
 
         }
 
+        if (object instanceof Network.UpdatePlayerInventory) {
+            Network.UpdatePlayerInventory updateCharacter = (Network.UpdatePlayerInventory)object;
+
+
+
+            for (CharacterPacket packet : handler.getLoggedIn()) {
+                if (packet.isLoaded && packet.id == updateCharacter.cid) {
+                    packet.inventory = updateCharacter.object;
+                }
+            }
+
+        }
+
         if (object instanceof Network.UserChat) {
             Network.UserChat chat = (Network.UserChat)object;
             //handler.getServer().getMap().queueMessage(new Message(0, chat, false, true));

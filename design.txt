@@ -1,30 +1,20 @@
-turn based, 2d, top down
-- tick based
 
-open map / world
-- in-game player trading
-- medieval setting with fantasy elements
+you get to play as mage or mage-killer
+- in the game mages are seen as as quite op. when mages attack a mob all surrounding npcs will also attack. this
+will not happen to the mage killer, but mages are more powerful.
+- the endgame boss will require both a mage and a mage-killer, as he will have different "modes" where
+he either cannot be attacked by magic or physical attack
 
-combat progression
-- players can unlock new spells by finding scrolls, or finding npc's that will teach you
-- each scroll acts as a "card" with a certain requirement to cast.
-- you can get them by killing monsters
-  - thinking of a system where you can collect "essence" from pvp combat and you can use these to form "new" spells
+the mage path will begin with the player realizing how op he is. The "watcher" will greet the mage, as the main villian
+of the story.
+- the first scene of the mage path will begin by letting the watcher gift the mage unlimited mana and letting him test his powers against a
+low-level mob(this will not happen again!!)
+- the mage then goes on a character arc that takes him to find the mages who sell mana, and he discovers that it is literally "blood of the world",
+something that drains the life of the planet when used.
+- mana is acquired from underground drilling, it is found within the inner core of the planet
 
-
-
-tech
-- full inventory system
-- full npc system
-- full combat card system
-    - it will probably go like `damage = gear * spell` and `hit = spell accuracy * gear accuracy`
-    - it will give players each 8 seconds to select a card
 
 
 player progression
 - players can unlock new armour by killing or buying
-
-questing
-- don't know if i'm gonna implement quests
-
 

@@ -53,10 +53,7 @@ public class WorldResponseListener extends Listener {
 //            handler.getAlphaClientApp().getActiveWorld().addGameObject(projectile.object);
 //        }
 
-        if (object instanceof Network.UpdatePlayerCombat) {
-            Network.UpdatePlayerCombat combat = (Network.UpdatePlayerCombat)object;
-            handler.updatePlayerHealth(combat.id, combat.object);
-        }
+
 
         if (object instanceof Network.UpdateNPCCombat) {
             Network.UpdateNPCCombat combat = (Network.UpdateNPCCombat)object;

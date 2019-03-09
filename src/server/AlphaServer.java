@@ -133,13 +133,15 @@ public class AlphaServer extends Server {
 
     public void sendToAll(Object object) {
         for (CharacterPacket packet : loggedIn) {
-            sendToTCP(packet.id, object);
+            if (packet.isLoaded) {
+                sendToTCP(packet.id, object);
+            }
         }
     }
 
     public void sendToAllExcept(Object o, int id) {
         for(CharacterPacket packet : loggedIn) {
-            if (id != packet.id) {
+            if (id != packet.id && packet.isLoaded) {
                 sendToTCP(packet.id, o);
             }
         }

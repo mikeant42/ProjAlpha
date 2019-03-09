@@ -5,6 +5,7 @@ import client.listener.LoginResponseListener;
 import client.listener.NPCResponseListener;
 import client.listener.WorldResponseListener;
 import client.render.CombatComponent;
+import client.ui.MainPanelController;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -47,6 +48,7 @@ public class ClientHandler {
     private WorldResponseListener worldResponseListener;
     private NPCResponseListener npcResponseListener;
 
+
     public ClientHandler(AlphaClientApp alphaClientApp) {
         client = new Client();
         client.start();
@@ -82,6 +84,10 @@ public class ClientHandler {
     }
 
     public void updatePlayerLocal(int move, double x, double y, int idd) {
+        if (getId() == idd) {
+            alphaClientApp.getActiveWorld().getPlayer().setPosition(x,y);
+            characterPacket.moveState = move;
+        }
         for (CharacterPacket packet : otherPlayers) {
             if (idd == packet.id && idd != characterPacket.id) {
                 packet.x = x;
@@ -90,6 +96,10 @@ public class ClientHandler {
             }
         }
 
+    }
+
+    public void updateOurPlayerInventory(Inventory inventory) {
+        characterPacket.inventory = inventory;
     }
 
     public void updateNPC(double x, double y, int move, int id) {
@@ -286,6 +296,13 @@ public class ClientHandler {
 
     public void removeInventory(int uid) {
         characterPacket.inventory.removeObjectFromUID(uid);
+    }
+
+    public void sendInventoryUpdate() {
+        Network.UpdatePlayerInventory update = new Network.UpdatePlayerInventory();
+        update.object = characterPacket.inventory;
+        update.cid = getId();
+        client.sendTCP(update);
     }
 
     public AlphaClientApp getAlphaClientApp() {

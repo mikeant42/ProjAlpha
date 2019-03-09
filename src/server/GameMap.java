@@ -19,6 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GameMap {
     /*
     There is one of these per map. Each one holds positions of npc, random loot, and all objects residing on the server
+
+    maybe create some sort of IDManager so i can let other classes assign unique ids
      */
 
     private int objectLimit = 1024;
@@ -49,6 +51,8 @@ public class GameMap {
     private List<TiledObject> staticCollisions = new ArrayList<>();
 
     private boolean updateInternal = true;
+
+    private double respawnX, respawnY; // a player respawn point in every map
 
     long tick = 0;
 
@@ -121,16 +125,22 @@ public class GameMap {
         staticCollisions.addAll(map.getLayerByName("collision").getObjects());
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
-            if (object.getName().equals("googon")) {
+            if (object.getName().equals("respawn")) {
+                respawnX = object.getX();
+                respawnY = object.getY();
+            } else if (object.getName().equals("googon")) {
                 NPC npc = new NPC("googon", object.getX(), object.getY());
                 npc.setEnemy(true);
                 npc.setBehavior(BehaviorType.ROAMING);
-                npcHandler.addNPC(npc, assignUniqueId());
+                npc.setUniqueId(assignUniqueId());
+                npcHandler.addNPC(npc);
             } else if (object.getName().equals("watcher")) {
                 NPC npc = new NPC("watcher", object.getX(), object.getY());
                 npc.setInteractable(true);
+                npc.setUniqueId(assignUniqueId());
                 npc.setBehavior(BehaviorType.STATIC);
-                npcHandler.addNPC(npc, assignUniqueId());
+
+                npcHandler.addNPC(npc);
             }
         }
     }
@@ -179,6 +189,12 @@ public class GameMap {
             }
         }
 
+        for (CharacterPacket player : server.getLoggedIn()) {
+            if (player.combat.getHealth() <= 0) {
+                killPlayer(player);
+            }
+        }
+
         for (GameObject object : objects) {
 
             collision.handleStaticCollisions(staticCollisions, object);
@@ -189,7 +205,7 @@ public class GameMap {
                     if (!object.isProjectile()) {
                         // when player runs over an object, he adds it to his inventory
                         removeGameObject(object);
-                        addInventory(packet.id, object);
+                        addInventory(packet, object);
                         System.out.println("picking up non projhectile");
                     } else {
                         if (projectileManager.getSource(object.getUniqueGameId()) != packet.id) { // the user cant harm himself with a spell
@@ -203,6 +219,11 @@ public class GameMap {
                             combat.object = packet.combat;
 
                             queueMessage(new Message(combat, false));
+
+                            if (packet.combat.getHealth() <= 0) {
+                                killPlayer(packet);
+                                System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + packet.id);
+                            }
 
                         }
 
@@ -244,11 +265,14 @@ public class GameMap {
 
     }
 
-    public void addInventory(int cid, GameObject object) {
+    public void addInventory(CharacterPacket packet, GameObject object) {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
         inventoryItem.object = object;
+
+        packet.inventory.addObject(object);
+
         //server.sendToTCP(cid, inventoryItem);
-        queueMessage(new Message(cid, inventoryItem, false));
+        queueMessage(new Message(packet.id, inventoryItem, false));
     }
 
     private void onCharacterAdd(CharacterPacket packet) {
@@ -263,6 +287,29 @@ public class GameMap {
             queueMessage(new Message(packet.id, object, true));
         }
 
+    }
+
+    private void killPlayer(CharacterPacket packet) {
+        packet.combat.setHealth(50);
+
+        for (int i = 0; i < packet.inventory.objects.length; i++) {
+            GameObject object = packet.inventory.objects[i];
+            packet.inventory.removeObjectFromSlot(i);
+            if (object != null) {
+                object.setX(packet.x);
+                object.setY(packet.y);
+                addGameObject(object);
+            }
+        }
+
+        packet.x = respawnX;
+        packet.y = respawnY;
+
+        Network.UpdateCharacterPacket update = new Network.UpdateCharacterPacket();
+        update.player = packet;
+        update.hasDied = true;
+
+        queueMessage(new Message(update, false));
     }
 
     public void addGameObject(GameObject object) {
