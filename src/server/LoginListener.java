@@ -38,7 +38,7 @@ public class LoginListener extends Listener {
             character = new CharacterPacket();
             character.x = 300;
             character.y = 300;
-            character.id = connection.getID();
+            character.uid = connection.getID();
             character.name = name;
             character.inventory = new Inventory();
 

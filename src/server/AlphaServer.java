@@ -36,7 +36,7 @@ public class AlphaServer extends Server {
         // this update method is NOT in the same thread and does NOT update with the map's broadcast update
         for (CharacterPacket packet : loggedIn) {
             for (Message message : serverMessagePool) {
-                if (message.getId() == packet.id) {
+                if (message.getId() == packet.uid) {
                     if (packet.isLoaded) {
                         message.send(this);
                         serverMessagePool.remove(message);
@@ -57,12 +57,12 @@ public class AlphaServer extends Server {
     public void logIn (ServerHandler.CharacterConnection c, CharacterPacket character) {
 // Add existing characters to new logged in connection.
         for (CharacterPacket other : getLoggedIn()) {
-            if (other.id != c.getID()) {
+            if (other.uid != c.getID()) {
                 Network.AddCharacter addCharacter = new Network.AddCharacter();
                 addCharacter.character = other;
 
                 map.queueMessage(new Message(c.getID(), addCharacter, true));
-                System.out.println("Client " + other.id + " added to client " + c.getID());
+                System.out.println("Client " + other.uid + " added to client " + c.getID());
             }
         }
 
@@ -93,7 +93,7 @@ public class AlphaServer extends Server {
 
     protected void updateClient(int id, double x, double y) {
         for (CharacterPacket packet : loggedIn) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 packet.x = x;
                 packet.y = y;
             }
@@ -102,7 +102,7 @@ public class AlphaServer extends Server {
 
     public void setIsLoaded(int cid, boolean tf) {
         for (CharacterPacket packet : loggedIn) {
-            if (packet.id == cid) {
+            if (packet.uid == cid) {
                 packet.isLoaded = tf;
             }
         }
@@ -114,7 +114,7 @@ public class AlphaServer extends Server {
 
     public void removeClient(int id) {
         for (CharacterPacket packet : loggedIn) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 loggedIn.remove(packet);
                 return;
             }
@@ -134,15 +134,15 @@ public class AlphaServer extends Server {
     public void sendToAll(Object object) {
         for (CharacterPacket packet : loggedIn) {
             if (packet.isLoaded) {
-                sendToTCP(packet.id, object);
+                sendToTCP(packet.uid, object);
             }
         }
     }
 
     public void sendToAllExcept(Object o, int id) {
         for(CharacterPacket packet : loggedIn) {
-            if (id != packet.id && packet.isLoaded) {
-                sendToTCP(packet.id, o);
+            if (id != packet.uid && packet.isLoaded) {
+                sendToTCP(packet.uid, o);
             }
         }
     }

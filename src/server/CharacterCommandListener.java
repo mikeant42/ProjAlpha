@@ -64,7 +64,7 @@ public class CharacterCommandListener extends Listener {
 
 
             for (CharacterPacket packet : handler.getLoggedIn()) {
-                if (packet.isLoaded && packet.id == updateCharacter.cid) {
+                if (packet.isLoaded && packet.uid == updateCharacter.cid) {
                     packet.inventory = updateCharacter.object;
                 }
             }

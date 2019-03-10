@@ -1,6 +1,6 @@
 package shared;
 
-public class GameObject {
+public class GameObject extends Network.GameEntity {
     // this will be everything from weapons to food to potions, all objects in the game that can be picked up, used, seen, and removed
     // Attributes CONSUMABLE,
 
@@ -9,8 +9,6 @@ public class GameObject {
     private int itemLevel;
     private String name;
     private String desc;
-    private double x,y;
-    private int uniqueGameId;
 
     private boolean isProjectile = false;
 
@@ -72,11 +70,11 @@ public class GameObject {
     }
 
     public int getUniqueGameId() {
-        return uniqueGameId;
+        return this.uid;
     }
 
     public void setUniqueGameId(int uniqueGameId) {
-        this.uniqueGameId = uniqueGameId;
+        this.uid = uniqueGameId;
     }
 
     public int getId() {

@@ -89,7 +89,7 @@ public class ClientHandler {
             characterPacket.moveState = move;
         }
         for (CharacterPacket packet : otherPlayers) {
-            if (idd == packet.id && idd != characterPacket.id) {
+            if (idd == packet.uid && idd != characterPacket.uid) {
                 packet.x = x;
                 packet.y = y;
                 packet.moveState = move;
@@ -121,7 +121,7 @@ public class ClientHandler {
 
     protected void removePlayerLocal(int id) {
         for (CharacterPacket packet : otherPlayers) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 otherPlayers.remove(packet);
             }
         }
@@ -160,7 +160,7 @@ public class ClientHandler {
 
     public void requestMap() {
         Network.WorldQuery query = new Network.WorldQuery();
-        query.cid = characterPacket.id;
+        query.cid = getCharacterPacket().uid;
         client.sendTCP(query);
     }
 
@@ -180,7 +180,7 @@ public class ClientHandler {
 
     public boolean isPlayerHere(int id) {
         for (CharacterPacket packet : otherPlayers) {
-            if (packet.id  == id) {
+            if (packet.uid  == id) {
                 System.out.println("Player " + id + " is here");
                 return true;
             }
@@ -237,13 +237,13 @@ public class ClientHandler {
     public void sendChat(String message) {
         UserChat chat = new UserChat();
         chat.message = message;
-        chat.cid = characterPacket.id;
+        chat.cid = characterPacket.uid;
         client.sendTCP(chat);
     }
 
     public void updatePlayerHealth(int id, CombatObject object) {
         for (CharacterPacket packet : otherPlayers) {
-            if (id == packet.id) {
+            if (id == packet.uid) {
                 packet.combat = object;
             }
         }
@@ -311,7 +311,7 @@ public class ClientHandler {
 
 
     public int getId() {
-        return characterPacket.id;
+        return characterPacket.uid;
     }
 
     public Client getClient() {

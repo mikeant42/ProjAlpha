@@ -99,7 +99,7 @@ public class NPC {
         updateNPC.uid = packet.uid;
         updateNPC.moveState = behavior.getState();
 
-        // also update our packet for newcomers
+        // also update our packet
         packet.x = behavior.getX();
         packet.y = behavior.getY();
 

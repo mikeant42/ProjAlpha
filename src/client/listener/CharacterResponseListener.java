@@ -35,7 +35,7 @@ public class CharacterResponseListener extends Listener {
 
         if (object instanceof Network.UpdateCharacterPacket) {
             Network.UpdateCharacterPacket update = (Network.UpdateCharacterPacket)object;
-            if (update.player.id == handler.getId()) {
+            if (update.player.uid == handler.getId()) {
                 handler.setCharacterPacket(update.player); // this updates the inventory
 
                 if (update.hasDied) {
@@ -44,9 +44,9 @@ public class CharacterResponseListener extends Listener {
                 }
             }
 
-            handler.updatePlayerLocal(update.player.moveState, update.player.x, update.player.y, update.player.id);
+            handler.updatePlayerLocal(update.player.moveState, update.player.x, update.player.y, update.player.uid);
 
-            handler.updatePlayerHealth(update.player.id, update.player.combat);
+            handler.updatePlayerHealth(update.player.uid, update.player.combat);
         }
 
 //        if (ClientHandler.LOGIN_STATUS) {

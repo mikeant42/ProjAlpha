@@ -37,12 +37,6 @@ TODO
 - write more gc friendly code
 - Rewrite packet code oop with a base of x,y,id
 
-CharacterPckt extends Entity
-GameObject extends Entity
-NPCPacket extends Entity
-for entity : entities
-    if entity instanceof Gameobject...
-
 
 Optimizations
 ----

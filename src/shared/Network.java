@@ -49,6 +49,7 @@ public class Network {
         kryo.register(MonsterPacket.class);
         kryo.register(Projectile.class);
         kryo.register(UpdateCharacterPacket.class);
+        kryo.register(GameEntity.class);
     }
 
     static public class Login {
@@ -59,6 +60,11 @@ public class Network {
     static public class ReadyToRecieve {
         public int cid;
         public boolean ready;
+    }
+
+    static public class GameEntity {
+        public double x,y;
+        public int uid;
     }
 
     static public class RegistrationRequired {
@@ -92,10 +98,7 @@ public class Network {
         public CharacterPacket packet;
     }
 
-    static public class NPCPacket {
-        public double x;
-        public double y;
-        public int uid;
+    static public class NPCPacket extends GameEntity {
         public EntityType type;
         public int moveState;
         public BehaviorType behaviorType;

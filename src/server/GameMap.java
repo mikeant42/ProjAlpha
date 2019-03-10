@@ -41,6 +41,7 @@ public class GameMap {
     private List<CharacterPacket> unLoadedPlayersToAdd = new ArrayList<>();
     private List<CharacterPacket> unLoadedPlayersToRemove = new ArrayList<>();
 
+
     // this is the entire stack of data the gamemap sends out each time it broadcasts to the client
     private BlockingQueue<Message> objectsToSend = new ArrayBlockingQueue<Message>(10000);
 
@@ -208,13 +209,13 @@ public class GameMap {
                         addInventory(packet, object);
                         System.out.println("picking up non projhectile");
                     } else {
-                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.id) { // the user cant harm himself with a spell
+                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.uid) { // the user cant harm himself with a spell
                             projectileManager.remove(object.getUniqueGameId());
                             removeGameObject(object);
 
                             // test
                             Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
-                            combat.id = packet.id;
+                            combat.id = packet.uid;
                             packet.combat.setHealth(packet.combat.getHealth() - 10);
                             combat.object = packet.combat;
 
@@ -222,7 +223,7 @@ public class GameMap {
 
                             if (packet.combat.getHealth() <= 0) {
                                 killPlayer(packet);
-                                System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + packet.id);
+                                System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + packet.uid);
                             }
 
                         }
@@ -272,19 +273,19 @@ public class GameMap {
         packet.inventory.addObject(object);
 
         //server.sendToTCP(cid, inventoryItem);
-        queueMessage(new Message(packet.id, inventoryItem, false));
+        queueMessage(new Message(packet.uid, inventoryItem, false));
     }
 
     private void onCharacterAdd(CharacterPacket packet) {
         // We also have to spawn all the npcs in his level
         for (NPC npc : npcHandler.getNPCs()) {
-            //server.sendWithQueue(packet.id, npc.getPacket(), true);
-            queueMessage(new Message(packet.id, npc.getPacket(), true));
+            //server.sendWithQueue(packet.uid, npc.getPacket(), true);
+            queueMessage(new Message(packet.uid, npc.getPacket(), true));
         }
 
         for (GameObject object : objects) {
-            //server.sendWithQueue(packet.id, object, true);
-            queueMessage(new Message(packet.id, object, true));
+            //server.sendWithQueue(packet.uid, object, true);
+            queueMessage(new Message(packet.uid, object, true));
         }
 
     }
@@ -304,6 +305,8 @@ public class GameMap {
 
         packet.x = respawnX;
         packet.y = respawnY;
+
+        //packet.isLoaded = false; // we stop comms with the player until the client says its fine again
 
         Network.UpdateCharacterPacket update = new Network.UpdateCharacterPacket();
         update.player = packet;
@@ -338,7 +341,7 @@ public class GameMap {
 
     public void updatePlayerHealthServer(int id, CombatObject object) {
         for (CharacterPacket packet : server.getLoggedIn()) {
-            if (id == packet.id) {
+            if (id == packet.uid) {
                 packet.combat = object;
             }
         }

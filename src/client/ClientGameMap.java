@@ -122,7 +122,7 @@ public class ClientGameMap {
 
     private boolean isPlayerHere(int id) {
         for (CharacterPacket packet : playersHere) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 return true;
             }
         }
@@ -177,9 +177,9 @@ public class ClientGameMap {
 
     public void removePlayer(int id) {
         for (CharacterPacket packet : playersHere) {
-            if (packet.id == id) {
+            if (packet.uid == id) {
                 playersToRemove.add(packet);
-                removeNetworkedEntity(packet.id);
+                removeNetworkedEntity(packet.uid);
                 return;
             }
         }
@@ -209,10 +209,10 @@ public class ClientGameMap {
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                if (!isPlayerHere(packet.id)) {
-                    System.out.println("Adding player " + packet.id);
+                if (!isPlayerHere(packet.uid)) {
+                    System.out.println("Adding player " + packet.uid);
                     SpawnData data = new SpawnData(packet.x, packet.y);
-                    data.put("ID", packet.id);
+                    data.put("ID", packet.uid);
                     data.put("user", packet.name);
                     FXGL.getApp().getGameWorld().spawn("player", data);
                     playersToAdd.add(packet);
@@ -385,7 +385,7 @@ public class ClientGameMap {
         if (player.hasComponent(NetworkedComponent.class))
             player.getComponent(NetworkedComponent.class).update();
 
-        Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().id);
+        Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().uid);
         if (chat != null) {
             if (player.hasComponent(OverlayTextComponent.class)) {
                 player.getComponent(OverlayTextComponent.class).setText(chat.message);
@@ -403,14 +403,14 @@ public class ClientGameMap {
 
 
                 // Update the other players
-                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("player", packet.id);
+                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("player", packet.uid);
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
 
                     //System.out.println(entity.getPosition());
-                    Network.UserChat entityChat = getChatMsg(packet.id);
+                    Network.UserChat entityChat = getChatMsg(packet.uid);
 
-                    //if (packet.id == entity.getComponent(NetworkedComponent.class).getId()) {
+                    //if (packet.uid == entity.getComponent(NetworkedComponent.class).getId()) {
                         // We found the dude we need to update
 
                         if (entityChat != null) {
@@ -443,7 +443,7 @@ public class ClientGameMap {
 
                                     if (previous != null) {
                                         for (CharacterPacket previousPacket : previous) {
-                                            if (packet.id == previousPacket.id) {
+                                            if (packet.uid == previousPacket.uid) {
                                                 previousPlayer = previousPacket;
 
 
