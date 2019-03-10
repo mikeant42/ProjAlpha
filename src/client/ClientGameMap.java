@@ -511,7 +511,7 @@ public class ClientGameMap {
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
                     if ((int)entity.getX() == (int)packet.x && (int)entity.getX() == (int)packet.y) {
-                        //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                        entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
                         System.out.println("npc is standing still");
                     } else {
                         //playerRecievedTick = tick;

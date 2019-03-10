@@ -5,14 +5,16 @@ import client.MovementComponent.*;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
-import server.npc.NPC;
 import shared.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public class AlphaCollision {
 
     private AlphaCollisionHandler handler;
+    private static int playerWidth = 30;
+    private static int playerHeight = 30;
 
     public AlphaCollision(AlphaCollisionHandler handler) {
         this.handler = handler;
@@ -94,27 +96,39 @@ public class AlphaCollision {
         return doesCollide(packet.x, packet.y, projectile.object.getX(), projectile.object.getY(), playerWidth, playerHeight, projectile.width, projectile.height);
     }
 
-    public static boolean doesCollide(Projectile projectile, NPC npc) {
-        int npcWidth = 40;
-        int npcHeight = 40;
-
-        return doesCollide(npc.getX(), npc.getY(), projectile.object.getX(), projectile.object.getY(), npcWidth, npcHeight, projectile.width, projectile.height);
-    }
-
-    public static boolean doesCollide(GameObject object, NPC npc) {
-        int projectileWidth = 10;
-        int projectileHeight = 10;
-
-        return doesCollide(npc.getX(), npc.getY(), object.getX(), object.getY(), projectileWidth, projectileHeight, object.getWidth(), object.getHeight());
-    }
-
 
     public void handleStaticCollisions(List<TiledObject> staticCollisions, GameObject projectile) {
         for (TiledObject object : staticCollisions) {
             boolean collides = doesCollide(object.getX(), object.getY(), projectile.getX(), projectile.getY(), object.getWidth(), object.getHeight(),
                     projectile.getWidth(), projectile.getHeight());
             if (collides) {
-                handler.handleStaticCollision(object, projectile);
+                handler.handleCollision(object, projectile);
+            }
+        }
+    }
+
+    public void handlePlayerCollisions(Collection<Network.GameEntity> entities, CharacterPacket packet) {
+        for (Network.GameEntity entity : entities) {
+            if (entity instanceof GameObject) {
+                GameObject object = (GameObject)entity;
+                boolean collides = doesCollide(object.getX(), object.getY(), packet.x, packet.y, object.getWidth(), object.getHeight(),
+                        playerWidth, playerHeight);
+                if (collides) {
+                    handler.handleCollision((GameObject) entity, packet);
+                }
+            }
+        }
+    }
+
+    public void handleNPCCollision(Collection<Network.GameEntity> entities, Network.NPCPacket packet) {
+        for (Network.GameEntity entity : entities) {
+            if (entity instanceof GameObject) {
+                GameObject object = (GameObject)entity;
+                boolean collides = doesCollide(object.getX(), object.getY(), packet.x, packet.y, object.getWidth(), object.getHeight(),
+                        playerWidth, playerHeight);
+                if (collides) {
+                    handler.handleCollision((GameObject) entity, packet);
+                }
             }
         }
     }

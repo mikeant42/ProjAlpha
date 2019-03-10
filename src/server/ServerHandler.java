@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -13,12 +14,6 @@ import shared.CharacterPacket;
 import shared.Network;
 import shared.Network.*;
 
-/**
- * Suggestion: make it more oop by creating a CharacterManager class that will eventually extend to NPCManager, etc.
- * Alternative to networking
- * - Don't have the client draw itself on the screen. Instead just treat the client like another player, and have the server send back
- *   the movement information.
- */
 
 public class ServerHandler {
 
@@ -95,60 +90,6 @@ public class ServerHandler {
         updateThread.run();
 
 
-//        // lets run the npc update method in its own thread
-//        // the kryo server update thread cannot be blocked
-//        Thread npcThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.NONE();
-//
-//                long now;
-//                long updateTime;
-//                long wait;
-//
-//                final long OPTIMAL_TIME = 1000000000 / fakeFPS;
-//
-//                while (running) {
-//                    now = System.nanoTime();
-//
-//                    tick();
-//                    server.getMap().updateAction(tick);
-//
-//                    updateTime = System.nanoTime() - now;
-//                    wait = (OPTIMAL_TIME - updateTime) / 1000000;
-//
-//                    try {
-//                        Thread.sleep(wait);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        System.err.println("thread sleep error");
-//                    }
-//
-//
-//                }
-//
-////
-////                double ns = 1000000000.0 / fakeFPS;
-////                double delta = 0;
-////
-////                long lastTime = System.nanoTime();
-////                long timer = System.currentTimeMillis();
-////
-////                while (running) {
-////                    long now = System.nanoTime();
-////                    delta += (now - lastTime) / ns;
-////                    lastTime = now;
-////
-////                    while (delta >= 1) {
-////                        tick();
-////                        server.getMap().updateAction(tick);
-////                        delta--;
-////                    }
-////                }
-//            }
-//        });
-//        npcThread.run();
-
 
         Log.TRACE();
 
@@ -181,7 +122,7 @@ public class ServerHandler {
         new ServerHandler();
     }
 
-    public HashSet<CharacterPacket> getLoggedIn() {
+    public Map<Integer, CharacterPacket> getLoggedIn() {
         return server.getLoggedIn();
     }
 }

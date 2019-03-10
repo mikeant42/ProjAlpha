@@ -6,17 +6,24 @@ import shared.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class ProjectileManager {
-    private List<Projectile> projectilesToAdd = new ArrayList<>();
-    private List<Projectile> projectilesToRemove = new ArrayList<>();
-    private List<Projectile> projectiles;
+//    private List<Projectile> projectilesToAdd = new ArrayList<>();
+//    private List<Projectile> projectilesToRemove = new ArrayList<>();
+//    private List<Projectile> projectiles;
+
+    private Map<Integer, Projectile> projectiles = new ConcurrentHashMap<>();
+
     private GameMap map;
     public static final int LIFESPAN_IN_TICKS = 100;
 
     public ProjectileManager(GameMap map) {
-        projectiles = new ArrayList<>();
 
         this.map = map;
     }
@@ -50,7 +57,7 @@ public class ProjectileManager {
 
         projectile1.object = projObject;
 
-        projectilesToAdd.add(projectile1);
+        projectiles.put(projectile1.object.getUniqueGameId(), projectile1);
 
         System.out.println("added projectile");
         return projectile1;
@@ -59,14 +66,8 @@ public class ProjectileManager {
 
 
     public void update(long tick) {
-        projectiles.addAll(projectilesToAdd);
-        projectilesToAdd.clear();
 
-        projectiles.removeAll(projectilesToRemove);
-        projectilesToRemove.clear();
-
-
-        for (Projectile projectile : projectiles) {
+        for (Projectile projectile : projectiles.values()) {
             if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
                 //Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
                 //        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
@@ -77,30 +78,24 @@ public class ProjectileManager {
 
                     map.updateObjectPosition(projectile.object);
             } else {
-                map.removeGameObject(projectile.object.getUniqueGameId());
+                map.removeGameObject(projectile.object);
+                projectiles.remove(projectile.object.getUniqueGameId());
+                System.out.println("proj manager removing object");
             }
         }
     }
 
     public int getSource(int uid) {
-        for (int i = 0; i < projectiles.size(); i++) {
-            if (projectiles.get(i).object.getUniqueGameId() == uid) {
-                return projectiles.get(i).projectile.sourceUser;
-            }
+        if (projectiles.get(uid) != null) {
+            return projectiles.get(uid).projectile.sourceUser;
         }
 
         return -1;
     }
 
     public void remove(int uid) {
-        for (Projectile projectile : projectiles) {
-            if (uid == projectile.object.getUniqueGameId()) {
-                projectilesToRemove.add(projectile);
-            }
-        }
+        projectiles.remove(uid);
     }
 
-    public List<Projectile> getProjectiles() {
-        return projectiles;
-    }
+
 }

@@ -35,7 +35,6 @@ TODO
 - split client into launcher and game
 - replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
-- Rewrite packet code oop with a base of x,y,id
 
 
 Optimizations

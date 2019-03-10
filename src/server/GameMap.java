@@ -3,18 +3,16 @@ package server;
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import server.message.Message;
-import server.npc.NPC;
 import server.npc.NPCHandler;
 import shared.*;
 import shared.collision.AlphaCollision;
 import shared.collision.AlphaCollisionHandler;
 import shared.objects.Fish;
 
+import javax.swing.text.html.parser.Entity;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.*;
 
 public class GameMap {
     /*
@@ -31,19 +29,16 @@ public class GameMap {
 
     private int mapID;
 
-    // idea - this list manages multiple maps
-    private List<GameObject> objects = new ArrayList<>();
-
-    private List<GameObject> objectsToRemove = new ArrayList<>();
-    private List<GameObject> objectsToAdd = new ArrayList<>();
-
-    private List<CharacterPacket> unLoadedPlayers = new ArrayList<>();
-    private List<CharacterPacket> unLoadedPlayersToAdd = new ArrayList<>();
-    private List<CharacterPacket> unLoadedPlayersToRemove = new ArrayList<>();
+    private Queue<CharacterPacket> unloadedPlayers = new ConcurrentLinkedQueue<>();
 
 
     // this is the entire stack of data the gamemap sends out each time it broadcasts to the client
     private BlockingQueue<Message> objectsToSend = new ArrayBlockingQueue<Message>(10000);
+
+
+    // 16 seperate threads allowed to access this map
+    // maps the (uid, object) of each game entity
+    private Map<Integer, Network.GameEntity> entities = new ConcurrentHashMap<>();
 
     private ProjectileManager projectileManager;
 
@@ -83,10 +78,59 @@ public class GameMap {
 
         collision = new AlphaCollision(new AlphaCollisionHandler() {
             @Override
-            public void handleStaticCollision(TiledObject object, GameObject projectile) {
+            public void handleCollision(TiledObject object, GameObject projectile) {
                 removeGameObject(projectile);
                 projectileManager.remove(projectile.getUniqueGameId());
                 System.out.println("world collision");
+            }
+
+            @Override
+            public void handleCollision(GameObject object, CharacterPacket player) {
+                if (!object.isProjectile()) {
+                    // when player runs over an object, he adds it to his inventory
+                    removeGameObject(object);
+                    addInventory(player, object);
+                    System.out.println("picking up non projhectile");
+                } else {
+                    if (projectileManager.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
+                        projectileManager.remove(object.getUniqueGameId());
+                        removeGameObject(object);
+
+                        // test
+                        Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
+                        combat.id = player.uid;
+                        player.combat.setHealth(player.combat.getHealth() - 10);
+                        combat.object = player.combat;
+
+                        queueMessage(new Message(combat, false));
+
+                        if (player.combat.getHealth() <= 0) {
+                            killPlayer(player);
+                            System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + object.uid);
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void handleCollision(GameObject object, Network.NPCPacket npc) {
+                if (npc.type == EntityType.ENEMY &&  object.isProjectile()) {
+                    projectileManager.remove(object.getUniqueGameId());
+                    removeGameObject(object);
+
+                    // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
+
+                    Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
+                    combat.id = npc.uid;
+                    npc.combat.setHealth(npc.combat.getHealth() - 10);
+                    combat.object = npc.combat;
+
+                    queueMessage(new Message(combat, false));
+
+                    System.out.println("proj-npc collision");
+                }
             }
         });
 
@@ -130,21 +174,29 @@ public class GameMap {
                 respawnX = object.getX();
                 respawnY = object.getY();
             } else if (object.getName().equals("googon")) {
-                NPC npc = new NPC("googon", object.getX(), object.getY());
-                npc.setEnemy(true);
-                npc.setBehavior(BehaviorType.ROAMING);
-                npc.setUniqueId(assignUniqueId());
-                npcHandler.addNPC(npc);
+                Network.NPCPacket packet = new Network.NPCPacket();
+                packet.x = object.getX();
+                packet.y = object.getY();
+                packet.uid = assignUniqueId();
+                packet.type = EntityType.ENEMY;
+                packet.name = "googon";
+                packet.combat = new CombatObject(100,0);
+                npcHandler.registerBehavior(packet, BehaviorType.ROAMING);
+                entities.put(packet.uid, packet);
             } else if (object.getName().equals("watcher")) {
-                NPC npc = new NPC("watcher", object.getX(), object.getY());
-                npc.setInteractable(true);
-                npc.setUniqueId(assignUniqueId());
-                npc.setBehavior(BehaviorType.STATIC);
-
-                npcHandler.addNPC(npc);
+                Network.NPCPacket packet = new Network.NPCPacket();
+                packet.x = object.getX();
+                packet.y = object.getY();
+                packet.uid = assignUniqueId();
+                packet.type = EntityType.INTERACTABLE_NPC;
+                packet.name = object.getName();
+                //packet.combat = new CombatObject(100,0);
+                npcHandler.registerBehavior(packet, BehaviorType.STATIC);
+                entities.put(packet.uid, packet);
             }
         }
     }
+
 
     public void updateExternal(long broadcastTick) {
         // this is the code broadcasting to the clients
@@ -157,6 +209,10 @@ public class GameMap {
 
     }
 
+    public void removePlayer(int uid) {
+        entities.remove(uid);
+    }
+
 
     /*
     This updates in another thread at 60fps
@@ -164,128 +220,79 @@ public class GameMap {
     public void updateAction(long tick) {
         this.tick = tick;
 
-        objects.addAll(objectsToAdd);
-        objects.removeAll(objectsToRemove);
-
-        objectsToAdd.clear();
-        objectsToRemove.clear();
-
-        unLoadedPlayers.addAll(unLoadedPlayersToAdd);
-        unLoadedPlayersToAdd.clear();
-
-        unLoadedPlayers.removeAll(unLoadedPlayersToRemove);
-        unLoadedPlayersToRemove.clear();
-
-
         projectileManager.update(tick);
 
         // every so often check if the player is somewhere he shouldnt be
 
 
-        for (CharacterPacket packet : unLoadedPlayers) {
+        for (CharacterPacket packet : unloadedPlayers) {
             if (packet.isLoaded) {
                 onCharacterAdd(packet);
                 System.out.println("loaded char");
-                unLoadedPlayersToRemove.add(packet);
+                unloadedPlayers.remove(packet);
             }
         }
 
-        for (CharacterPacket player : server.getLoggedIn()) {
-            if (player.combat.getHealth() <= 0) {
-                killPlayer(player);
+
+        for (Network.GameEntity entity : entities.values()) {
+
+            if (entity instanceof GameObject) {
+                GameObject loopedObject = (GameObject) entity;
+                collision.handleStaticCollisions(staticCollisions, loopedObject);
             }
-        }
 
-        for (GameObject object : objects) {
+            if (entity instanceof CharacterPacket) {
+                CharacterPacket player = (CharacterPacket) entity;
 
-            collision.handleStaticCollisions(staticCollisions, object);
+                if (player.combat.getHealth() <= 0) {
+                    killPlayer(player);
+                }
 
-            for (CharacterPacket packet : server.getLoggedIn()) {
-                if (AlphaCollision.doesCollide(object, packet)) {
+                collision.handlePlayerCollisions(entities.values(), player);
 
-                    if (!object.isProjectile()) {
-                        // when player runs over an object, he adds it to his inventory
-                        removeGameObject(object);
-                        addInventory(packet, object);
-                        System.out.println("picking up non projhectile");
-                    } else {
-                        if (projectileManager.getSource(object.getUniqueGameId()) != packet.uid) { // the user cant harm himself with a spell
-                            projectileManager.remove(object.getUniqueGameId());
-                            removeGameObject(object);
+            }
 
-                            // test
-                            Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
-                            combat.id = packet.uid;
-                            packet.combat.setHealth(packet.combat.getHealth() - 10);
-                            combat.object = packet.combat;
+            if (entity instanceof Network.NPCPacket) {
+                Network.NPCPacket npc = (Network.NPCPacket) entity;
 
-                            queueMessage(new Message(combat, false));
+                collision.handleNPCCollision(entities.values(), npc);
 
-                            if (packet.combat.getHealth() <= 0) {
-                                killPlayer(packet);
-                                System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + packet.uid);
-                            }
-
-                        }
-
-                    }
+                Network.UpdateNPC updateNPC = npcHandler.updateData(npc);
+                if (updateNPC != null) {
+                    queueMessage(new Message(updateNPC, false));
                 }
             }
 
-            for (NPC npc : npcHandler.getNPCs()) {
-                if (npc.isEnemy() &&  object.isProjectile() && AlphaCollision.doesCollide(object, npc)) {
-                    projectileManager.remove(object.getUniqueGameId());
-                    removeGameObject(object);
-
-                    // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
-
-                    Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
-                    combat.id = npc.getPacket().uid;
-                    npc.getPacket().combat.setHealth(npc.getPacket().combat.getHealth() - 10);
-                    combat.object = npc.getPacket().combat;
-
-                    queueMessage(new Message(combat, false));
-
-                    System.out.println("proj-npc collision");
-                }
-
-
-            }
-
 
         }
-
-        for (NPC npc : npcHandler.getNPCs()) {
-
-            if (npc.shouldUpdate()) {
-                //server.sendToAllReady(npc.formUpdate());
-                queueMessage(new Message(npc.formUpdate(), false));
-            }
-            npc.update();
-        }
-
     }
 
     public void addInventory(CharacterPacket packet, GameObject object) {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
         inventoryItem.object = object;
 
-        packet.inventory.addObject(object);
+        boolean added = packet.inventory.addObject(object);
 
-        //server.sendToTCP(cid, inventoryItem);
-        queueMessage(new Message(packet.uid, inventoryItem, false));
+        if (added) {
+            queueMessage(new Message(packet.uid, inventoryItem, false));
+        } else {
+            System.err.println("Not enough space in inventory");
+        }
+
+
     }
 
     private void onCharacterAdd(CharacterPacket packet) {
-        // We also have to spawn all the npcs in his level
-        for (NPC npc : npcHandler.getNPCs()) {
-            //server.sendWithQueue(packet.uid, npc.getPacket(), true);
-            queueMessage(new Message(packet.uid, npc.getPacket(), true));
-        }
 
-        for (GameObject object : objects) {
-            //server.sendWithQueue(packet.uid, object, true);
-            queueMessage(new Message(packet.uid, object, true));
+        for (Network.GameEntity object : entities.values()) {
+            if (object instanceof GameObject) {
+                queueMessage(new Message(packet.uid, object, true));
+            }
+            if (object instanceof Network.NPCPacket) {
+                queueMessage(new Message(packet.uid, object, true));
+            }
+
+            entities.put(packet.uid, packet);
         }
 
     }
@@ -316,7 +323,8 @@ public class GameMap {
     }
 
     public void addGameObject(GameObject object) {
-        objectsToAdd.add(object);
+        addGameObjectLocal(object);
+
         updateInternal = true;
 
         System.out.println("adding obj");
@@ -325,7 +333,7 @@ public class GameMap {
     }
 
     public void addGameObjectLocal(GameObject object) {
-        objectsToAdd.add(object);
+        entities.put(object.getUniqueGameId(), object);
     }
 
 
@@ -340,7 +348,7 @@ public class GameMap {
     }
 
     public void updatePlayerHealthServer(int id, CombatObject object) {
-        for (CharacterPacket packet : server.getLoggedIn()) {
+        for (CharacterPacket packet : server.getLoggedIn().values()) {
             if (id == packet.uid) {
                 packet.combat = object;
             }
@@ -353,18 +361,10 @@ public class GameMap {
         //server.sendToAllReady(packet);
         queueMessage(new Message(packet, false));
 
-       objectsToRemove.add(object);
-       updateInternal = true;
-       //deAllocateId(object.getUniqueGameId());
-    }
 
-    public void removeGameObject(int uid) {
-        for (GameObject object : objects) {
-            if (object.getUniqueGameId() == uid) {
-                removeGameObject(object);
-            }
-        }
-        updateInternal = true;
+       entities.remove(object.getUniqueGameId());
+
+       //deAllocateId(object.getUniqueGameId());
     }
 
 //    private void deAllocateId(int id) {
@@ -393,8 +393,7 @@ public class GameMap {
 
 
     public void addUnloadedPlayer(CharacterPacket packet) {
-        unLoadedPlayersToAdd.add(packet);
-        updateInternal = true;
+        unloadedPlayers.add(packet);
     }
 
 

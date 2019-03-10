@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AlphaServer extends Server {
 
-    private HashSet<CharacterPacket> loggedIn = new HashSet();
+    //private HashSet<CharacterPacket> loggedIn = new HashSet();
+    private Map<Integer, CharacterPacket> players = new ConcurrentHashMap<>();
     private GameMap map; // List<GameMap>
 
 
@@ -34,7 +37,7 @@ public class AlphaServer extends Server {
 
         // we are assuming all objects in this pool are queued
         // this update method is NOT in the same thread and does NOT update with the map's broadcast update
-        for (CharacterPacket packet : loggedIn) {
+        for (CharacterPacket packet : players.values()) {
             for (Message message : serverMessagePool) {
                 if (message.getId() == packet.uid) {
                     if (packet.isLoaded) {
@@ -56,7 +59,7 @@ public class AlphaServer extends Server {
 
     public void logIn (ServerHandler.CharacterConnection c, CharacterPacket character) {
 // Add existing characters to new logged in connection.
-        for (CharacterPacket other : getLoggedIn()) {
+        for (CharacterPacket other : players.values()) {
             if (other.uid != c.getID()) {
                 Network.AddCharacter addCharacter = new Network.AddCharacter();
                 addCharacter.character = other;
@@ -92,37 +95,43 @@ public class AlphaServer extends Server {
     }
 
     protected void updateClient(int id, double x, double y) {
-        for (CharacterPacket packet : loggedIn) {
-            if (packet.uid == id) {
-                packet.x = x;
-                packet.y = y;
-            }
-        }
+//        for (CharacterPacket packet : loggedIn) {
+//            if (packet.uid == id) {
+//                packet.x = x;
+//                packet.y = y;
+//            }
+//        }
+        CharacterPacket packet = players.get(id);
+        packet.x = x;
+        packet.y = y;
     }
 
     public void setIsLoaded(int cid, boolean tf) {
-        for (CharacterPacket packet : loggedIn) {
-            if (packet.uid == cid) {
-                packet.isLoaded = tf;
-            }
-        }
+//        for (CharacterPacket packet : loggedIn) {
+//            if (packet.uid == cid) {
+//                packet.isLoaded = tf;
+//            }
+//        }
+        players.get(cid).isLoaded = tf;
     }
 
-    public HashSet<CharacterPacket> getLoggedIn() {
-        return loggedIn;
+    public Map<Integer, CharacterPacket> getLoggedIn() {
+        return players;
     }
 
     public void removeClient(int id) {
-        for (CharacterPacket packet : loggedIn) {
-            if (packet.uid == id) {
-                loggedIn.remove(packet);
-                return;
-            }
-        }
+//        for (CharacterPacket packet : loggedIn) {
+//            if (packet.uid == id) {
+//                loggedIn.remove(packet);
+//                return;
+//            }
+//        }
+        players.remove(id);
+        map.removePlayer(id);
     }
 
     public void addLoggedIn(CharacterPacket packet) {
-        loggedIn.add(packet);
+        players.put(packet.uid, packet);
     }
 
 
@@ -132,7 +141,7 @@ public class AlphaServer extends Server {
 
 
     public void sendToAll(Object object) {
-        for (CharacterPacket packet : loggedIn) {
+        for (CharacterPacket packet : players.values()) {
             if (packet.isLoaded) {
                 sendToTCP(packet.uid, object);
             }
@@ -140,7 +149,7 @@ public class AlphaServer extends Server {
     }
 
     public void sendToAllExcept(Object o, int id) {
-        for(CharacterPacket packet : loggedIn) {
+        for(CharacterPacket packet : players.values()) {
             if (id != packet.uid && packet.isLoaded) {
                 sendToTCP(packet.uid, o);
             }
