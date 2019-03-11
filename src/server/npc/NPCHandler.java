@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NPCHandler {
 
+    // maybe a class Spawner which spawns and keeps track of an entity
     private Map<Network.NPCPacket, NPCBehavior> npcs = new ConcurrentHashMap<>();
 
 

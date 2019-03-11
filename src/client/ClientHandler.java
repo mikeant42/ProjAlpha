@@ -83,6 +83,9 @@ public class ClientHandler {
 
     }
 
+    static { System.out.println("static init");}
+
+
     public void updatePlayerLocal(int move, double x, double y, int idd) {
         if (getId() == idd) {
             alphaClientApp.getActiveWorld().getPlayer().setPosition(x,y);

@@ -348,11 +348,8 @@ public class GameMap {
     }
 
     public void updatePlayerHealthServer(int id, CombatObject object) {
-        for (CharacterPacket packet : server.getLoggedIn().values()) {
-            if (id == packet.uid) {
-                packet.combat = object;
-            }
-        }
+        CharacterPacket packet = (CharacterPacket) entities.get(id);
+        packet.combat = object;
     }
 
     public void removeGameObject(GameObject object) {

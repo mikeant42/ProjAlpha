@@ -22,7 +22,7 @@ public class ServerHandler {
     private long tick = 0;
     private long fakeFPS = 60;
     private long broadcastTick = 0;
-    private int broadcastTickBuffer = 20; // every x internal ticks we send an update to the clients
+    private int broadcastTickBuffer = 11; // every x internal ticks we send an update to the clients
 
 
     public ServerHandler() throws IOException {

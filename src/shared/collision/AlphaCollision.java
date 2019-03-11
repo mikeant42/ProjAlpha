@@ -55,6 +55,7 @@ public class AlphaCollision {
     }
 
 
+
     public static CollisionHandler setDialogueCollision(EntityType player, EntityType hut) {
         return new CollisionHandler(player, hut) {
 

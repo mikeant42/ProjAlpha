@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientGameMap {
@@ -33,6 +34,8 @@ public class ClientGameMap {
     private List<CharacterPacket> playersToRemove = new ArrayList<>();
     private List<GameObject> objectsToRemove = new ArrayList<>();
     private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
+
+    private Map<Integer, Network.GameEntity> entities = new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<Long, GameState> gameStates = new ConcurrentHashMap<>(); // storing previous gamestates to interpolate
 
@@ -345,6 +348,18 @@ public class ClientGameMap {
     private Point2D interpolateCharacter(double x, double y, Point2D end, double dtf) {
         double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
         return FXGLMath.lerp(x, y, end.getX(), end.getY(), blend);
+    }
+
+    private Point2D interpolate(double startX, double startY, double posX, double posY){
+
+        double differenzX = posX-startX;
+        double differenzY = posY-startY;
+
+        startX += differenzX/2;
+        startX += differenzY/2;
+
+        return new Point2D(startX, startY);
+
     }
 
 
