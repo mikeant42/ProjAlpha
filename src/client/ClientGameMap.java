@@ -47,20 +47,17 @@ public class ClientGameMap {
 
     private Entity player;
 
-    public static int TILESIZE = 256;
-
     private ClientHandler clientHandler;
 
     private boolean isMapLoaded = false;
 
     private Camera camera;
 
-    private boolean needsChange = true;
     private int changeTick = 0;
 
     // these are for players and npcs
     private double interpolationConstant = 0.9;
-    private double snappingDistance = 0; // this doesnt seem to work
+    private double snappingDistance = 0.9; //
 
     private long playerTick = 0;
 
@@ -473,24 +470,28 @@ public class ClientGameMap {
                                     previousPlayer.y = packet.y;
                                 }
 
-                                 // maybe i need the tick of when i recieved the information
 
 
                                 entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                                double distanceX = Math.abs(previousPlayer.x - entity.getX());
-                                double distanceY = Math.abs(previousPlayer.y - entity.getY());
-                                if (distanceX < snappingDistance || distanceY < snappingDistance) {
-                                    entity.setX(packet.x);
-                                    entity.setY(packet.y);
+                                double distanceX = Math.abs(packet.x - entity.getX());
+                                double distanceY = Math.abs(packet.y - entity.getY());
+
+                                if (distanceX < snappingDistance && distanceY < snappingDistance) {
+//                            entity.setX(packet.x);
+//                            entity.setY(packet.y);
+                                    entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
                                 } else {
-                                    double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
-                                    entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
+
 
 
 
                                 }
+                                double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+                                entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
+
+                                 // maybe i need the tick of when i recieved the information
 
 
 //                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
@@ -557,19 +558,22 @@ public class ClientGameMap {
 
                         entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                        double distanceX = Math.abs(previousNPC.x - entity.getX());
-                        double distanceY = Math.abs(previousNPC.y - entity.getY());
-                        if (distanceX < snappingDistance || distanceY < snappingDistance) {
-                            entity.setX(packet.x);
-                            entity.setY(packet.y);
+                        double distanceX = Math.abs(packet.x - entity.getX());
+                        double distanceY = Math.abs(packet.y - entity.getY());
+
+                        if (distanceX < snappingDistance && distanceY < snappingDistance) {
+//                            entity.setX(packet.x);
+//                            entity.setY(packet.y);
+                            entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
                         } else {
-                            double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
-                            entity.setPosition(interpolateCharacter(previousNPC.x, previousNPC.y, entity.getPosition(), dtf));
+
 
 
 
                         }
+                        double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+                        entity.setPosition(interpolateCharacter(previousNPC.x, previousNPC.y, entity.getPosition(), dtf));
                     }
 
                 }

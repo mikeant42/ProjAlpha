@@ -3,8 +3,10 @@ package client.render;
 import client.MovementComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import shared.Data;
+import shared.EntityType;
 
 /**
  * Class for moving characters who also have an animated texture
@@ -24,6 +26,8 @@ public class AnimatedMovementComponent extends MovementComponent {
     private String file;
 
     private int idleStart, idleEnd, forwardStart, forwardEnd, backStart, backEnd, rightStart, rightEnd, leftStart, leftEnd;
+
+    private Point2D previousPosition;
 
     // TODO - make this more configurable for when we need to rotate objetcts for the animations, and when we don't
 
@@ -72,6 +76,8 @@ public class AnimatedMovementComponent extends MovementComponent {
 
 
         }
+
+        previousPosition = getPreviousPos();
 
         // update this before movementcomponent, or else will cause animation problems
         super.onUpdate(tpf);

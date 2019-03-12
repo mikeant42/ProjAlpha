@@ -2,6 +2,7 @@ package client;
 
 import client.render.AnimatedMovementComponent;
 import com.almasb.fxgl.entity.component.Component;
+import shared.Data;
 import shared.EntityType;
 
 public class NetworkedComponent extends Component {
@@ -63,6 +64,8 @@ public class NetworkedComponent extends Component {
                 if (movementComponent.isMoving()) {
                     handler.sendMovement(movementComponent.getState(), getEntity().getX(),
                             getEntity().getY(), this.id);
+                } else {
+                    movementComponent.setState(Data.MovementState.STANDING);
                 }
 
             }

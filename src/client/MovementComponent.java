@@ -6,6 +6,7 @@ import shared.Data;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Point2D;
+import shared.EntityType;
 
 public class MovementComponent extends Component {
 
@@ -42,6 +43,10 @@ public class MovementComponent extends Component {
         previousPos = getEntity().getPosition();
 
         speed = (int)(tpf * moveFactor);
+    }
+
+    public Point2D getPreviousPos() {
+        return previousPos;
     }
 
     public void up() {
