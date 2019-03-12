@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextobjectid="70">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextobjectid="71">
  <tileset firstgid="1" name="pixel_nature" tilewidth="32" tileheight="32" tilecount="153" columns="9">
   <image source="../textures/pixel_nature.png" width="288" height="544"/>
  </tileset>
@@ -36,7 +36,7 @@
   <object id="57" name="googon" type="roaming" x="960" y="544">
    <point/>
   </object>
-  <object id="62" name="watcher" x="448" y="416">
+  <object id="62" name="watcher" x="416" y="544">
    <point/>
   </object>
   <object id="63" name="googon" type="roaming" x="864" y="544">

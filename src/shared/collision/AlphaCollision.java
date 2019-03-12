@@ -2,7 +2,10 @@ package shared.collision;
 
 import client.render.AnimatedMovementComponent;
 import client.MovementComponent.*;
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.physics.CollisionHandler;
 import shared.*;
@@ -52,6 +55,21 @@ public class AlphaCollision {
 
         };
 
+    }
+
+
+    public static CollisionHandler setImpactCollision(EntityType player, EntityType hut) {
+        return new CollisionHandler(player, hut) {
+
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                SpawnData data = new SpawnData(player.getX(), player.getY()+60);
+                FXGL.getApp().getGameWorld().spawn("spell impact", data);
+                System.out.println("prof3erwfgvegf");
+            }
+
+
+        };
     }
 
 

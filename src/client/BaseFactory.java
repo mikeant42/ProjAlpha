@@ -3,15 +3,27 @@ package client;
 import client.render.AnimatedMovementComponent;
 import client.render.CombatComponent;
 import client.render.ProjectileComponent;
+import com.almasb.fxgl.app.FXGL;
+import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.particle.ParticleComponent;
+import com.almasb.fxgl.particle.ParticleEmitter;
+import com.almasb.fxgl.particle.ParticleEmitters;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import shared.EntityType;
+
+
+import static com.almasb.fxgl.app.DSLKt.play;
+import static com.almasb.fxgl.app.DSLKt.texture;
 
 public class BaseFactory implements EntityFactory {
 
@@ -116,7 +128,7 @@ public class BaseFactory implements EntityFactory {
                 //.viewFromNodeWithBBox(new Rectangle(25, 25, Color.BLUE))
                 .bbox(new HitBox(BoundingShape.box(30, 30)))
                 .with(new CollidableComponent(true))
-                .type(EntityType.NPC)
+                .type(data.get("type"))
                 .build();
 
 
@@ -146,7 +158,7 @@ public class BaseFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(30, 30)))
                 .with(new CollidableComponent(true))
                 .viewFromTexture("npc/" + data.get("name") + ".png")
-                .type(EntityType.NPC)
+                .type(data.get("type"))
                 .build();
 
 
@@ -200,6 +212,7 @@ public class BaseFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new NetworkedComponent(data.get("uid"), handler))
                 .with(new IDComponent("object", data.get("uid")))
+                .with(new ExpireComponent(2))
                 .viewFromAnimatedTexture(new AnimatedTexture(channel))
                 .type(EntityType.PROJECTILE)
                 //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
@@ -210,6 +223,62 @@ public class BaseFactory implements EntityFactory {
         //entity.setProperty("doesOwn", data.get("doesOwn"));
 
         return entity;
+    }
+
+    @Spawns("spell impact")
+    public Entity newImpactEffect(SpawnData data) {
+        String fileName = "particle/impact.png";
+        AnimationChannel channel = new AnimationChannel(fileName, 6,600/6, 600/6, Duration.seconds(0.3), 0, 35);
+        Entity entity =  Entities.builder()
+                .from(data)
+                .viewFromAnimatedTexture(new AnimatedTexture(channel))
+                .type(EntityType.PARTICLE)
+                .with(new ExpireComponent(0.3))
+                //.with(new ExpireCleanControl(Duration.seconds(1.8))
+                //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                //.type(EntityType.COLLIDE)
+                //.with(new CollidableComponent(true))
+                .build();
+        entity.setRenderLayer(RenderLayer.TOP);
+
+
+        //entity.setProperty("doesOwn", data.get("doesOwn"));
+
+        return entity;
+    }
+
+    @Spawns("walking effect")
+    public Entity spawnDirt(SpawnData data) {
+       // play("explosion-0" + (int) (Math.random() * 8 + 1) + ".wav");
+
+        // explosion particle effect
+        ParticleEmitter emitter = ParticleEmitters.newSmokeEmitter();
+        emitter.setSize(10, 15);
+        emitter.setNumParticles(20);
+        emitter.setExpireFunction(i -> Duration.seconds(0.2));
+        emitter.setVelocityFunction(i -> Vec2.fromAngle(360 / 24 *i).toPoint2D().multiply(FXGLMath.random(45, 50)));
+        emitter.setBlendMode(BlendMode.SRC_OVER);
+        emitter.setStartColor(Color.GREEN);
+        emitter.setEndColor(Color.GREEN.interpolate(Color.BROWN, 0.5));
+        emitter.setSourceImage(FXGL.getAssetLoader().loadImage("particle/dirt.png"));
+
+//        ParticleControl control = new ParticleControl(emitter);
+//
+//        Entity explosion = Entities.builder()
+//                .at(data.getX() - 5, data.getY() - 10)
+//                .with(control)
+//                .buildAndAttach();
+//
+//        control.setOnFinished(explosion::removeFromWorld);
+
+
+        return Entities.builder()
+                .at(data.getX(), data.getY())
+                //.viewFromNode(texture("explosion.png", 80 * 48, 80).toAnimatedTexture(48, Duration.seconds(2)))
+                .with(new ParticleComponent(emitter))
+                .with(new ExpireComponent(0.4))
+                //.with(new ExpireCleanControl(Duration.seconds(1.8)))
+                .build();
     }
 
 

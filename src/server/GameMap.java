@@ -55,6 +55,7 @@ public class GameMap {
 
     // 128 is the limit of the number of game objects in one map
     //private int[] uniqueObjects = new int[objectLimit];
+    // once an id is assigned, it cannot be used again. this is to prevent old object ids from referencing new objects that they thought was the old object
     private List<Integer> uniques = new ArrayList<>();
 
     private AlphaCollision collision;
@@ -67,7 +68,7 @@ public class GameMap {
         this.mapID = 1;
 
         try {
-            map = AlphaUtil.parseWorld("src/assets/json/ult.xml");
+            map = AlphaUtil.parseWorld("src/assets/json/starter.xml");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,9 +80,11 @@ public class GameMap {
         collision = new AlphaCollision(new AlphaCollisionHandler() {
             @Override
             public void handleCollision(TiledObject object, GameObject projectile) {
-                removeGameObject(projectile);
-                projectileManager.remove(projectile.getUniqueGameId());
-                System.out.println("world collision");
+                if (projectile.isProjectile()) {
+                    removeGameObject(projectile);
+                    projectileManager.remove(projectile.getUniqueGameId());
+                    System.out.println("world collision");
+                }
             }
 
             @Override
@@ -90,7 +93,7 @@ public class GameMap {
                     // when player runs over an object, he adds it to his inventory
                     removeGameObject(object);
                     addInventory(player, object);
-                    System.out.println("picking up non projhectile");
+                    System.out.println("picking up non projectile");
                 } else {
                     if (projectileManager.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
                         projectileManager.remove(object.getUniqueGameId());
@@ -300,13 +303,15 @@ public class GameMap {
     private void killPlayer(CharacterPacket packet) {
         packet.combat.setHealth(50);
 
-        for (int i = 0; i < packet.inventory.objects.length; i++) {
-            GameObject object = packet.inventory.objects[i];
-            packet.inventory.removeObjectFromSlot(i);
-            if (object != null) {
-                object.setX(packet.x);
-                object.setY(packet.y);
-                addGameObject(object);
+        if (packet.inventory.objects.length > 0) {
+            for (int i = 0; i < packet.inventory.objects.length; i++) {
+                GameObject object = packet.inventory.objects[i];
+                packet.inventory.removeObjectFromSlot(i);
+                if (object != null) {
+                    object.setX(packet.x);
+                    object.setY(packet.y);
+                    addGameObject(object);
+                }
             }
         }
 

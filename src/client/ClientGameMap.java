@@ -84,7 +84,7 @@ public class ClientGameMap {
             public void run() {
                 if (id == 1) {
                     try {
-                        map = AlphaUtil.parseWorld("src/assets/json/ult.xml");/////
+                        map = AlphaUtil.parseWorld("src/assets/json/starter.xml");/////
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -99,6 +99,7 @@ public class ClientGameMap {
 
                 // disable the spawn layer, this is only for the server
                 map.getLayerByName("spawn").setObjects(new ArrayList<TiledObject>());
+                map.setBackgroundcolor("Green");
 
                 FXGL.getApp().getGameWorld().setLevelFromMap(map);
 
@@ -173,6 +174,15 @@ public class ClientGameMap {
         objectsToRemove.add(object);
         System.out.println("removing " + object.getName());
         removeNetworkedEntity(object.getUniqueGameId());
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (object.isProjectile()) {
+                    FXGL.getApp().getGameWorld().spawn("spell impact", object.getX(), object.getY());
+                }
+            }
+        });
     }
 
     public void removePlayer(int id) {
@@ -291,6 +301,7 @@ public class ClientGameMap {
                     SpawnData data = new SpawnData(packet.x, packet.y);
                     data.put("ID", packet.uid);
                     data.put("name", packet.name);
+                    data.put("type", packet.type);
 
                     if (packet.behaviorType == BehaviorType.ROAMING) {
                         FXGL.getApp().getGameWorld().spawn("Roaming NPC", data);
@@ -419,6 +430,7 @@ public class ClientGameMap {
                 if (optEnt.isPresent()) {
                     Entity entity = optEnt.get();
 
+
                     //System.out.println(entity.getPosition());
                     Network.UserChat entityChat = getChatMsg(packet.uid);
 
@@ -444,8 +456,6 @@ public class ClientGameMap {
 
                             // this block occurs whenever we recieve an update
                             if (entity.hasComponent(AnimatedMovementComponent.class)) {
-
-
 
 
                                 CharacterPacket previousPlayer = new CharacterPacket();
