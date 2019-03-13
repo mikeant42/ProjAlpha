@@ -34,7 +34,7 @@ public class NPCBehavior {
         this.y = spawnY;
 
 
-        bounds = 500;
+        bounds = 175;
 
     }
 

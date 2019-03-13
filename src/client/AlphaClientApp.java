@@ -13,6 +13,8 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -108,6 +110,7 @@ public class AlphaClientApp extends GameApplication {
                 ClientHandler.LOGIN_STATUS = true;
 
                 getGameScene().removeUI(loginScreen);
+
 
                 clientHandler.requestMap();
 

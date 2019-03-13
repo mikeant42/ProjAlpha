@@ -3,6 +3,7 @@ package server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.*;
+import shared.objects.Fish;
 
 public class LoginListener extends Listener {
 
@@ -41,6 +42,7 @@ public class LoginListener extends Listener {
             character.uid = connection.getID();
             character.name = name;
             character.inventory = new Inventory();
+            character.inventory.addObject(new Fish());
 
 
             character.combat = new CombatObject(60, 100);

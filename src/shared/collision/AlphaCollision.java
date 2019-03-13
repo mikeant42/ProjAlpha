@@ -119,7 +119,9 @@ public class AlphaCollision {
     public void handleStaticCollisions(List<TiledObject> staticCollisions, GameObject projectile) {
         for (TiledObject object : staticCollisions) {
             boolean collides = doesCollide(object.getX(), object.getY(), projectile.getX(), projectile.getY(), object.getWidth(), object.getHeight(),
+
                     projectile.getWidth(), projectile.getHeight());
+
             if (collides) {
                 handler.handleCollision(object, projectile);
             }

@@ -2,6 +2,7 @@ package server;
 
 import com.almasb.fxgl.parser.tiled.TiledMap;
 import com.almasb.fxgl.parser.tiled.TiledObject;
+import com.esotericsoftware.minlog.Log;
 import server.message.Message;
 import server.npc.NPCHandler;
 import shared.*;
@@ -293,6 +294,18 @@ public class GameMap {
             }
             if (object instanceof Network.NPCPacket) {
                 queueMessage(new Message(packet.uid, object, true));
+            }
+
+            if (packet.inventory.objects.length > 0) {
+                for (int i = 0; i < packet.inventory.objects.length; i++) {
+                    GameObject object1 = packet.inventory.getObjectSlot(i);
+                    if (object1 == null) {
+                        packet.inventory.removeObjectFromSlot(i);
+                        Log.error("Player " + packet.uid + " has an invalid inventory object");
+                    } else {
+                        object1.setUniqueGameId(assignUniqueId());
+                    }
+                }
             }
 
             entities.put(packet.uid, packet);

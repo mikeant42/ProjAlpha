@@ -165,6 +165,13 @@ public class ClientGameMap {
                         c.removeFromWorld();
                     }
                 }
+//
+//                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
+//                if (optEnt.isPresent()) {
+//
+//                }
+//
+
             }
         });
 
@@ -498,7 +505,7 @@ public class ClientGameMap {
 
 
                                 }
-                                double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+                                double blend = 1f - Math.pow(1f - 0.2, dtf * 60); // we should be at 60fps
                                 entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
 
                                  // maybe i need the tick of when i recieved the information

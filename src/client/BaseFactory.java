@@ -214,6 +214,7 @@ public class BaseFactory implements EntityFactory {
                 .with(new IDComponent("object", data.get("uid")))
                 .with(new ExpireComponent(2))
                 .viewFromAnimatedTexture(new AnimatedTexture(channel))
+                //.viewFromNode(texture(fileName, 256, 64).toAnimatedTexture(4, Duration.seconds(2)))
                 .type(EntityType.PROJECTILE)
                 //.bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 //.type(EntityType.COLLIDE)
