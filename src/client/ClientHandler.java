@@ -221,7 +221,7 @@ public class ClientHandler {
         for (GameObject object : objects) {
             if (object.getUniqueGameId() == uid) {
                 remove.add(object);
-                alphaClientApp.getActiveWorld().removeGameObject(object);
+                alphaClientApp.getActiveWorld().removeEntityLater(object.getUniqueGameId());
             }
         }
         objects.removeAll(remove);
@@ -253,7 +253,7 @@ public class ClientHandler {
         if (id == getId()) {
             characterPacket.combat = object;
         }
-        alphaClientApp.getActiveWorld().updatePlayerCombat(id, object);
+        alphaClientApp.getActiveWorld().updateCombatLocal(id, object);
     }
 
     public void updateNPCHealth(int uid, CombatObject object) {
@@ -263,7 +263,7 @@ public class ClientHandler {
             }
         }
 
-        alphaClientApp.getActiveWorld().updateNPCCombat(uid, object);
+        alphaClientApp.getActiveWorld().updateCombatLocal(uid, object);
     }
 
     public void sendHealthUpdate() {

@@ -33,7 +33,6 @@ TODO
 - authenticating packets based on timestamps, etc.
 - split server into LoginServer and GameServer
 - split client into launcher and game
-- replace the NetworkedComponent class with IDComponent
 - write more gc friendly code
 
 

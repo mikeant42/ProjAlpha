@@ -308,6 +308,7 @@ public class AlphaClientApp extends GameApplication {
         settings.setWidth(860);
         settings.setHeight(600);
         settings.setTitle("Alpha");
+        settings.setProfilingEnabled(true);
     }
 
     public static void main(String[] aargs) {

@@ -303,7 +303,7 @@ public class GameMap {
                         packet.inventory.removeObjectFromSlot(i);
                         Log.error("Player " + packet.uid + " has an invalid inventory object");
                     } else {
-                        object1.setUniqueGameId(assignUniqueId());
+                        object1.setUniqueGameId(assignUniqueId()); // object needs a new uid
                     }
                 }
             }

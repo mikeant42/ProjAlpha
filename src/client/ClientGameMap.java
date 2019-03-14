@@ -13,28 +13,13 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import shared.*;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientGameMap {
-
-    private List<CharacterPacket> playersHere = new ArrayList<>();
-    private List<Network.NPCPacket> npcsHere = new ArrayList<>();
-    private List<GameObject> objectsHere = new ArrayList<>();
-
-    private List<CharacterPacket> playersToAdd = new ArrayList<>();
-    private List<GameObject> objectsToAdd = new ArrayList<>();
-    private List<Network.NPCPacket> npcsToAdd = new ArrayList<>();
-
-    private List<CharacterPacket> playersToRemove = new ArrayList<>();
-    private List<GameObject> objectsToRemove = new ArrayList<>();
-    private List<Network.NPCPacket> npcsToRemove = new ArrayList<>();
-
     private Map<Integer, Network.GameEntity> entities = new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<Long, GameState> gameStates = new ConcurrentHashMap<>(); // storing previous gamestates to interpolate
@@ -122,69 +107,30 @@ public class ClientGameMap {
 
 
     private boolean isPlayerHere(int id) {
-        for (CharacterPacket packet : playersHere) {
-            if (packet.uid == id) {
-                return true;
-            }
-        }
-        return false;
-    }
+//        for (CharacterPacket packet : playersHere) {
+//            if (packet.uid == id) {
+//                return true;
+//            }
+//        }
+//        return false;
 
-    private boolean isNPCHere(int id) {
-        for (Network.NPCPacket packet : npcsHere) {
-            if (packet.uid == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isObjectHere(int uid) {
-        for (GameObject object : objectsHere) {
-            if (object.getUniqueGameId() == uid) {
-                return true;
-            }
-        }
-        return false;
+        return entities.get(id) != null;
     }
 
 
-
-    public void removeNetworkedEntity(int id) {
-        if (id == clientHandler.getId()) {
-            System.err.println("Attempting to remove our own player!");
-            return;
-        }
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                List<Entity> charr = FXGL.getApp().getGameWorld().getEntitiesByComponent(NetworkedComponent.class);
-                for (Entity c : charr) {
-                    if (c.getComponent(NetworkedComponent.class).getId() == id) {
-                        c.removeFromWorld();
-                    }
-                }
-//
-//                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
-//                if (optEnt.isPresent()) {
-//
-//                }
-//
-
-            }
-        });
-
-    }
 
     public void removeGameObject(GameObject object) {
-        objectsToRemove.add(object);
+        //objectsToRemove.add(object);
+        entities.remove(object.getUniqueGameId());
         System.out.println("removing " + object.getName());
-        removeNetworkedEntity(object.getUniqueGameId());
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    getEntityFromId(object.getUniqueGameId()).removeFromWorld();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (object.isProjectile()) {
                     FXGL.getApp().getGameWorld().spawn("spell impact", object.getX(), object.getY());
                 }
@@ -193,12 +139,25 @@ public class ClientGameMap {
     }
 
     public void removePlayer(int id) {
-        for (CharacterPacket packet : playersHere) {
-            if (packet.uid == id) {
-                playersToRemove.add(packet);
-                removeNetworkedEntity(packet.uid);
-                return;
-            }
+//        for (CharacterPacket packet : playersHere) {
+//            if (packet.uid == id) {
+//                playersToRemove.add(packet);
+//                removeNetworkedEntity(packet.uid);
+//                return;
+//            }
+//        }
+        if (isPlayerHere(id)) {
+            entities.remove(id);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        getEntityFromId(id).removeFromWorld();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
     }
@@ -226,13 +185,14 @@ public class ClientGameMap {
         Platform.runLater(new Runnable(){
             @Override
             public void run() {
-                if (!isPlayerHere(packet.uid)) {
+                if (entities.get(packet.uid) == null) {
                     System.out.println("Adding player " + packet.uid);
                     SpawnData data = new SpawnData(packet.x, packet.y);
                     data.put("ID", packet.uid);
                     data.put("user", packet.name);
                     FXGL.getApp().getGameWorld().spawn("player", data);
-                    playersToAdd.add(packet);
+                    //playersToAdd.add(packet);
+                    entities.put(packet.uid, packet);
                 }
             };
         });
@@ -263,7 +223,7 @@ public class ClientGameMap {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if (!isObjectHere(object.getUniqueGameId())) {
+                if (entities.get(object.getUniqueGameId()) == null) {
                     SpawnData data = new SpawnData(object.getX(), object.getY());
                     data.put("ID", object.getId());
                     data.put("uid", object.getUniqueGameId());
@@ -272,7 +232,8 @@ public class ClientGameMap {
 
                     FXGL.getApp().getGameWorld().spawn("Gameobject", data);
 
-                    objectsToAdd.add(object);
+                    //objectsToAdd.add(object);
+                    entities.put(object.getUniqueGameId(), object);
                 }
             }
         });
@@ -282,7 +243,7 @@ public class ClientGameMap {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if (!isObjectHere(projectile.object.getUniqueGameId())) {
+                if (entities.get(projectile.object.getUniqueGameId()) == null) {
                     SpawnData data = new SpawnData(projectile.projectile.originX, projectile.projectile.originY);
                     data.put("ID", projectile.object.getId());
                     data.put("uid", projectile.object.getUniqueGameId());
@@ -293,7 +254,8 @@ public class ClientGameMap {
                     FXGL.getApp().getGameWorld().spawn("projectile", data);
                     System.out.println("adding projectile");
 
-                    objectsToAdd.add(projectile.object);
+                    //objectsToAdd.add(projectile.object);
+                    entities.put(projectile.object.getUniqueGameId(), projectile.object);
                 }
             }
         });
@@ -303,7 +265,7 @@ public class ClientGameMap {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if (!isNPCHere(packet.uid)) {
+                if (entities.get(packet.uid) == null) {
                     System.out.println("Spawning npc " + packet.uid);
                     SpawnData data = new SpawnData(packet.x, packet.y);
                     data.put("ID", packet.uid);
@@ -320,44 +282,61 @@ public class ClientGameMap {
                         FXGL.getApp().getGameWorld().spawn("Standing NPC", data);
                     }
 
-                    npcsToAdd.add(packet);
+                    //npcsToAdd.add(packet);
+                    entities.put(packet.uid, packet);
                 }
             }
         });
     }
 
 
-    public void updatePlayerCombat(int id, CombatObject object) {
+
+    public void updateCombatLocal(int id, CombatObject object) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                updateCombatLocal("player", id, object);
+                Entity entity = null;
+                try {
+                    entity = getEntityFromId(id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (entity != null) {
+                    if (entity.hasComponent(CombatComponent.class)) {
+                        entity.getComponent(CombatComponent.class).setCombatObject(object);
+                    } else {
+                        entity.addComponent(new CombatComponent(object));
+                        entity.addComponent(new OverlayHealthComponent(Color.GREEN));
+                    }
+                }
             }
         });
     }
 
-    public void updateNPCCombat(int id, CombatObject object) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                updateCombatLocal("npc", id, object);
-            }
-        });
-    }
-
-
-    private void updateCombatLocal(String type, int id, CombatObject object) {
-        Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID(type, id);
+    private Entity getEntityFromId(int uid) throws Exception {
+        Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", uid);
         if (optEnt.isPresent()) {
             Entity entity = optEnt.get();
-            if (entity.hasComponent(CombatComponent.class)) {
-                entity.getComponent(CombatComponent.class).setCombatObject(object);
-            } else {
-                entity.addComponent(new CombatComponent(object));
-                entity.addComponent(new OverlayHealthComponent(Color.GREEN));
-            }
+            return entity;
+        } else {
+            throw new Exception("Tried to select character that does not exist in client game world");
         }
+
     }
+
+    public void removeEntityLater(int uid) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getEntityFromId(uid).removeFromWorld();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     // this method of interpolation introduces lag - we are seeing what the player was doing instead of what he is
     private Point2D interpolateCharacter(double x, double y, Point2D end, double dtf) {
@@ -388,32 +367,13 @@ public class ClientGameMap {
         camera.updateBounds(player);
 
 
-        playersHere.addAll(playersToAdd);
-        playersToAdd.clear();
-
-        playersHere.removeAll(playersToRemove);
-        playersToRemove.clear();
-
-        objectsHere.addAll(objectsToAdd);
-        objectsToAdd.clear();
-
-        objectsHere.removeAll(objectsToRemove);
-        objectsToRemove.clear();
-
-        npcsHere.addAll(npcsToAdd);
-        npcsToAdd.clear();
-
-        npcsHere.removeAll(npcsToRemove);
-        npcsToRemove.clear();
-
-
         // 1. Have the server send us the world.
         // 2. Draw and update all visible players
         //    - All of the networked npcs/players should update within their own loop
 
         // haven't been able to reproduce bug where the networkedcomponent is null. needs more investigation
-        if (player.hasComponent(NetworkedComponent.class))
-            player.getComponent(NetworkedComponent.class).update();
+        if (player.hasComponent(LocalPlayerComponent.class))
+            player.getComponent(LocalPlayerComponent.class).update();
 
         Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().uid);
         if (chat != null) {
@@ -426,29 +386,30 @@ public class ClientGameMap {
         }
 
 
-        if (!clientHandler.getOtherPlayers().isEmpty()) {
+        if (!entities.values().isEmpty()) {
+
+            for (Network.GameEntity entity : entities.values()) {
+
+                if (entity instanceof CharacterPacket) {
+                    CharacterPacket packet = (CharacterPacket)entity;
+
+                    // Update the other players
+                    Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", packet.uid);
+                    if (optEnt.isPresent()) {
+                        Entity playerEntity = optEnt.get();
 
 
-            for (CharacterPacket packet : playersHere) {
+                        //System.out.println(entity.getPosition());
+                        Network.UserChat entityChat = getChatMsg(packet.uid);
 
-
-                // Update the other players
-                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("player", packet.uid);
-                if (optEnt.isPresent()) {
-                    Entity entity = optEnt.get();
-
-
-                    //System.out.println(entity.getPosition());
-                    Network.UserChat entityChat = getChatMsg(packet.uid);
-
-                    //if (packet.uid == entity.getComponent(NetworkedComponent.class).getId()) {
+                        //if (packet.uid == entity.getComponent(LocalPlayerComponent.class).getId()) {
                         // We found the dude we need to update
 
                         if (entityChat != null) {
-                            if (entity.hasComponent(OverlayTextComponent.class)) {
-                                entity.getComponent(OverlayTextComponent.class).setText(entityChat.message);
+                            if (playerEntity.hasComponent(OverlayTextComponent.class)) {
+                                playerEntity.getComponent(OverlayTextComponent.class).setText(entityChat.message);
                             } else {
-                                entity.addComponent(new OverlayTextComponent(entityChat.message, 5));
+                                playerEntity.addComponent(new OverlayTextComponent(entityChat.message, 5));
                             }
 
                             messagesToAdd.remove(entityChat);
@@ -457,180 +418,132 @@ public class ClientGameMap {
 
 
                         //if (entity.getX() == packet.x && entity.getY() == packet.y) {
-                            //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                        //entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
                         //} else {
 
-                            // this block occurs whenever we recieve an update
-                            if (entity.hasComponent(AnimatedMovementComponent.class)) {
+                        // this block occurs whenever we recieve an update
+                        if (playerEntity.hasComponent(AnimatedMovementComponent.class)) {
 
 
-                                CharacterPacket previousPlayer = new CharacterPacket();
+                            playerEntity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                                if (gameStates.containsKey(tick-10)) {
-                                    List<CharacterPacket> previous = gameStates.get(tick-10).getPlayers();
+                            double distanceX = Math.abs(packet.x - playerEntity.getX());
+                            double distanceY = Math.abs(packet.y - playerEntity.getY());
 
-                                    if (previous != null) {
-                                        for (CharacterPacket previousPacket : previous) {
-                                            if (packet.uid == previousPacket.uid) {
-                                                previousPlayer = previousPacket;
-
-
-
-                                            }
-                                        }
-                                    }
-
-                                } else {
-
-                                    previousPlayer.x = packet.x;
-                                    previousPlayer.y = packet.y;
-                                }
-
-
-
-                                entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
-
-                                double distanceX = Math.abs(packet.x - entity.getX());
-                                double distanceY = Math.abs(packet.y - entity.getY());
-
-                                if (distanceX < snappingDistance && distanceY < snappingDistance) {
+                            if (distanceX < snappingDistance && distanceY < snappingDistance) {
 //                            entity.setX(packet.x);
 //                            entity.setY(packet.y);
-                                    entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                                playerEntity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
-                                } else {
-
-
+                            } else {
 
 
-                                }
-                                double blend = 1f - Math.pow(1f - 0.2, dtf * 60); // we should be at 60fps
-                                entity.setPosition(interpolateCharacter(previousPlayer.x, previousPlayer.y, entity.getPosition(), dtf));
-
-                                 // maybe i need the tick of when i recieved the information
 
 
-//                                entity.getComponent(NetworkedComponent.class).getEntity().setX(packet.x);
-//                                entity.getComponent(NetworkedComponent.class).getEntity().setY(packet.y);
                             }
+                            double blend = 1f - Math.pow(1f - 0.2, dtf * 60); // we should be at 60fps
+                            playerEntity.setPosition(interpolateCharacter(packet.x, packet.y, playerEntity.getPosition(), dtf));
+
+                            // maybe i need the tick of when i recieved the information
+
+
+//                                entity.getComponent(LocalPlayerComponent.class).getEntity().setX(packet.x);
+//                                entity.getComponent(LocalPlayerComponent.class).getEntity().setY(packet.y);
+                        }
 
                         //}
 
 
-                    //}
+                        //}
+
+
+                    }
 
 
                 }
 
-
-            }
-
-
-        }
+                if (entity instanceof Network.NPCPacket) {
+                    Network.NPCPacket packet = (Network.NPCPacket)entity;
 
 
+                    if (packet.behaviorType != BehaviorType.STATIC) {
+                        Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", packet.uid);
+                        if (optEnt.isPresent()) {
+                            Entity npcEntity = optEnt.get();
+                            if ((int)npcEntity.getX() == (int)packet.x && (int)npcEntity.getX() == (int)packet.y) {
+                                npcEntity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                                System.out.println("npc is standing still");
+                            } else {
 
-        // idea
-        // have an array of ints, each uid,  that need updating
-        // loop through that list instead of the entire list of packets
-
-       // long playerRecievedTick = 0;
-
-        for (Network.NPCPacket packet : npcsHere) {
-
-            if (packet.behaviorType != BehaviorType.STATIC) {
-                Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("npc", packet.uid);
-                if (optEnt.isPresent()) {
-                    Entity entity = optEnt.get();
-                    if ((int)entity.getX() == (int)packet.x && (int)entity.getX() == (int)packet.y) {
-                        entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
-                        System.out.println("npc is standing still");
-                    } else {
-                        //playerRecievedTick = tick;
-                        entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
-//                        entity.setX(packet.x);
-//                        entity.setY(packet.y);
-                        // this block occurs whenever we recieve an update
-                        Network.NPCPacket previousNPC = new Network.NPCPacket();
-
-                        if (gameStates.containsKey(tick-100)) {
-                            List<Network.NPCPacket> previous = gameStates.get(tick-100).getNpcs();
-
-                            if (previous != null) {
-                                for (Network.NPCPacket previousPacket : previous) {
-                                    if (packet.uid == previousPacket.uid) {
-                                        previousNPC = previousPacket;
-
-                                    }
-                                }
-                            }
-
-                        } else {
-
-                            previousNPC.x = packet.x;
-                            previousNPC.y = packet.y;
-                        }
+                                npcEntity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
 
-                        entity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
+                                npcEntity.getComponent(AnimatedMovementComponent.class).setState(packet.moveState);
 
-                        double distanceX = Math.abs(packet.x - entity.getX());
-                        double distanceY = Math.abs(packet.y - entity.getY());
+                                double distanceX = Math.abs(packet.x - npcEntity.getX());
+                                double distanceY = Math.abs(packet.y - npcEntity.getY());
 
-                        if (distanceX < snappingDistance && distanceY < snappingDistance) {
+                                if (distanceX < snappingDistance && distanceY < snappingDistance) {
 //                            entity.setX(packet.x);
 //                            entity.setY(packet.y);
-                            entity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
+                                    npcEntity.getComponent(AnimatedMovementComponent.class).setState(Data.MovementState.STANDING);
 
-                        } else {
+                                } else {
 
 
 
+
+                                }
+                                double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
+                                npcEntity.setPosition(interpolateCharacter(packet.x, packet.y, npcEntity.getPosition(), dtf));
+                            }
 
                         }
-                        double blend = 1f - Math.pow(1f - interpolationConstant, dtf * 60); // we should be at 60fps
-                        entity.setPosition(interpolateCharacter(previousNPC.x, previousNPC.y, entity.getPosition(), dtf));
                     }
 
                 }
-            }
 
 
-        }
+                if (entity instanceof GameObject) {
+                    GameObject object = (GameObject)entity;
 
+                    Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", object.getUniqueGameId());
+                    if (optEnt.isPresent()) {
+                        Entity objectEntity = optEnt.get();
 
-        for (GameObject object : objectsHere) {
-            Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("object", object.getUniqueGameId());
-            if (optEnt.isPresent()) {
-                Entity entity = optEnt.get();
-
-                System.out.println("entity pos upf");
-                if (entity.hasComponent(ProjectileComponent.class)) {
-                    ProjectileComponent component = entity.getComponent(ProjectileComponent.class);
-                    entity.setPosition(FXGLMath.lerp(component.getProjectilePosition().getX(), component.getProjectilePosition().getY(), object.getX(), object.getY(), 0.01));
-                    //entity.setX(object.getX());
-                    //entity.setY(object.getY());
+                        System.out.println("entity pos upf");
+                        if (objectEntity.hasComponent(ProjectileComponent.class)) {
+                            ProjectileComponent component = objectEntity.getComponent(ProjectileComponent.class);
+                            objectEntity.setPosition(FXGLMath.lerp(component.getProjectilePosition().getX(), component.getProjectilePosition().getY(), object.getX(), object.getY(), 0.01));
+                            //entity.setX(object.getX());
+                            //entity.setY(object.getY());
+                        }
+                    }
                 }
-            }
-        }
 
+
+            }
+
+
+
+        }
 
 
         messagesToAdd.clear();
-
-        GameState current = new GameState();
-        current.setPlayers(playersHere);
-        current.setNpcs(npcsHere);
-
-        gameStates.put(tick, current);
-
-
-        for (Long state : gameStates.keySet()) {
-            if (state.longValue() < tick-100) { // delete all the old gamestates
-                gameStates.remove(state);
-            }
-        }
+//
+//        GameState current = new GameState();
+//        current.setPlayers(playersHere);
+//        current.setNpcs(npcsHere);
+//
+//        gameStates.put(tick, current);
+//
+//
+//        for (Long state : gameStates.keySet()) {
+//            if (state.longValue() < tick-100) { // delete all the old gamestates
+//                gameStates.remove(state);
+//            }
+//        }
 
     }
 

@@ -22,7 +22,6 @@ import javafx.util.Duration;
 import shared.EntityType;
 
 
-import static com.almasb.fxgl.app.DSLKt.play;
 import static com.almasb.fxgl.app.DSLKt.texture;
 
 public class BaseFactory implements EntityFactory {
@@ -59,9 +58,8 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp uid of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
-        player.addComponent(new IDComponent("player", data.get("ID")));
+        player.addComponent(new IDComponent("entity", data.get("ID")));
 
-        player.addComponent(new NetworkedComponent(data.get("ID"), handler));
         //player.addComponent(new OverlayTextComponent(data.get("user")));
 
 
@@ -92,8 +90,8 @@ public class BaseFactory implements EntityFactory {
         // We need to set the temp uid of the player so we are in sync with the client. This data is passed from the server.
         player.addComponent(movementComponent);
 
-        player.addComponent(new IDComponent("player", data.get("ID")));
-        player.addComponent(new NetworkedComponent(data.get("ID"), handler));
+        player.addComponent(new IDComponent("entity", data.get("ID")));
+        player.addComponent(new LocalPlayerComponent(data.get("ID"), handler));
         player.addComponent(new CombatComponent(handler.getCharacterPacket().combat));
         //player.addComponent(new OverlayTextComponent(handler.getUsername()));
 
@@ -135,7 +133,7 @@ public class BaseFactory implements EntityFactory {
 
         npc.setRenderLayer(RenderLayer.TOP);
 
-        npc.addComponent(new IDComponent("npc", data.get("ID")));
+        npc.addComponent(new IDComponent("entity", data.get("ID")));
         npc.addComponent(movementComponent);
 
         return npc;
@@ -170,7 +168,7 @@ public class BaseFactory implements EntityFactory {
         }
 
 
-        npc.addComponent(new IDComponent("npc", data.get("ID")));
+        npc.addComponent(new IDComponent("entity", data.get("ID")));
         //npc.addComponent(movementComponent);
 
         return npc;
@@ -181,8 +179,7 @@ public class BaseFactory implements EntityFactory {
         Entity entity;
         entity = Entities.builder()
                 .from(data)
-                .with(new NetworkedComponent(data.get("uid"), handler))
-                //.with(new IDComponent("object", data.get("uid"))) // this is needed for us to update the object
+                .with(new IDComponent("entity", data.get("uid"))) // this is needed for us to update the object
                 .viewFromTexture("objects/" + data.get("name") + ".png")
                 .build();
 
@@ -210,8 +207,7 @@ public class BaseFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(15,15))) // these need to be the same as the projectile
                 .with(new ProjectileComponent(data.get("velX"), data.get("velY")))
                 .with(new CollidableComponent(true))
-                .with(new NetworkedComponent(data.get("uid"), handler))
-                .with(new IDComponent("object", data.get("uid")))
+                .with(new IDComponent("entity", data.get("uid")))
                 .with(new ExpireComponent(2))
                 .viewFromAnimatedTexture(new AnimatedTexture(channel))
                 //.viewFromNode(texture(fileName, 256, 64).toAnimatedTexture(4, Duration.seconds(2)))
