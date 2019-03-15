@@ -24,30 +24,6 @@ public class LocalPlayerComponent extends Component {
         movementComponent = entity.getComponent(AnimatedMovementComponent.class);
     }
 
-    public boolean isSyncMovement() {
-        return syncMovement;
-    }
-
-    public void setSyncMovement(boolean usePhysics) {
-        this.syncMovement = usePhysics;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isMoveFlag() {
-        return moveFlag;
-    }
-
-    public void setMoveFlag(boolean moveFlag) {
-        this.moveFlag = moveFlag;
-    }
-
     public void update() {
         if (movementComponent.isMoving()) {
             handler.sendMovement(movementComponent.getState(), getEntity().getX(),

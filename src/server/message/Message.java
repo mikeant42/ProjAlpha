@@ -11,10 +11,17 @@ public class Message {
     private int excludeID = 0;
 
 
+    /**
+     * @param wait - whether to to wait for players who haven't loaded their map yet
+     */
     public Message(Object content, boolean wait) {
         this(0, content, wait, true);
     }
 
+    /**
+     *
+     * @param wait - whether to to wait for players who haven't loaded their map yet
+     */
     public Message(int id, Object content, boolean wait) {
         this(id, content, wait, false);
     }

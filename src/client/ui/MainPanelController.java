@@ -63,8 +63,6 @@ public class MainPanelController implements UIController {
     // There needs to be corresponding GameObjects
     private ImageView[] inventory = new ImageView[grid*grid];
 
-    private Inventory userInvent;
-
 
     private int selected = 200; // this is out of range
 
@@ -85,8 +83,8 @@ public class MainPanelController implements UIController {
     }
 
     public void create(ClientHandler handler) {
-        this.userInvent = handler.getCharacterPacket().inventory;
         this.handler = handler;
+        Inventory userInvent = handler.getCharacterPacket().inventory;
 
         for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
             GameObject object = userInvent.getObjectSlot(i);
@@ -102,10 +100,6 @@ public class MainPanelController implements UIController {
 
     }
 
-    public Inventory getUserInvent() {
-        return userInvent;
-    }
-
     public void addItem(GameObject object) {
         for (int i = 0; i < Inventory.INVENT_SIZE; i++) {
             if (!slotTaken(i)) {
@@ -117,7 +111,7 @@ public class MainPanelController implements UIController {
 
     private void addItem(GameObject object, int i) {
         inventory[i].setImage(FXGL.getAssetLoader().loadImage("objects/" + object.getName() + ".png"));
-        userInvent.addObject(i, object);
+        handler.getCharacterPacket().inventory.addObject(i, object);
     }
 
     public void dropAll() {
@@ -189,7 +183,7 @@ public class MainPanelController implements UIController {
 
     public void dropItem() {
         if (selected <= grid*grid) { // if its a valid selection
-            if (slotTaken(selected) && userInvent != null) {
+            if (slotTaken(selected) && handler.getCharacterPacket().inventory != null) {
                 drop(selected);
             } else {
                 System.err.println("selection is null");
@@ -201,19 +195,19 @@ public class MainPanelController implements UIController {
     }
 
     private void drop(int selected) {
-        userInvent.removeObjectFromSlot(selected);
+        handler.getCharacterPacket().inventory.removeObjectFromSlot(selected);
         //System.out.println(userInvent.getObjectSlot(selected).getName());
-        System.out.println(userInvent.getObjectSlot(selected) == null);
+        System.out.println(handler.getCharacterPacket().inventory.getObjectSlot(selected) == null);
         inventory[selected].setImage(defaultImage);
         System.out.println(selected + " removing from inventory");
     }
 
     public void useItem() {
         if (selected <= grid*grid) { // if its a valid selection
-            if (slotTaken(selected) && userInvent != null) {
-                userInvent.getObjectSlot(selected).use(handler.getCharacterPacket());
+            if (slotTaken(selected) && handler.getCharacterPacket().inventory != null) {
+                handler.getCharacterPacket().inventory.getObjectSlot(selected).use(handler.getCharacterPacket());
                 handler.sendHealthUpdate();
-                System.out.println(userInvent.getObjectSlot(selected).getUniqueGameId() + " is being used");
+                System.out.println(handler.getCharacterPacket().inventory.getObjectSlot(selected).getUniqueGameId() + " is being used");
                 // if it heals update the server on new character health
 
                 drop(selected);

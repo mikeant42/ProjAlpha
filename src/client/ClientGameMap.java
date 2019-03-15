@@ -117,51 +117,6 @@ public class ClientGameMap {
         return entities.get(id) != null;
     }
 
-
-
-    public void removeGameObject(GameObject object) {
-        //objectsToRemove.add(object);
-        entities.remove(object.getUniqueGameId());
-        System.out.println("removing " + object.getName());
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    getEntityFromId(object.getUniqueGameId()).removeFromWorld();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (object.isProjectile()) {
-                    FXGL.getApp().getGameWorld().spawn("spell impact", object.getX(), object.getY());
-                }
-            }
-        });
-    }
-
-    public void removePlayer(int id) {
-//        for (CharacterPacket packet : playersHere) {
-//            if (packet.uid == id) {
-//                playersToRemove.add(packet);
-//                removeNetworkedEntity(packet.uid);
-//                return;
-//            }
-//        }
-        if (isPlayerHere(id)) {
-            entities.remove(id);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        getEntityFromId(id).removeFromWorld();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-    }
-
     public void addChatMsg(Network.UserChat chat) {
         messagesToAdd.add(chat);
     }
@@ -319,7 +274,7 @@ public class ClientGameMap {
             Entity entity = optEnt.get();
             return entity;
         } else {
-            throw new Exception("Tried to select character that does not exist in client game world");
+            throw new Exception("Tried to select entity that does not exist in client game world");
         }
 
     }
@@ -330,6 +285,14 @@ public class ClientGameMap {
             public void run() {
                 try {
                     getEntityFromId(uid).removeFromWorld();
+                    Network.GameEntity object = entities.get(uid);
+                    if (object instanceof GameObject) {
+                        GameObject object1 = (GameObject)object;
+                        if (object1.isProjectile()) {
+                            FXGL.getApp().getGameWorld().spawn("spell impact", object1.getX(), object1.getY());
+                        }
+                    }
+                    entities.remove(uid);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -444,6 +407,8 @@ public class ClientGameMap {
                             }
                             double blend = 1f - Math.pow(1f - 0.2, dtf * 60); // we should be at 60fps
                             playerEntity.setPosition(interpolateCharacter(packet.x, packet.y, playerEntity.getPosition(), dtf));
+                            //playerEntity.setX(packet.x);
+                            //playerEntity.setY(packet.y);
 
                             // maybe i need the tick of when i recieved the information
 
@@ -506,18 +471,18 @@ public class ClientGameMap {
 
 
                 if (entity instanceof GameObject) {
-                    GameObject object = (GameObject)entity;
+                    GameObject object = (GameObject) entity;
+                    if (object.isProjectile()) {
+                        Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", object.getUniqueGameId());
+                        if (optEnt.isPresent()) {
+                            Entity objectEntity = optEnt.get();
 
-                    Optional<Entity> optEnt = FXGL.getApp().getGameWorld().getEntityByID("entity", object.getUniqueGameId());
-                    if (optEnt.isPresent()) {
-                        Entity objectEntity = optEnt.get();
-
-                        System.out.println("entity pos upf");
-                        if (objectEntity.hasComponent(ProjectileComponent.class)) {
-                            ProjectileComponent component = objectEntity.getComponent(ProjectileComponent.class);
-                            objectEntity.setPosition(FXGLMath.lerp(component.getProjectilePosition().getX(), component.getProjectilePosition().getY(), object.getX(), object.getY(), 0.01));
-                            //entity.setX(object.getX());
-                            //entity.setY(object.getY());
+                            if (objectEntity.hasComponent(ProjectileComponent.class)) {
+                                ProjectileComponent component = objectEntity.getComponent(ProjectileComponent.class);
+                                objectEntity.setPosition(FXGLMath.lerp(component.getProjectilePosition().getX(), component.getProjectilePosition().getY(), object.getX(), object.getY(), 0.01));
+                                //entity.setX(object.getX());
+                                //entity.setY(object.getY());
+                            }
                         }
                     }
                 }

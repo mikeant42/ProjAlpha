@@ -28,9 +28,8 @@ public class CharacterResponseListener extends Listener {
         // IF we get the command to remove from the server all we do is remove it from the game world
         if (object instanceof Network.RemoveCharacter) {
             Network.RemoveCharacter msg = (Network.RemoveCharacter) object;
-            handler.getAlphaClientApp().getActiveWorld().removePlayer(msg.id);
+            handler.getAlphaClientApp().getActiveWorld().removeEntityLater(msg.id);
             System.out.println("Removing client " + msg.id + " from the world");
-            return;
         }
 
         if (object instanceof Network.UpdateCharacterPacket) {

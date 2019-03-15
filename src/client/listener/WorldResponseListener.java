@@ -40,7 +40,6 @@ public class WorldResponseListener extends Listener {
         if (object instanceof Network.RemoveGameObject) {
             Network.RemoveGameObject obj = (Network.RemoveGameObject)object;
             handler.removeGameObject(obj.uid);
-            System.out.println("Removing obj");
         }
 
         if (object instanceof Network.ObjectPositionUpdate) {

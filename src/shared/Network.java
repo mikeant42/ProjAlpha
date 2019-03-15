@@ -160,10 +160,20 @@ public class Network {
         public int id;
     }
 
+    static public class UpdatePlayerHit extends UpdatePlayerCombat {
+        public Projectile projectile;
+    }
+
+
     static public class UpdateNPCCombat {
         public CombatObject object;
         public int id;
     }
+
+    static public class UpdateNPCHit extends UpdateNPCCombat {
+        public Projectile projectile;
+    }
+
 
     static public class UpdateCharacterPacket {
         public CharacterPacket player;

@@ -62,10 +62,7 @@ public class CharacterCommandListener extends Listener {
             Network.UpdatePlayerInventory updateCharacter = (Network.UpdatePlayerInventory)object;
 
 
-            CharacterPacket packet = handler.getLoggedIn().get(updateCharacter.cid);
-            if (packet != null && packet.isLoaded) {
-                packet.inventory = updateCharacter.object;
-            }
+            handler.getServer().getMap().updatePlayerInventory(updateCharacter.cid, ((Network.UpdatePlayerInventory) object).object);
 
 
         }

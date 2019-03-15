@@ -10,7 +10,6 @@ import shared.collision.AlphaCollision;
 import shared.collision.AlphaCollisionHandler;
 import shared.objects.Fish;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -41,7 +40,7 @@ public class GameMap {
     // maps the (uid, object) of each game entity
     private Map<Integer, Network.GameEntity> entities = new ConcurrentHashMap<>();
 
-    private ProjectileManager projectileManager;
+    private ProjectileHandler projectileHandler;
 
     private TiledMap map;
 
@@ -76,14 +75,14 @@ public class GameMap {
 
         addCollidables();
 
-        projectileManager = new ProjectileManager(this);
+        projectileHandler = new ProjectileHandler(this);
 
         collision = new AlphaCollision(new AlphaCollisionHandler() {
             @Override
             public void handleCollision(TiledObject object, GameObject projectile) {
                 if (projectile.isProjectile()) {
                     removeGameObject(projectile);
-                    projectileManager.remove(projectile.getUniqueGameId());
+                    projectileHandler.remove(projectile.getUniqueGameId());
                     System.out.println("world collision");
                 }
             }
@@ -96,8 +95,7 @@ public class GameMap {
                     addInventory(player, object);
                     System.out.println("picking up non projectile");
                 } else {
-                    if (projectileManager.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
-                        projectileManager.remove(object.getUniqueGameId());
+                    if (projectileHandler.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
                         removeGameObject(object);
 
                         // test
@@ -110,8 +108,10 @@ public class GameMap {
 
                         if (player.combat.getHealth() <= 0) {
                             killPlayer(player);
-                            System.out.println("Client " + projectileManager.getSource(object.getUniqueGameId()) + " killed client " + object.uid);
+                            System.out.println("Client " + projectileHandler.getSource(object.getUniqueGameId()) + " killed client " + player.uid);
                         }
+
+                        projectileHandler.remove(object.getUniqueGameId());
 
                     }
 
@@ -121,7 +121,7 @@ public class GameMap {
             @Override
             public void handleCollision(GameObject object, Network.NPCPacket npc) {
                 if (npc.type == EntityType.ENEMY &&  object.isProjectile()) {
-                    projectileManager.remove(object.getUniqueGameId());
+                    projectileHandler.remove(object.getUniqueGameId());
                     removeGameObject(object);
 
                     // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
@@ -202,6 +202,9 @@ public class GameMap {
     }
 
 
+    /*
+    This updates in its own thread at a lower rate than the server action updates
+     */
     public void updateExternal(long broadcastTick) {
         // this is the code broadcasting to the clients
         // this code will only run ~10 times a second
@@ -211,6 +214,15 @@ public class GameMap {
                 objectsToSend.remove(packet);
         }
 
+    }
+
+    public void updatePlayerInventory(int uid, Inventory inventory) {
+        CharacterPacket packet = (CharacterPacket) entities.get(uid);
+        if (packet != null && packet.isLoaded) {
+            System.out.println("reloading inventory " + (packet.inventory.objects.length == inventory.objects.length));
+            packet.inventory = inventory;
+
+        }
     }
 
     public void removePlayer(int uid) {
@@ -224,7 +236,7 @@ public class GameMap {
     public void updateAction(long tick) {
         this.tick = tick;
 
-        projectileManager.update(tick);
+        projectileHandler.update(tick);
 
         // every so often check if the player is somewhere he shouldnt be
 
@@ -417,7 +429,7 @@ public class GameMap {
     }
 
     public void addProjectile(Network.AddProjectile packet) {
-        Projectile projectile = projectileManager.addProjectile(packet, tick);
+        Projectile projectile = projectileHandler.addProjectile(packet, tick);
         queueMessage(new Message(projectile, false));
     }
 

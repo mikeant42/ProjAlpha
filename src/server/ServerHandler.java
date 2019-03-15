@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.esotericsoftware.kryonet.Connection;
 
@@ -21,6 +23,7 @@ public class ServerHandler {
     private boolean running = true;
     private long tick = 0;
     private long fakeFPS = 60;
+    private long broadcastFPS = 5;
     private long broadcastTick = 0;
     private int broadcastTickBuffer = 11; // every x internal ticks we send an update to the clients
 
@@ -46,6 +49,10 @@ public class ServerHandler {
         server.bind(Network.port);
         server.start();
 
+        //runBroadcastLoop();
+
+        //ExecutorService service = Executors.newCachedThreadPool();
+
 
         Thread updateThread = new Thread(new Runnable() {
             @Override
@@ -62,13 +69,6 @@ public class ServerHandler {
                     now = System.nanoTime();
 
                     tick();
-                    if (broadcastTick + broadcastTickBuffer == tick) {
-                        broadcastTick = tick;
-
-
-                        server.getMap().updateExternal(broadcastTick);
-
-                    }
 
                     server.getMap().updateAction(tick);
 
@@ -87,13 +87,55 @@ public class ServerHandler {
 
             }
         });
-        updateThread.run();
+        updateThread.start();
+
+        runBroadcastLoop();
+
+
 
 
 
         Log.TRACE();
 
 //    }
+    }
+
+    public void runBroadcastLoop() {
+        Thread updateThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.NONE();
+
+                long now;
+                long updateTime;
+                long wait;
+
+                final long OPTIMAL_TIME = 1000000000 / broadcastFPS;
+
+                while (running) {
+                    now = System.nanoTime();
+
+                    broadcastTick++;
+                    server.getMap().updateExternal(broadcastTick);
+
+
+
+                    updateTime = System.nanoTime() - now;
+                    wait = (OPTIMAL_TIME - updateTime) / 1000000;
+
+                    try {
+                        Thread.sleep(wait);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println("thread sleep error");
+                    }
+
+
+                }
+
+            }
+        });
+        updateThread.start();
     }
 
     private void tick() {

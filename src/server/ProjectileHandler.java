@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
-public class ProjectileManager {
+public class ProjectileHandler {
 //    private List<Projectile> projectilesToAdd = new ArrayList<>();
 //    private List<Projectile> projectilesToRemove = new ArrayList<>();
 //    private List<Projectile> projectiles;
@@ -23,7 +23,7 @@ public class ProjectileManager {
     private GameMap map;
     public static final int LIFESPAN_IN_TICKS = 100;
 
-    public ProjectileManager(GameMap map) {
+    public ProjectileHandler(GameMap map) {
 
         this.map = map;
     }
