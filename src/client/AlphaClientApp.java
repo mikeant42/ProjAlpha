@@ -6,22 +6,31 @@ import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.listener.ExitListener;
+import com.almasb.fxgl.entity.Entities;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.settings.GameSettings;
+import com.almasb.fxgl.ui.FXGLTextFlow;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import shared.*;
 import shared.collision.AlphaCollision;
 
+import java.awt.*;
 import java.util.Map;
 
 
@@ -33,6 +42,7 @@ public class AlphaClientApp extends GameApplication {
     private UI mainPanel;
 
     private ProgressBar hpBar;
+    private ProgressBar manaBar;
 
     private LoginController loginController;
 
@@ -55,6 +65,10 @@ public class AlphaClientApp extends GameApplication {
     private boolean panelOpen = false;
 
     private MainPanelController panelControl;
+
+    private Entity mouseAttackLook;
+
+    private Text playerStateText;
 
     public AlphaClientApp() {
         clientHandler = new ClientHandler(this);
@@ -145,7 +159,29 @@ public class AlphaClientApp extends GameApplication {
                 pane.getChildren().add(hpBar);
                 getGameScene().addUINodes(pane);
 
+                manaBar = new ProgressBar();
+                manaBar.setMinValue(0);
+                manaBar.setMaxValue(Data.PlayerConstants.MAX_HEALTH);
+                manaBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getMana());
+                manaBar.setWidth(healthWidth);
+                manaBar.setLabelVisible(true);
+                manaBar.setLabelPosition(Position.BOTTOM);
+                manaBar.setFill(Color.BLUE);
 
+                Pane manaPane = new Pane();
+                manaPane.setTranslateX(FXGL.getAppWidth()-healthWidth-healthWidth);
+                manaPane.getChildren().add(manaBar);
+                getGameScene().addUINodes(manaPane);
+
+
+                playerStateText = new Text("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
+                playerStateText.setFill(Color.DARKSLATEGREY);
+                playerStateText.setStrokeWidth(2.2);
+
+
+                getGameScene().addUINodes(playerStateText);
+                playerStateText.setX(10);
+                playerStateText.setY(10);
 
 
 
@@ -204,6 +240,25 @@ public class AlphaClientApp extends GameApplication {
         }, KeyCode.A);
 
 
+
+
+        UserAction changeState = new UserAction("Change State") {
+            @Override
+            protected void onActionBegin() {
+                if (getGameState().getInt("playerState") == Data.AlphaGameState.FIGHTING) {
+                    getGameState().setValue("playerState", Data.AlphaGameState.BUYING);
+                    playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
+                    //playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
+                } else  if (getGameState().getInt("playerState") == Data.AlphaGameState.BUYING) {
+                    getGameState().setValue("playerState", Data.AlphaGameState.FIGHTING);
+                    playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
+                    //playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
+                }
+
+            }
+        };
+
+        getInput().addAction(changeState, KeyCode.C);
 
 
         UserAction click = new UserAction("Click") {
@@ -291,6 +346,8 @@ public class AlphaClientApp extends GameApplication {
 
         if (gameMap.isMapLoaded()) {
             hpBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getHealth());
+            manaBar.setCurrentValue(clientHandler.getCharacterPacket().combat.getMana());
+
 
 
             //System.out.println(getTick());

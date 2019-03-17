@@ -11,6 +11,7 @@ public class Fish extends GameObject{
         setName(Names.Food.FISH);
     }
 
+    // this needs to get out of this class
     @Override
     public void use(CharacterPacket packet) {
         int effect = (int)(packet.combat.getHealth() + (Data.PlayerConstants.MAX_HEALTH * healAmount));

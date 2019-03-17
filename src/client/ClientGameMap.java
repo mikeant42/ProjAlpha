@@ -10,6 +10,8 @@ import com.almasb.fxgl.parser.tiled.TiledObject;
 import com.almasb.fxgl.util.Optional;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shared.*;
 
@@ -104,19 +106,6 @@ public class ClientGameMap {
 
 
 
-
-
-    private boolean isPlayerHere(int id) {
-//        for (CharacterPacket packet : playersHere) {
-//            if (packet.uid == id) {
-//                return true;
-//            }
-//        }
-//        return false;
-
-        return entities.get(id) != null;
-    }
-
     public void addChatMsg(Network.UserChat chat) {
         messagesToAdd.add(chat);
     }
@@ -153,26 +142,6 @@ public class ClientGameMap {
         });
     }
 
-//    public void addProjectile(Network.AddProjectile projectile) {
-//        System.out.println("should add");
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                SpawnData data = new SpawnData(projectile.originX, projectile.originY);
-//                data.put("mouseX", projectile.destinationX);
-//                data.put("mouseY", projectile.destinationY);
-//                data.put("name", "tornado");
-//                if (projectile.sourceUser == clientHandler.getId()) {
-//                    data.put("doesOwn", true);
-//                } else {
-//                    data.put("doesOwn", false);
-//                }
-//
-//                FXGL.getApp().getGameWorld().spawn("projectile", data);
-//            }
-//        });
-//
-//    }
 
     public void addGameObject(GameObject object) {
         Platform.runLater(new Runnable() {

@@ -19,8 +19,21 @@ public class Data {
     }
 
     static public class AlphaGameState {
-        public static int TALKING  = 0;
+        public static int BUYING   = 0;
         public static int FIGHTING = 1;
+
+        public static String stateToString(int state) {
+            String val = "";
+            switch (state) {
+                case 0:
+                    val = "BUYING";
+                    break;
+                case 1:
+                    val = "FIGHTING";
+                    break;
+            }
+            return val;
+        }
     }
 
 }

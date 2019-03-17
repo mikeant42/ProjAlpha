@@ -45,8 +45,6 @@ Optimizations
 Bugs
 ----
 - sometimes the client side collision detection will make the character get stuck
-- other npcs don't show the idle animation
-- npcs "twitch" a little when they choose to remain idle (RoamingBehavior)
 
 
 Mobile

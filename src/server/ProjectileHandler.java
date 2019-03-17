@@ -32,7 +32,7 @@ public class ProjectileHandler {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
         projectile1.tickCreated = tick;
-       // projectile1.uid = map.assignUniqueId();
+       // projectile1.uid = map.asdddddddddddddddsignUniqueId();
 
         GameObject projObject = new GameObject(IDs.Spell.TORNADO);
         projObject.setProjectile(true);
@@ -48,8 +48,10 @@ public class ProjectileHandler {
 
 
 
+
         tx/=mag;
         ty/=mag;
+        System.out.println(tx + " , " + ty);
         tx*=projectile1.moveSpeed;
         ty*=projectile1.moveSpeed;
         projectile1.velX = tx;
