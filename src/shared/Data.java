@@ -18,6 +18,11 @@ public class Data {
         public static int MAX_MANA   = 100;
     }
 
+    static public class Shield {
+        public static int NONE    = -1;
+        public static int GRAVITY = 0;
+    }
+
     static public class AlphaGameState {
         public static int BUYING   = 0;
         public static int FIGHTING = 1;

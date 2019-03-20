@@ -3,6 +3,8 @@ package shared;
 public class CombatObject {
     private int health;
     private int mana;
+    private int shield = Data.Shield.NONE;
+    
 
     public CombatObject() {
 
@@ -28,5 +30,13 @@ public class CombatObject {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public int getShield() {
+        return shield;
+    }
+
+    public void setShield(int shield) {
+        this.shield = shield;
     }
 }

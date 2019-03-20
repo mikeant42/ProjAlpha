@@ -20,9 +20,6 @@ import javafx.scene.layout.GridPane;
 import shared.GameObject;
 import shared.Inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainPanelController implements UIController {
 
     @FXML
@@ -206,7 +203,7 @@ public class MainPanelController implements UIController {
         if (selected <= grid*grid) { // if its a valid selection
             if (slotTaken(selected) && handler.getCharacterPacket().inventory != null) {
                 handler.getCharacterPacket().inventory.getObjectSlot(selected).use(handler.getCharacterPacket());
-                handler.sendHealthUpdate();
+                handler.sendCombatObjectUpdate();
                 System.out.println(handler.getCharacterPacket().inventory.getObjectSlot(selected).getUniqueGameId() + " is being used");
                 // if it heals update the server on new character health
 

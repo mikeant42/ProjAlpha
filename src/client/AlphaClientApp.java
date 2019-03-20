@@ -260,6 +260,22 @@ public class AlphaClientApp extends GameApplication {
 
         getInput().addAction(changeState, KeyCode.C);
 
+        UserAction useShield = new UserAction("Set Shield") {
+            @Override
+            protected void onActionBegin() {
+                if (gameMap.isMapLoaded()) {
+                    if (clientHandler.getCharacterPacket().combat.getShield() == Data.Shield.NONE) {
+                        clientHandler.getCharacterPacket().combat.setShield(Data.Shield.GRAVITY);
+                    } else {
+                        clientHandler.getCharacterPacket().combat.setShield(Data.Shield.NONE);
+                    }
+                    clientHandler.sendCombatObjectUpdate();
+                }
+            }
+        };
+
+        getInput().addAction(useShield, KeyCode.X);
+
 
         UserAction click = new UserAction("Click") {
             @Override

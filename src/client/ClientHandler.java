@@ -266,7 +266,7 @@ public class ClientHandler {
         alphaClientApp.getActiveWorld().updateCombatLocal(uid, object);
     }
 
-    public void sendHealthUpdate() {
+    public void sendCombatObjectUpdate() {
         Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
         combat.object = characterPacket.combat;
         combat.id = getId();

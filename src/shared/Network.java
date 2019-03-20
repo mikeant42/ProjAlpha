@@ -4,13 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import shared.objects.Fish;
 
-// This class is a convenient place to keep things common to both the client and server.
 
-/**
- * There are two different types of ids
- * - The connection uid
- * - The npc uid assigned to a non Connection networtk entity
- */
 public class Network {
     static public final int port = 54555;
 
@@ -50,6 +44,7 @@ public class Network {
         kryo.register(Projectile.class);
         kryo.register(UpdateCharacterPacket.class);
         kryo.register(GameEntity.class);
+        kryo.register(Data.Shield.class);
     }
 
     static public class Login {

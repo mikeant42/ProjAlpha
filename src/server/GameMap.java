@@ -101,6 +101,8 @@ public class GameMap {
                         // test
                         Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
                         combat.id = player.uid;
+                        if (player.combat.getShield() != Data.Shield.NONE)
+                            System.out.println("hitting with shield");
                         player.combat.setHealth(player.combat.getHealth() - 10);
                         combat.object = player.combat;
 

@@ -232,6 +232,8 @@ public class ClientGameMap {
                         entity.addComponent(new CombatComponent(object));
                         entity.addComponent(new OverlayHealthComponent(Color.GREEN));
                     }
+                    entity.getComponent(CombatComponent.class).updateShield();
+
                 }
             }
         });
