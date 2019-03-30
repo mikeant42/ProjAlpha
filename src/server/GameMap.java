@@ -46,8 +46,6 @@ public class GameMap {
 
     private List<TiledObject> staticCollisions = new ArrayList<>();
 
-    private boolean updateInternal = true;
-
     private double respawnX, respawnY; // a player respawn point in every map
 
     long tick = 0;
@@ -221,7 +219,6 @@ public class GameMap {
     public void updatePlayerInventory(int uid, Inventory inventory) {
         CharacterPacket packet = (CharacterPacket) entities.get(uid);
         if (packet != null && packet.isLoaded) {
-            System.out.println("reloading inventory " + (packet.inventory.objects.length == inventory.objects.length));
             packet.inventory = inventory;
 
         }
@@ -275,9 +272,13 @@ public class GameMap {
 
                 collision.handleNPCCollision(entities.values(), npc);
 
-                Network.UpdateNPC updateNPC = npcHandler.updateData(npc);
+                Network.UpdateNPC updateNPC = npcHandler.updateData(npc.uid);
                 if (updateNPC != null) {
                     queueMessage(new Message(updateNPC, false));
+
+                    // update the npcs internal values
+                    npc.x = updateNPC.x;
+                    npc.y = updateNPC.y;
                 }
             }
 
@@ -285,7 +286,7 @@ public class GameMap {
         }
     }
 
-    public void addInventory(CharacterPacket packet, GameObject object) {
+    public void addInventory(CharacterPacket packet, GameObject object) { // throws exception
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
         inventoryItem.object = object;
 
@@ -356,10 +357,6 @@ public class GameMap {
 
     public void addGameObject(GameObject object) {
         addGameObjectLocal(object);
-
-        updateInternal = true;
-
-        System.out.println("adding obj");
         //server.sendToAllReady(object);`
         queueMessage(new Message(object, false));
     }

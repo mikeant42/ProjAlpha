@@ -40,13 +40,11 @@ public class ClientGameMap {
 
     private Camera camera;
 
-    private int changeTick = 0;
 
     // these are for players and npcs
     private double interpolationConstant = 0.9;
     private double snappingDistance = 0.9; //
 
-    private long playerTick = 0;
 
 
     public ClientGameMap() {
@@ -137,6 +135,8 @@ public class ClientGameMap {
                     FXGL.getApp().getGameWorld().spawn("player", data);
                     //playersToAdd.add(packet);
                     entities.put(packet.uid, packet);
+
+                    updateCombatLocalNow(packet.uid, packet.combat);
                 }
             };
         });
@@ -214,27 +214,30 @@ public class ClientGameMap {
     }
 
 
+    private void updateCombatLocalNow(int id, CombatObject object) {
+        Entity entity = null;
+        try {
+            entity = getEntityFromId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (entity != null) {
+            if (entity.hasComponent(CombatComponent.class)) {
+                entity.getComponent(CombatComponent.class).setCombatObject(object);
+            } else {
+                entity.addComponent(new CombatComponent(object));
+                entity.addComponent(new OverlayHealthComponent(Color.GREEN));
+            }
+            entity.getComponent(CombatComponent.class).updateShield();
+
+        }
+    }
 
     public void updateCombatLocal(int id, CombatObject object) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Entity entity = null;
-                try {
-                    entity = getEntityFromId(id);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (entity != null) {
-                    if (entity.hasComponent(CombatComponent.class)) {
-                        entity.getComponent(CombatComponent.class).setCombatObject(object);
-                    } else {
-                        entity.addComponent(new CombatComponent(object));
-                        entity.addComponent(new OverlayHealthComponent(Color.GREEN));
-                    }
-                    entity.getComponent(CombatComponent.class).updateShield();
-
-                }
+               updateCombatLocalNow(id, object);
             }
         });
     }
@@ -309,6 +312,7 @@ public class ClientGameMap {
         if (player.hasComponent(LocalPlayerComponent.class))
             player.getComponent(LocalPlayerComponent.class).update();
 
+        // this needs to be put somewhere else
         Network.UserChat chat = getChatMsg(clientHandler.getCharacterPacket().uid);
         if (chat != null) {
             if (player.hasComponent(OverlayTextComponent.class)) {

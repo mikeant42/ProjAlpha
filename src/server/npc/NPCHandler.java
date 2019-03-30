@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NPCHandler {
 
     // maybe a class Spawner which spawns and keeps track of an entity
-    private Map<Network.NPCPacket, NPCBehavior> npcs = new ConcurrentHashMap<>();
+    private Map<Integer, NPCBehavior> npcs = new ConcurrentHashMap<>();
 
 
     public NPCHandler() {
@@ -32,19 +32,19 @@ public class NPCHandler {
         switch (type) {
             case ROAMING:
                 behavior = new RoamingBehavior(packet.x, packet.y);
-                npcs.put(packet, behavior);
+                npcs.put(packet.uid, behavior);
                 return;
             case STATIC:
                 behavior = new NPCBehavior(packet.x, packet.y);
                 behavior.setAllowedToMove(false);
-                npcs.put(packet, behavior);
+                npcs.put(packet.uid, behavior);
         }
 
 
     }
 
-    public Network.UpdateNPC updateData(Network.NPCPacket packet) {
-        NPCBehavior behavior = npcs.get(packet);
+    public Network.UpdateNPC updateData(int id) {
+        NPCBehavior behavior = npcs.get(id);
 
         behavior.update();
 
@@ -53,12 +53,12 @@ public class NPCHandler {
             Network.UpdateNPC updateNPC = new Network.UpdateNPC();
             updateNPC.x = behavior.getX();
             updateNPC.y = behavior.getY();
-            updateNPC.uid = packet.uid;
+            updateNPC.uid = id;
             updateNPC.moveState = behavior.getState();
 
-            // also update our packet
-            packet.x = behavior.getX();
-            packet.y = behavior.getY();
+//            // also update our packet
+//            packet.x = behavior.getX();
+//            packet.y = behavior.getY();
 
 
             return updateNPC;
@@ -72,7 +72,7 @@ public class NPCHandler {
 
     public void addSpawnPoint() {}
 
-    public Map<Network.NPCPacket, NPCBehavior> getNpcs() {
+    public Map<Integer, NPCBehavior> getNpcs() {
         return npcs;
     }
 }

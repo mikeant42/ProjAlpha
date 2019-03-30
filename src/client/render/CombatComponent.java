@@ -28,7 +28,6 @@ public class CombatComponent extends Component {
         switch (combatObject.getShield()) {
             case -1:
                 if (shieldOn) {
-                    shield.setVisible(false);
                     getEntity().getView().removeNode(shield);
                 }
                 shieldOn = false;
@@ -40,7 +39,7 @@ public class CombatComponent extends Component {
                     shield.setScaleX(0.7);
                     shield.setScaleY(0.7);
                     shield.setLayoutX(-shield.getImage().getWidth() / 2 + offset);
-                    shield.setLayoutY(-shield.getImage().getHeight() / 2 + offset + 3);
+                    shield.setLayoutY(-shield.getImage().getHeight() / 2 + offset + 8);
                     shieldOn = true;
                 }
                 break;

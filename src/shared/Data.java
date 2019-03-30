@@ -24,14 +24,14 @@ public class Data {
     }
 
     static public class AlphaGameState {
-        public static int BUYING   = 0;
-        public static int FIGHTING = 1;
+        public static int RESTORING   = 0;
+        public static int FIGHTING    = 1;
 
         public static String stateToString(int state) {
             String val = "";
             switch (state) {
                 case 0:
-                    val = "BUYING";
+                    val = "RESTORING";
                     break;
                 case 1:
                     val = "FIGHTING";

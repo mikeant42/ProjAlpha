@@ -246,10 +246,10 @@ public class AlphaClientApp extends GameApplication {
             @Override
             protected void onActionBegin() {
                 if (getGameState().getInt("playerState") == Data.AlphaGameState.FIGHTING) {
-                    getGameState().setValue("playerState", Data.AlphaGameState.BUYING);
+                    getGameState().setValue("playerState", Data.AlphaGameState.RESTORING);
                     playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
                     //playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
-                } else  if (getGameState().getInt("playerState") == Data.AlphaGameState.BUYING) {
+                } else  if (getGameState().getInt("playerState") == Data.AlphaGameState.RESTORING) {
                     getGameState().setValue("playerState", Data.AlphaGameState.FIGHTING);
                     playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
                     //playerStateText.setText("PlayerState " + Data.AlphaGameState.stateToString(getGameState().getInt("playerState")));
@@ -265,7 +265,7 @@ public class AlphaClientApp extends GameApplication {
             protected void onActionBegin() {
                 if (gameMap.isMapLoaded()) {
                     if (clientHandler.getCharacterPacket().combat.getShield() == Data.Shield.NONE) {
-                        clientHandler.getCharacterPacket().combat.setShield(Data.Shield.GRAVITY);
+                        clientHandler.getCharacterPacket().combat.setShield(Data.Shield.GRAVITY); // pull from player deck - active shield
                     } else {
                         clientHandler.getCharacterPacket().combat.setShield(Data.Shield.NONE);
                     }
