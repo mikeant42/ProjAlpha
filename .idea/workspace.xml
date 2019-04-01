@@ -10,65 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="412cecc1-ef73-4790-b089-3fceb850790d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/AlphaClient_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/AlphaServer_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MAINIFEST_SERVER.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/manifests/client/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/manifests/server/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/Launcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjAlpha.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProjAlpha.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-10-Mar-2019-18.25.18.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-11-Mar-2019-01.42.17.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-12-Mar-2019-17.51.56.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-12-Mar-2019-18.54.50.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-14-Mar-2019-16.10.00.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-14-Mar-2019-21.53.27.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/FXGL-15-Mar-2019-02.17.27.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/assets/ui/login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/assets/ui/login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$11.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$12.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/AlphaClientApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientGameMap$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ClientHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/client/ui/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/GameMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/server/ProjectileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/server/ProjectileHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/AlphaUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/AlphaUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/CharacterPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/CharacterPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$MonsterPacket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$NPCPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$NPCPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateCharacterPacket.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateCharacterPacket.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPCCombat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPCCombat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPCHit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network$UpdateNPCHit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Network.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Projectile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProjAlpha/shared/Projectile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/ui/login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/ui/login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/AlphaClientApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/AlphaClientApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ClientGameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientGameMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/ui/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ui/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/GameMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/GameMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/ProjectileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/ProjectileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/AlphaUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/AlphaUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/CharacterPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/CharacterPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Network.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/Projectile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/Projectile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/system/fxgl.bundle" beforeDir="false" afterPath="$PROJECT_DIR$/system/fxgl.bundle" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -165,7 +108,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="3" selection-start-column="3" selection-end-column="3" />
+              <caret column="4" selection-start-column="4" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -385,7 +328,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/boss/Documents/ProjAlpha/src/server/Main.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554077650350" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554077759822" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets/manifests/server" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
@@ -931,7 +874,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="3" selection-start-column="3" selection-end-column="3" />
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
         </state>
       </provider>
     </entry>
