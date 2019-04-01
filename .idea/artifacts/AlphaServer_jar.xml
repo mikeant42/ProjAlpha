@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AlphaServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AlphaServer_jar</output-path>
+    <root id="archive" name="AlphaServer.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/assets/manifests/server/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="ProjAlpha" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/fxgl-0.5.4-uber.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/fxgl-0.5.3-uber.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/src.zip" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/shared/lib/kryonet-2.21-all.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

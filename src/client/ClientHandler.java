@@ -27,7 +27,7 @@ different types of packets.
 public class ClientHandler {
     private Client client;
 
-    private String host = "localhost";
+    //private String defaultHost = "localhost";
 
     public static boolean LOGIN_STATUS = false;
 
@@ -143,9 +143,9 @@ public class ClientHandler {
         return false;
     }
 
-    public void connectServer() {
+    public void connectServer(String hostName) {
         try {
-            client.connect(5000, host, Network.port);
+            client.connect(5000, hostName, Network.port);
             // Server communication after connection can go here, or in Listener#connected().
         } catch (IOException ex) {
             ex.printStackTrace();

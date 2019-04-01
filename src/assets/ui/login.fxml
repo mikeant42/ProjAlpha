@@ -42,6 +42,12 @@
          </effect></Button>
       <Label fx:id="loginMsg" layoutX="396.0" layoutY="220.0" text=" " textFill="#eb0808" />
       <PasswordField fx:id="password" layoutX="232.0" layoutY="86.0" />
+      <Text fill="#00ede0" layoutX="448.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Host:">
+         <effect>
+            <Glow level="0.41" />
+         </effect>
+      </Text>
+      <TextField fx:id="hostField" layoutX="490.0" layoutY="132.0" minWidth="96.0" prefHeight="27.0" prefWidth="96.0" text="localhost" />
 
    </children>
 </Pane>

@@ -40,11 +40,11 @@ public class Network {
         kryo.register(UpdateNPCCombat.class);
         kryo.register(BehaviorType.class);
         kryo.register(ReadyToRecieve.class);
-        kryo.register(MonsterPacket.class);
         kryo.register(Projectile.class);
         kryo.register(UpdateCharacterPacket.class);
         kryo.register(GameEntity.class);
         kryo.register(Data.Shield.class);
+        kryo.register(CombatEntity.class);
     }
 
     static public class Login {
@@ -93,7 +93,7 @@ public class Network {
         public CharacterPacket packet;
     }
 
-    static public class NPCPacket extends GameEntity {
+    static public class NPCPacket extends CombatEntity {
         public EntityType type;
         public int moveState;
         public BehaviorType behaviorType;
@@ -102,12 +102,12 @@ public class Network {
         public boolean interactable;
         public boolean trader;
 
+    }
+
+    static public class CombatEntity extends GameEntity {
         public CombatObject combat;
     }
 
-    static public class MonsterPacket extends NPCPacket {
-        public CombatObject combatObject;
-    }
 
     static public class UpdateNPC {
         public double x;
@@ -159,6 +159,10 @@ public class Network {
         public Projectile projectile;
     }
 
+    static public class KillNPC {
+        public int uid;
+        public int killerID;
+    }
 
     static public class UpdateNPCCombat {
         public CombatObject object;

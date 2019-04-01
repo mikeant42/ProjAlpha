@@ -72,7 +72,7 @@ public class AlphaClientApp extends GameApplication {
 
     public AlphaClientApp() {
         clientHandler = new ClientHandler(this);
-        clientHandler.connectServer();
+        //clientHandler.connectServer();
 
         gameMap = new ClientGameMap();
 
@@ -105,15 +105,15 @@ public class AlphaClientApp extends GameApplication {
      */
     public void startGame() {
         getGameWorld().addEntityFactory(new BaseFactory(clientHandler));
-        this.addExitListener(new ExitListener() {
-            @Override
-            public void onExit() {
-                System.out.println("Bye!");
-                clientHandler.quit(clientHandler.getId());
-                clientHandler.getClient().close();
-                System.exit(0);
-            }
-        });
+//        this.addExitListener(new ExitListener() {
+//            @Override
+//            public void onExit() {
+//                System.out.println("Bye!");
+//                clientHandler.quit(clientHandler.getId());
+//                clientHandler.getClient().close();
+//                System.exit(0);
+//            }
+//        });
 
         Platform.runLater(new Runnable(){
             @Override

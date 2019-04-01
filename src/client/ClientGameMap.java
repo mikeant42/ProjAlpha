@@ -68,12 +68,12 @@ public class ClientGameMap {
             @Override
             public void run() {
                 if (id == 1) {
-                    try {
-                        map = AlphaUtil.parseWorld("src/assets/json/starter.xml");/////
+                //    try {
+                        map = AlphaUtil.parseWorld(getClass().getClassLoader().getResourceAsStream("src/assets/json/starter.xml"));/////
 
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                  //  } catch (FileNotFoundException e) {
+                 //       e.printStackTrace();
+                  //  }
 
                 }
 

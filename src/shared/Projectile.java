@@ -9,4 +9,6 @@ public class Projectile {
 
     public double velX, velY;
     public float moveSpeed = 4;
+
+    public int damageEffect;
 }

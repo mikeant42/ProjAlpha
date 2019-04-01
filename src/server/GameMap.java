@@ -65,11 +65,11 @@ public class GameMap {
 
         this.mapID = 1;
 
-        try {
-            map = AlphaUtil.parseWorld("src/assets/json/starter.xml");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+     //   try {
+            map = AlphaUtil.parseWorld(getClass().getClassLoader().getResourceAsStream("src/assets/json/starter.xml"));
+     //   } catch (FileNotFoundException e) {
+     //       e.printStackTrace();
+       // }
 
         addCollidables();
 
@@ -94,14 +94,14 @@ public class GameMap {
                     System.out.println("picking up non projectile");
                 } else {
                     if (projectileHandler.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
-                        removeGameObject(object);
+                        System.out.println("ergergre");
 
                         // test
                         Network.UpdatePlayerCombat combat = new Network.UpdatePlayerCombat();
                         combat.id = player.uid;
                         if (player.combat.getShield() != Data.Shield.NONE)
                             System.out.println("hitting with shield");
-                        player.combat.setHealth(player.combat.getHealth() - 10);
+                        player.combat.setHealth(projectileHit(projectileHandler.get(object.getUniqueGameId()), player));
                         combat.object = player.combat;
 
                         queueMessage(new Message(combat, false));
@@ -111,6 +111,7 @@ public class GameMap {
                             System.out.println("Client " + projectileHandler.getSource(object.getUniqueGameId()) + " killed client " + player.uid);
                         }
 
+                        removeGameObject(object);
                         projectileHandler.remove(object.getUniqueGameId());
 
                     }
@@ -121,15 +122,21 @@ public class GameMap {
             @Override
             public void handleCollision(GameObject object, Network.NPCPacket npc) {
                 if (npc.type == EntityType.ENEMY &&  object.isProjectile()) {
-                    projectileHandler.remove(object.getUniqueGameId());
                     removeGameObject(object);
+
+
+
+
+
 
                     // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
 
                     Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
                     combat.id = npc.uid;
-                    npc.combat.setHealth(npc.combat.getHealth() - 10);
+                    npc.combat.setHealth(projectileHit(projectileHandler.get(object.getUniqueGameId()), npc));
                     combat.object = npc.combat;
+
+                    projectileHandler.remove(object.getUniqueGameId());
 
                     queueMessage(new Message(combat, false));
 
@@ -168,6 +175,15 @@ public class GameMap {
             addGameObject(object);
         }
 
+    }
+
+    private int projectileHit(Projectile projectile, Network.CombatEntity packet) {
+        //System.out.println("expired : " + projectileHandler.hasExpired(projectile.object.getUniqueGameId()));
+        if (projectile != null && !projectileHandler.hasExpired(projectile.object.getUniqueGameId())) {
+            return (int) (packet.combat.getHealth() - projectile.damageEffect);
+        } else {
+            return 0;
+        }
     }
 
     private void addCollidables() {

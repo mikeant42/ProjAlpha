@@ -20,6 +20,9 @@ public class LoginController implements UIController {
     @FXML
     private Label loginMsg;
 
+    @FXML
+    private TextField hostField;
+
     private ClientHandler handler;
     private GameScene gameScene;
     private Stage stage;
@@ -45,6 +48,7 @@ public class LoginController implements UIController {
 
     @FXML
     public void Login(ActionEvent event) {
+        handler.connectServer(hostField.getText().trim());
         if (!ClientHandler.LOGIN_STATUS) {
             if (username.getText().equals("") || password.getText().equals("")) {
                 loginMsg.setText("You have to fill everything out");

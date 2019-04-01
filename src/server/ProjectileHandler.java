@@ -59,6 +59,9 @@ public class ProjectileHandler {
 
         projectile1.object = projObject;
 
+
+        projectile1.damageEffect = 10;
+
         projectiles.put(projectile1.object.getUniqueGameId(), projectile1);
 
         System.out.println("added projectile");
@@ -95,8 +98,16 @@ public class ProjectileHandler {
         return -1;
     }
 
+    public Projectile get(int id) {
+        return projectiles.get(id);
+    }
+
     public void remove(int uid) {
         projectiles.remove(uid);
+    }
+
+    public boolean hasExpired(int uid) {
+        return !(projectiles.get(uid).tickCreated+LIFESPAN_IN_TICKS >= projectiles.get(uid).tickCreated);
     }
 
 

@@ -8,15 +8,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="kryonet-2.21-all" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/shared/lib/fxgl-0.5.3-uber.jar!/" />
+          <root url="jar://$MODULE_DIR$/shared/lib/fxgl-0.5.4-uber.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

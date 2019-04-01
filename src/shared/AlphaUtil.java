@@ -22,6 +22,15 @@ public class AlphaUtil {
         return map;
     }
 
+    public static TiledMap parseWorld(InputStream stream) {
+        TMXParser parser = new TMXParser();
+        TiledMap map = parser.parse(stream);
+//        map.getLayerByName("Treetop").setDraworder("topdown");
+
+        return map;
+    }
+
+
     public static int ensureRange(int value, int min, int max) {
         return Math.min(Math.max(value, min), max);
     }

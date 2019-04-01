@@ -18,9 +18,13 @@ Network
 - Basic queueing system that can store messages until the client is ready to accept them
 - Basic projectile system with client side prediction
 
+Running
+----
+Make sure you have all the dependencies. If you do not use java version 1.8, you will run into dependency problems for javafx. You will need to run AO using version 1.8 until alpha supports javafx 11.
+
 Dependencies
 ----
-- javafx - make sure if you're running openjdk to install, as only the oracle java has it pre installed
+- javafx - this should be from the jdk, javafx 11 not yet supported
 - kyronet - networking library included
 - fxgl - java game library included
 
