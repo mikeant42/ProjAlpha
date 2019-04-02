@@ -20,7 +20,7 @@ public class NPCResponseListener extends Listener {
             System.out.println("npcs added");
             handler.getNpcs().add(packet);
             // if statement here
-            handler.getAlphaClientApp().getActiveWorld().addNPC(packet);
+            handler.getAlphaClientApp().getActiveMap().addNPC(packet);
         }
 
         if (object instanceof Network.UpdateNPC) {

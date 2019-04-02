@@ -4,14 +4,11 @@ import client.listener.CharacterResponseListener;
 import client.listener.LoginResponseListener;
 import client.listener.NPCResponseListener;
 import client.listener.WorldResponseListener;
-import client.render.CombatComponent;
-import client.ui.MainPanelController;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import shared.*;
 import shared.Network.*;
-import sun.nio.ch.Net;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,6 +73,7 @@ public class ClientHandler {
 
 
             public void disconnected (Connection connection) {
+                System.out.println("disconnecting");
                 System.exit(0);
             }
         }));
@@ -88,7 +86,7 @@ public class ClientHandler {
 
     public void updatePlayerLocal(int move, double x, double y, int idd) {
         if (getId() == idd) {
-            alphaClientApp.getActiveWorld().getPlayer().setPosition(x,y);
+            alphaClientApp.getActiveMap().getPlayer().setPosition(x,y);
             characterPacket.moveState = move;
         }
         for (CharacterPacket packet : otherPlayers) {
@@ -207,13 +205,13 @@ public class ClientHandler {
     public void addGameObject(GameObject obj) {
         objects.add(obj);
 
-        alphaClientApp.getActiveWorld().addGameObject(obj);
+        alphaClientApp.getActiveMap().addGameObject(obj);
     }
 
     public void addProjectile(Projectile projectile) {
         objects.add(projectile.object);
 
-        alphaClientApp.getActiveWorld().addProjectile(projectile);
+        alphaClientApp.getActiveMap().addProjectile(projectile);
     }
 
     public void removeGameObject(int uid) {
@@ -221,7 +219,7 @@ public class ClientHandler {
         for (GameObject object : objects) {
             if (object.getUniqueGameId() == uid) {
                 remove.add(object);
-                alphaClientApp.getActiveWorld().removeEntityLater(object.getUniqueGameId());
+                alphaClientApp.getActiveMap().removeEntityLater(object.getUniqueGameId());
             }
         }
         objects.removeAll(remove);
@@ -253,7 +251,7 @@ public class ClientHandler {
         if (id == getId()) {
             characterPacket.combat = object;
         }
-        alphaClientApp.getActiveWorld().updateCombatLocal(id, object);
+        alphaClientApp.getActiveMap().updateCombatLocal(id, object);
     }
 
     public void updateNPCHealth(int uid, CombatObject object) {
@@ -263,7 +261,7 @@ public class ClientHandler {
             }
         }
 
-        alphaClientApp.getActiveWorld().updateCombatLocal(uid, object);
+        alphaClientApp.getActiveMap().updateCombatLocal(uid, object);
     }
 
     public void sendCombatObjectUpdate() {

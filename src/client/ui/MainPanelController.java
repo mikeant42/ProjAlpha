@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import shared.GameObject;
 import shared.Inventory;
+import shared.Network;
 
 public class MainPanelController implements UIController {
 
@@ -222,8 +223,8 @@ public class MainPanelController implements UIController {
         chatBox.setFocusTraversable(false);
     }
 
-    public void addChat(String chat) {
-        chatLog.add(chat);
+    public void addChat(String message) {
+        chatLog.add(message);
         chatView.setItems(chatLog);
     }
 

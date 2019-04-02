@@ -104,8 +104,19 @@ public class ClientGameMap {
 
 
 
-    public void addChatMsg(Network.UserChat chat) {
+    public void addChatToWorld(Network.UserChat chat) {
         messagesToAdd.add(chat);
+    }
+
+    // this should be in a more appropriate class
+    public String getUsername(int cid) throws Exception {
+        CharacterPacket packet = (CharacterPacket) entities.get(cid);
+        if (packet != null) {
+            return packet.name;
+        } else {
+            throw new Exception("Could not find player with corresponding id");
+        }
+
     }
 
 

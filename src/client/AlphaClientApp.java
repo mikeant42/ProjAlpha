@@ -5,32 +5,22 @@ import client.ui.LoginController;
 import client.ui.MainPanelController;
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.listener.ExitListener;
-import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.components.IDComponent;
 import com.almasb.fxgl.input.*;
 import com.almasb.fxgl.settings.GameSettings;
-import com.almasb.fxgl.ui.FXGLTextFlow;
 import com.almasb.fxgl.ui.Position;
 import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import shared.*;
 import shared.collision.AlphaCollision;
 
-import java.awt.*;
 import java.util.Map;
 
 
@@ -114,6 +104,7 @@ public class AlphaClientApp extends GameApplication {
 //                System.exit(0);
 //            }
 //        });
+
 
         Platform.runLater(new Runnable(){
             @Override
@@ -340,18 +331,35 @@ public class AlphaClientApp extends GameApplication {
     }
 
 
-    public ClientGameMap getActiveWorld() {
+    public ClientGameMap getActiveMap() {
         return gameMap;
     }
 
 //
     public void addChatMsg(Network.UserChat chat) {
-        gameMap.addChatMsg(chat);
 
+//        if (chat.cid == clientHandler.getId()) {
+//            gameMap.addChatToWorld(chat);
+//            username = clientHandler.getUsername();
+//        } else {
+//            username = gameMap.addChatToWorld(chat);
+//        }
+//
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                panelControl.addChat(chat.message);
+                String username = "";
+                if (chat.cid == clientHandler.getId()) {
+                    username = clientHandler.getUsername();
+                } else {
+                    try {
+                        username = gameMap.getUsername(chat.cid);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                gameMap.addChatToWorld(chat);
+                panelControl.addChat(username + ": " + chat.message);
             }
         });
     }

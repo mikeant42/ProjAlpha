@@ -20,7 +20,9 @@ Network
 
 Running
 ----
-Make sure you have all the dependencies. If you do not use java version 1.8, you will run into dependency problems for javafx. You will need to run AO using version 1.8 until alpha supports javafx 11.
+Make sure you have oracle java 8, and not openjdk. This is the best way to download the compatible javafx version. You will need to run AO using this version until alpha supports javafx 11.
+
+If you are getting a problem with too-high framerates on ubuntu, it's caused by a bug in javafx. Run `export _JAVA_OPTIONS="-Dquantum.multithreaded=false"`, then try to run alpha again.
 
 Dependencies
 ----

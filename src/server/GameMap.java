@@ -10,7 +10,6 @@ import shared.collision.AlphaCollision;
 import shared.collision.AlphaCollisionHandler;
 import shared.objects.Fish;
 
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -48,7 +47,9 @@ public class GameMap {
 
     private double respawnX, respawnY; // a player respawn point in every map
 
-    long tick = 0;
+    private long tick = 0;
+
+    private List<Integer> lockedPlayers = new ArrayList<>();
 
 
     // 128 is the limit of the number of game objects in one map
@@ -73,7 +74,7 @@ public class GameMap {
 
         addCollidables();
 
-        projectileHandler = new ProjectileHandler(this);
+        projectileHandler = new ProjectileHandler();
 
         collision = new AlphaCollision(new AlphaCollisionHandler() {
             @Override
@@ -93,7 +94,7 @@ public class GameMap {
                     addInventory(player, object);
                     System.out.println("picking up non projectile");
                 } else {
-                    if (projectileHandler.getSource(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
+                    if (projectileHandler.getSourcePlayerID(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
                         System.out.println("ergergre");
 
                         // test
@@ -108,7 +109,7 @@ public class GameMap {
 
                         if (player.combat.getHealth() <= 0) {
                             killPlayer(player);
-                            System.out.println("Client " + projectileHandler.getSource(object.getUniqueGameId()) + " killed client " + player.uid);
+                            System.out.println("Client " + projectileHandler.getSourcePlayerID(object.getUniqueGameId()) + " killed client " + player.uid);
                         }
 
                         removeGameObject(object);
@@ -122,7 +123,6 @@ public class GameMap {
             @Override
             public void handleCollision(GameObject object, Network.NPCPacket npc) {
                 if (npc.type == EntityType.ENEMY &&  object.isProjectile()) {
-                    removeGameObject(object);
 
 
 
@@ -136,6 +136,7 @@ public class GameMap {
                     npc.combat.setHealth(projectileHit(projectileHandler.get(object.getUniqueGameId()), npc));
                     combat.object = npc.combat;
 
+                    removeGameObject(object);
                     projectileHandler.remove(object.getUniqueGameId());
 
                     queueMessage(new Message(combat, false));
@@ -251,7 +252,7 @@ public class GameMap {
     public void updateAction(long tick) {
         this.tick = tick;
 
-        projectileHandler.update(tick);
+        //projectileHandler.update(tick);
 
         // every so often check if the player is somewhere he shouldnt be
 
@@ -269,6 +270,18 @@ public class GameMap {
 
             if (entity instanceof GameObject) {
                 GameObject loopedObject = (GameObject) entity;
+
+                if (loopedObject.isProjectile()) {
+                    //System.out.println(loopedObject.getUniqueGameId() + " " + loopedObject.getName());
+                    GameObject projObject = projectileHandler.updateProjectile(loopedObject.getUniqueGameId(), tick);
+                    // if this is null it means the object is expired, and needs to be removed
+                    if (projObject != null) {
+                        updateObjectPosition(projObject);
+                    } else {
+                        removeGameObject(loopedObject);
+                        projectileHandler.remove(loopedObject.getUniqueGameId());
+                    }
+                }
                 collision.handleStaticCollisions(staticCollisions, loopedObject);
             }
 
@@ -344,6 +357,12 @@ public class GameMap {
 
     }
 
+    protected void lockPlayer(int uid) {
+//        synchronized (lockedPlayers) {
+//            lockedPlayers.add(uid);
+//        }
+    }
+
     private void killPlayer(CharacterPacket packet) {
         packet.combat.setHealth(50);
 
@@ -369,7 +388,10 @@ public class GameMap {
         update.hasDied = true;
 
         queueMessage(new Message(update, false));
+
     }
+
+    //public void executeOnTick(long tick, Runnable runnable)
 
     public void addGameObject(GameObject object) {
         addGameObjectLocal(object);
@@ -444,7 +466,8 @@ public class GameMap {
     }
 
     public void addProjectile(Network.AddProjectile packet) {
-        Projectile projectile = projectileHandler.addProjectile(packet, tick);
+        Projectile projectile = projectileHandler.addProjectile(assignUniqueId(), packet, tick);
+        addGameObjectLocal(projectile.object);
         queueMessage(new Message(projectile, false));
     }
 

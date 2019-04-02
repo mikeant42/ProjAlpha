@@ -20,15 +20,13 @@ public class ProjectileHandler {
 
     private Map<Integer, Projectile> projectiles = new ConcurrentHashMap<>();
 
-    private GameMap map;
     public static final int LIFESPAN_IN_TICKS = 100;
 
-    public ProjectileHandler(GameMap map) {
+    public ProjectileHandler() {
 
-        this.map = map;
     }
 
-    public Projectile addProjectile(Network.AddProjectile projectile, long tick) {
+    public Projectile addProjectile(int uid, Network.AddProjectile projectile, long tick) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
         projectile1.tickCreated = tick;
@@ -39,8 +37,8 @@ public class ProjectileHandler {
         projObject.setX(projectile.originX);
         projObject.setY(projectile.originY);
         projObject.setName(Names.Spell.TORNADO);
-        projObject.setUniqueGameId(map.assignUniqueId());
-        map.addGameObjectLocal(projObject);
+        projObject.setUniqueGameId(uid);
+        //map.addGameObjectLocal(projObject);
 
         double tx = projectile.originX - projectile.destinationX;
         double ty = projectile.originY - projectile.destinationY;
@@ -69,28 +67,44 @@ public class ProjectileHandler {
 
     }
 
-
-    public void update(long tick) {
-
-        for (Projectile projectile : projectiles.values()) {
-            if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
-                //Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
-                //        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
-
-
-                    projectile.object.setX(projectile.object.getX()+projectile.velX);
-                    projectile.object.setY(projectile.object.getY()+projectile.velY);
-
-                    map.updateObjectPosition(projectile.object);
-            } else {
-                map.removeGameObject(projectile.object);
-                projectiles.remove(projectile.object.getUniqueGameId());
-                System.out.println("proj manager removing object");
-            }
+    public GameObject updateProjectile(int uid, long tick) {
+        Projectile projectile = projectiles.get(uid);
+        if (projectile == null) {
+            // I have no idea why this would be null, but if it is it may be the cause of a bug.
+            return null;
         }
+        if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
+            projectile.object.setX(projectile.object.getX()+projectile.velX);
+            projectile.object.setY(projectile.object.getY()+projectile.velY);
+            return projectile.object;
+        } else {
+            return null;
+        }
+
     }
 
-    public int getSource(int uid) {
+
+//    public void update(long tick) {
+//
+//        for (Projectile projectile : projectiles.values()) {
+//            if (projectile.tickCreated+LIFESPAN_IN_TICKS >= tick) {
+//                //Point2D newPosition = FXGLMath.lerp(projectile.object.getX(), projectile.object.getY(),
+//                //        projectile.projectile.destinationX, projectile.projectile.destinationY, 0.01);
+//
+//
+//                    projectile.object.setX(projectile.object.getX()+projectile.velX);
+//                    projectile.object.setY(projectile.object.getY()+projectile.velY);
+//
+//                    map.updateObjectPosition(projectile.object);
+//            } else {
+//                map.removeGameObject(projectile.object);
+//                projectiles.remove(projectile.object.getUniqueGameId());
+//                System.out.println("proj manager removing object");
+//            }
+//        }
+//    }
+
+    public int getSourcePlayerID(int uid) {
         if (projectiles.get(uid) != null) {
             return projectiles.get(uid).projectile.sourceUser;
         }

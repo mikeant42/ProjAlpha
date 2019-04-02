@@ -49,7 +49,7 @@ public class WorldResponseListener extends Listener {
 
 //        if (object instanceof Network.AddProjectile) {
 //            Network.AddProjectile projectile = (Network.AddProjectile)object;
-//            handler.getAlphaClientApp().getActiveWorld().addGameObject(projectile.object);
+//            handler.getAlphaClientApp().getActiveMap().addGameObject(projectile.object);
 //        }
 
 
