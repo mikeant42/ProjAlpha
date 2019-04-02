@@ -14,9 +14,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class ProjectileHandler {
-//    private List<Projectile> projectilesToAdd = new ArrayList<>();
-//    private List<Projectile> projectilesToRemove = new ArrayList<>();
-//    private List<Projectile> projectiles;
 
     private Map<Integer, Projectile> projectiles = new ConcurrentHashMap<>();
 
@@ -26,7 +23,7 @@ public class ProjectileHandler {
 
     }
 
-    public Projectile addProjectile(int uid, Network.AddProjectile projectile, long tick) {
+    public Projectile addProjectile(Network.AddProjectile projectile, long tick) {
         Projectile projectile1 = new Projectile();
         projectile1.projectile = projectile;
         projectile1.tickCreated = tick;
@@ -37,7 +34,7 @@ public class ProjectileHandler {
         projObject.setX(projectile.originX);
         projObject.setY(projectile.originY);
         projObject.setName(Names.Spell.TORNADO);
-        projObject.setUniqueGameId(uid);
+        projObject.setUniqueGameId(IDManager.assignUniqueId());
         //map.addGameObjectLocal(projObject);
 
         double tx = projectile.originX - projectile.destinationX;

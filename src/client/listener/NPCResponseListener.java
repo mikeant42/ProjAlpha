@@ -27,6 +27,11 @@ public class NPCResponseListener extends Listener {
             Network.UpdateNPC packet = (Network.UpdateNPC)object;
             handler.updateNPC(packet.x, packet.y, packet.moveState, packet.uid);
         }
+
+        if (object instanceof Network.KillNPC) {
+            Network.KillNPC kill = (Network.KillNPC)object;
+            handler.getAlphaClientApp().getActiveMap().removeEntityLater(kill.uid);
+        }
     }
 
 }

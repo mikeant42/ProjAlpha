@@ -311,7 +311,7 @@ public class ClientGameMap {
         return isMapLoaded;
     }
 
-    public void update(double dtf, long tick) {
+    public void update(double dtf) {
         camera.updateBounds(player);
 
 

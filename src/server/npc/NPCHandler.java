@@ -1,8 +1,7 @@
 package server.npc;
 
-import shared.BehaviorType;
-import shared.Data;
-import shared.Network;
+import server.IDManager;
+import shared.*;
 import sun.nio.ch.Net;
 
 import java.util.ArrayList;
@@ -15,6 +14,8 @@ public class NPCHandler {
     // maybe a class Spawner which spawns and keeps track of an entity
     private Map<Integer, NPCBehavior> npcs = new ConcurrentHashMap<>();
 
+    private Map<String, Network.NPCPacket> npcTypes = new ConcurrentHashMap<>();
+
 
     public NPCHandler() {
 
@@ -25,6 +26,23 @@ public class NPCHandler {
         // npc drops
     }
 
+    public void addNPC(Network.NPCPacket packet) {
+        npcTypes.put(packet.name, packet);
+    }
+
+    public Network.NPCPacket initMob(double x, double y, String name) {
+        Network.NPCPacket packet = new Network.NPCPacket();
+        packet.x = x;
+        packet.y = y;
+        packet.uid = IDManager.assignUniqueId();
+        packet.type = EntityType.ENEMY;
+        packet.name = name;
+        packet.combat = new CombatObject(100,0);
+        registerBehavior(packet, BehaviorType.ROAMING);
+
+        return packet;
+    }
+
 
     public void registerBehavior(Network.NPCPacket packet, BehaviorType type) {
         packet.behaviorType = type;
@@ -33,11 +51,12 @@ public class NPCHandler {
             case ROAMING:
                 behavior = new RoamingBehavior(packet.x, packet.y);
                 npcs.put(packet.uid, behavior);
-                return;
+                break;
             case STATIC:
                 behavior = new NPCBehavior(packet.x, packet.y);
                 behavior.setAllowedToMove(false);
                 npcs.put(packet.uid, behavior);
+                break;
         }
 
 
@@ -67,6 +86,11 @@ public class NPCHandler {
         }
 
 
+    }
+
+    public void removeNPC(int uid) {
+        npcs.remove(uid);
+        IDManager.deAllocateId(uid);
     }
 
 

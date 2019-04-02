@@ -28,6 +28,7 @@ public class AlphaServer extends Server {
     public static final int PLAYER_COUNT = 16;
 
     public AlphaServer() {
+        IDManager.init();
         map = new GameMap(this);
     }
 

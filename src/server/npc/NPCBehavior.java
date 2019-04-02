@@ -17,7 +17,6 @@ public class NPCBehavior {
 
     private boolean allowedToMove = true;
 
-    private boolean isStatic = false;
 
     public NPCBehavior(double spawnX, double spawnY) {
 //        data = new Network.NPCPacket();
@@ -129,14 +128,6 @@ public class NPCBehavior {
 
     public void setSpeed(float speed) {
         this.speed = speed;
-    }
-
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
     }
 
     public double getX() {

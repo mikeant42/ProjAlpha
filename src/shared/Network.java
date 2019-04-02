@@ -45,6 +45,7 @@ public class Network {
         kryo.register(GameEntity.class);
         kryo.register(Data.Shield.class);
         kryo.register(CombatEntity.class);
+        kryo.register(KillNPC.class);
     }
 
     static public class Login {

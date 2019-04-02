@@ -20,7 +20,7 @@ public class GameMap {
     maybe create some sort of IDManager so i can let other classes assign unique ids
      */
 
-    private int objectLimit = 1024;
+    //private int objectLimit = 1024; // leave room for projectiles, who's uid gets de-allocated when finished
 
     private NPCHandler npcHandler;
 
@@ -55,7 +55,7 @@ public class GameMap {
     // 128 is the limit of the number of game objects in one map
     //private int[] uniqueObjects = new int[objectLimit];
     // once an id is assigned, it cannot be used again. this is to prevent old object ids from referencing new objects that they thought was the old object
-    private List<Integer> uniques = new ArrayList<>();
+    //private List<Integer> uniques = new ArrayList<>();
 
     private AlphaCollision collision;
 
@@ -124,11 +124,6 @@ public class GameMap {
             public void handleCollision(GameObject object, Network.NPCPacket npc) {
                 if (npc.type == EntityType.ENEMY &&  object.isProjectile()) {
 
-
-
-
-
-
                     // gameplay idea - if you attack weak mop npcs, the surrounding mob will start attacking you.
 
                     Network.UpdateNPCCombat combat = new Network.UpdateNPCCombat();
@@ -139,7 +134,12 @@ public class GameMap {
                     removeGameObject(object);
                     projectileHandler.remove(object.getUniqueGameId());
 
-                    queueMessage(new Message(combat, false));
+
+                    if (npc.combat.getHealth() < 0) {
+                        killNPC(npc);
+                    } else {
+                        queueMessage(new Message(combat, false));
+                    }
 
                     System.out.println("proj-npc collision");
                 }
@@ -166,7 +166,7 @@ public class GameMap {
             Fish object = new Fish();
             object.setX(200);
             object.setY(200);
-            object.setUniqueGameId(assignUniqueId());
+            object.setUniqueGameId(IDManager.assignUniqueId());
 //        object.setOnUse(new AlphaCollisionHandler() {
 //            @Override
 //            public void onUse(CharacterPacket packet) {
@@ -181,7 +181,11 @@ public class GameMap {
     private int projectileHit(Projectile projectile, Network.CombatEntity packet) {
         //System.out.println("expired : " + projectileHandler.hasExpired(projectile.object.getUniqueGameId()));
         if (projectile != null && !projectileHandler.hasExpired(projectile.object.getUniqueGameId())) {
-            return (int) (packet.combat.getHealth() - projectile.damageEffect);
+            double damage = projectile.damageEffect;
+            if (packet.combat.getShield() == Data.Shield.GRAVITY) {
+                damage *= .9;
+            }
+            return (int) (packet.combat.getHealth() - damage);
         } else {
             return 0;
         }
@@ -195,20 +199,21 @@ public class GameMap {
                 respawnX = object.getX();
                 respawnY = object.getY();
             } else if (object.getName().equals("googon")) {
-                Network.NPCPacket packet = new Network.NPCPacket();
-                packet.x = object.getX();
-                packet.y = object.getY();
-                packet.uid = assignUniqueId();
-                packet.type = EntityType.ENEMY;
-                packet.name = "googon";
-                packet.combat = new CombatObject(100,0);
-                npcHandler.registerBehavior(packet, BehaviorType.ROAMING);
-                entities.put(packet.uid, packet);
+                Network.NPCPacket npc = npcHandler.initMob(object.getX(), object.getY(), "googon");
+//                Network.NPCPacket packet = new Network.NPCPacket();
+//                packet.x = object.getX();
+//                packet.y = object.getY();
+//                packet.uid = assignUniqueId();
+//                packet.type = EntityType.ENEMY;
+//                packet.name = "googon";
+//                packet.combat = new CombatObject(100,0);
+                //npcHandler.registerBehavior(packet, BehaviorType.ROAMING);
+                entities.put(npc.uid, npc);
             } else if (object.getName().equals("watcher")) {
                 Network.NPCPacket packet = new Network.NPCPacket();
                 packet.x = object.getX();
                 packet.y = object.getY();
-                packet.uid = assignUniqueId();
+                packet.uid = IDManager.assignUniqueId();
                 packet.type = EntityType.INTERACTABLE_NPC;
                 packet.name = object.getName();
                 //packet.combat = new CombatObject(100,0);
@@ -245,6 +250,21 @@ public class GameMap {
         entities.remove(uid);
     }
 
+    public void killNPC(Network.NPCPacket packet) {
+        entities.remove(packet.uid);
+        npcHandler.removeNPC(packet.uid);
+
+        Network.KillNPC kill = new Network.KillNPC();
+        kill.uid = packet.uid;
+        kill.killerID = -1;
+        queueMessage(new Message(kill, false));
+
+        Fish fish = new Fish();
+        fish.setUniqueGameId(IDManager.assignUniqueId());
+        fish.setX(packet.x);
+        fish.setY(packet.y);
+        addGameObject(fish);
+    }
 
     /*
     This updates in another thread at 60fps
@@ -299,8 +319,7 @@ public class GameMap {
             if (entity instanceof Network.NPCPacket) {
                 Network.NPCPacket npc = (Network.NPCPacket) entity;
 
-                collision.handleNPCCollision(entities.values(), npc);
-
+                // if the npc dies, this message doesn't need to be sent. This message is wasteful if executed before a death.
                 Network.UpdateNPC updateNPC = npcHandler.updateData(npc.uid);
                 if (updateNPC != null) {
                     queueMessage(new Message(updateNPC, false));
@@ -309,6 +328,8 @@ public class GameMap {
                     npc.x = updateNPC.x;
                     npc.y = updateNPC.y;
                 }
+
+                collision.handleNPCCollision(entities.values(), npc);
             }
 
 
@@ -347,7 +368,7 @@ public class GameMap {
                         packet.inventory.removeObjectFromSlot(i);
                         Log.error("Player " + packet.uid + " has an invalid inventory object");
                     } else {
-                        object1.setUniqueGameId(assignUniqueId()); // object needs a new uid
+                        object1.setUniqueGameId(IDManager.assignUniqueId()); // object needs a new uid
                     }
                 }
             }
@@ -395,7 +416,6 @@ public class GameMap {
 
     public void addGameObject(GameObject object) {
         addGameObjectLocal(object);
-        //server.sendToAllReady(object);`
         queueMessage(new Message(object, false));
     }
 
@@ -428,32 +448,35 @@ public class GameMap {
 
        entities.remove(object.getUniqueGameId());
 
+       if (object.isProjectile()) {
+           IDManager.deAllocateId(object.getUniqueGameId());
+       }
+
        //deAllocateId(object.getUniqueGameId());
     }
 
 //    private void deAllocateId(int id) {
-//        // sync needed bacause these can be called from another thread
 //        synchronized (uniques) {
 //            uniques.remove(new Integer(id));
 //        }
 //    }
-
-    // IT ASSIGNED DUPLICATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FIX FIX
-    // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
-    // if you gen too many ids this will cause a stackoverflow
-    public int assignUniqueId() {
-        synchronized (uniques) {
-            int num = ThreadLocalRandom.current().nextInt(AlphaServer.PLAYER_COUNT, objectLimit + 1);
-
-            if (uniques.contains(num)) {
-                num = assignUniqueId();
-            } else {
-                uniques.add(num);
-            }
-
-            return num;
-        }
-    }
+//
+//    // IT ASSIGNED DUPLICATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FIX FIX
+//    // this needs to be seperated from the game map, because by this logic objects from two different maps can have the same ids
+//    // if you gen too many ids this will cause a stackoverflow
+//    public int assignUniqueId() {
+//        synchronized (uniques) {
+//            int num = ThreadLocalRandom.current().nextInt(AlphaServer.PLAYER_COUNT, objectLimit + 1);
+//
+//            if (uniques.contains(num)) {
+//                num = assignUniqueId();
+//            } else {
+//                uniques.add(num);
+//            }
+//
+//            return num;
+//        }
+//    }
 
 
     public void addUnloadedPlayer(CharacterPacket packet) {
@@ -466,7 +489,7 @@ public class GameMap {
     }
 
     public void addProjectile(Network.AddProjectile packet) {
-        Projectile projectile = projectileHandler.addProjectile(assignUniqueId(), packet, tick);
+        Projectile projectile = projectileHandler.addProjectile(packet, tick);
         addGameObjectLocal(projectile.object);
         queueMessage(new Message(projectile, false));
     }

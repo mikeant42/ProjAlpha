@@ -1,6 +1,6 @@
 TODO
 ----
-- npc deaths, npc drop table/loot
+- npc drop table
 - more spells and shields
 - finish player death
 - dialogue system
