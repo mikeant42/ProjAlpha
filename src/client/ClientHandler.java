@@ -132,13 +132,13 @@ public class ClientHandler {
 //        alphaClientApp.setMap(uid);
 //    }
 
-    public boolean hasNPC(int id) {
+    public NPCPacket hasNPC(int id) {
         for (NPCPacket packet : npcs) {
             if (packet.uid == id) {
-                return true;
+                return packet;
             }
         }
-        return false;
+        return null;
     }
 
     public void connectServer(String hostName) {

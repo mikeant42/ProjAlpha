@@ -31,6 +31,7 @@ public class NPCResponseListener extends Listener {
         if (object instanceof Network.KillNPC) {
             Network.KillNPC kill = (Network.KillNPC)object;
             handler.getAlphaClientApp().getActiveMap().removeEntityLater(kill.uid);
+            //handler.getNpcs().remove(handler.hasNPC(kill.uid));
         }
     }
 

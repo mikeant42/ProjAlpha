@@ -13,6 +13,11 @@ import shared.objects.Fish;
 import java.util.*;
 import java.util.concurrent.*;
 
+class SpawnPoint {
+    double x,y;
+    double respawnTime;
+}
+
 public class GameMap {
     /*
     There is one of these per map. Each one holds positions of npc, random loot, and all objects residing on the server
@@ -51,6 +56,8 @@ public class GameMap {
 
     private List<Integer> lockedPlayers = new ArrayList<>();
 
+    private Map<Network.NPCPacket, SpawnPoint> spawnPoints = new ConcurrentHashMap<>();
+
 
     // 128 is the limit of the number of game objects in one map
     //private int[] uniqueObjects = new int[objectLimit];
@@ -59,7 +66,7 @@ public class GameMap {
 
     private AlphaCollision collision;
 
-    public GameMap(AlphaServer server) { // pass in the old npc handler
+    public GameMap(AlphaServer server) {
         this.npcHandler = new NPCHandler();
 
         this.server = server;
@@ -173,7 +180,7 @@ public class GameMap {
 //
 //            }
 //        });
-            addGameObject(object);
+            addGameObjectLocal(object);
         }
 
     }
@@ -191,24 +198,51 @@ public class GameMap {
         }
     }
 
+
+    private void addSpawnPoint(Network.NPCPacket packet) {
+        SpawnPoint point = new SpawnPoint();
+        point.respawnTime = 5;
+        point.x = packet.x;
+        point.y = packet.y;
+        //spawn(point, packet);
+
+        spawnPoints.put(packet, point);
+        entities.put(packet.uid, packet);
+
+    }
+
+    public void triggerRespawn(Network.NPCPacket packet) {
+        SpawnPoint point = spawnPoints.get(packet);
+        if (point != null) {
+            Network.NPCPacket newPacket = npcHandler.initMob(point.x, point.y, packet.name);
+            addSpawnPoint(newPacket);
+            queueMessage(new Message(newPacket, true));
+        }
+    }
+
     private void addCollidables() {
         staticCollisions.addAll(map.getLayerByName("collision").getObjects());
 
         for (TiledObject object : map.getLayerByName("spawn").getObjects()) {
+            if (object.getType().equals("mob")) {
+                Network.NPCPacket npc = npcHandler.initMob(object.getX(), object.getY(), object.getName());
+                addSpawnPoint(npc);
+            }
             if (object.getName().equals("respawn")) {
                 respawnX = object.getX();
                 respawnY = object.getY();
-            } else if (object.getName().equals("googon")) {
-                Network.NPCPacket npc = npcHandler.initMob(object.getX(), object.getY(), "googon");
-//                Network.NPCPacket packet = new Network.NPCPacket();
-//                packet.x = object.getX();
-//                packet.y = object.getY();
-//                packet.uid = assignUniqueId();
-//                packet.type = EntityType.ENEMY;
-//                packet.name = "googon";
-//                packet.combat = new CombatObject(100,0);
-                //npcHandler.registerBehavior(packet, BehaviorType.ROAMING);
-                entities.put(npc.uid, npc);
+//            } else if (object.getName().equals("googon")) {
+//                Network.NPCPacket npc = npcHandler.initMob(object.getX(), object.getY(), "googon");
+////                Network.NPCPacket packet = new Network.NPCPacket();
+////                packet.x = object.getX();
+////                packet.y = object.getY();
+////                packet.uid = assignUniqueId();
+////                packet.type = EntityType.ENEMY;
+////                packet.name = "googon";
+////                packet.combat = new CombatObject(100,0);
+//                //npcHandler.registerBehavior(packet, BehaviorType.ROAMING);
+//                //entities.put(npc.uid, npc);
+//                addSpawnPoint(npc);
             } else if (object.getName().equals("watcher")) {
                 Network.NPCPacket packet = new Network.NPCPacket();
                 packet.x = object.getX();
@@ -264,6 +298,9 @@ public class GameMap {
         fish.setX(packet.x);
         fish.setY(packet.y);
         addGameObject(fish);
+
+
+        triggerRespawn(packet);
     }
 
     /*

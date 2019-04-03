@@ -93,9 +93,6 @@ public class NPCHandler {
         IDManager.deAllocateId(uid);
     }
 
-
-    public void addSpawnPoint() {}
-
     public Map<Integer, NPCBehavior> getNpcs() {
         return npcs;
     }

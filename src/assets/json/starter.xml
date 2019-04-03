@@ -428,13 +428,13 @@
 </data>
  </layer>
  <objectgroup id="5" name="spawn">
-  <object id="11" name="googon" x="448" y="224">
+  <object id="11" name="googon" type="mob" x="448" y="224">
    <point/>
   </object>
-  <object id="12" name="googon" x="576" y="224">
+  <object id="12" name="googon" type="mob" x="576" y="224">
    <point/>
   </object>
-  <object id="13" name="googon" x="480" y="160">
+  <object id="13" name="googon" type="mob" x="480" y="160">
    <point/>
   </object>
   <object id="26" name="watcher" x="864" y="608">
