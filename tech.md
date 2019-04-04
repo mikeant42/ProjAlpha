@@ -24,3 +24,4 @@ Bugs
 ----
 - client side collision resolution needs to be fixed, it's not great with corners
 - player death function is not finished
+- don't understand how to reproduce - sometimes when client logs in then crashes, he is visible to other players but is not part of the server loop.

@@ -9,7 +9,10 @@ import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IDComponent;
+import com.almasb.fxgl.entity.components.ViewComponent;
 import com.almasb.fxgl.extra.entity.components.ExpireCleanComponent;
+import com.almasb.fxgl.extra.entity.effect.Effect;
+import com.almasb.fxgl.extra.entity.effect.EffectComponent;
 import com.almasb.fxgl.particle.ParticleComponent;
 import com.almasb.fxgl.particle.ParticleEmitter;
 import com.almasb.fxgl.particle.ParticleEmitters;
@@ -17,11 +20,19 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.scene.BoundsAccessor;
+import javafx.beans.property.ObjectPropertyBase;
+import javafx.scene.Node;
 import javafx.scene.effect.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNull;
 import shared.EntityType;
+
+
 
 
 import static com.almasb.fxgl.app.DSLKt.texture;
@@ -34,7 +45,10 @@ public class BaseFactory implements EntityFactory {
 
     private float playerScale = 0.8f;
 
-    private DropShadow lighting;
+    //private DropShadow shadow;
+    private Lighting lighting;
+    private int playerOrder=0;
+
 
     public BaseFactory(ClientHandler handler) {
         this.handler = handler;
@@ -42,19 +56,21 @@ public class BaseFactory implements EntityFactory {
         Light.Distant light = new Light.Distant();
         light.setAzimuth(-135.0);
 
-//        lighting = new Lighting();
-//        lighting.setLight(light);
-//        lighting.setSurfaceScale(5.0);
-
-        lighting = new DropShadow();
-        lighting.setRadius(0.1);
-        lighting.setOffsetX(-1);
-        lighting.setOffsetY(-4.0);
+        lighting = new Lighting();
+        lighting.setLight(light);
+        lighting.setSurfaceScale(5.0);
 
 
+//        lighting = new DropShadow();
+//        lighting.setRadius(0.1);
+//        lighting.setOffsetX(-1);
+//        lighting.setOffsetY(-4.0);
+//
+//
+//
+//        //lighting.setSpread(0.1);
+//        lighting.setColor(Color.color(0.1,0.1,0.1));
 
-        //lighting.setSpread(0.1);
-        lighting.setColor(Color.color(0.1,0.1,0.1));
 
 
 
@@ -65,6 +81,7 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("player")
     public Entity spawnPlayer(SpawnData data) {
+        playerOrder++;
 
         AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
         movementComponent.setIdle(7,8);
@@ -93,7 +110,10 @@ public class BaseFactory implements EntityFactory {
         player.setScaleX(playerScale);
         player.setScaleY(playerScale);
 
-        player.setRenderLayer(RenderLayer.TOP);
+        player.setProperty("order", playerOrder);
+
+        player.setRenderLayer(RenderLayer.DEFAULT);
+        //player.setRenderLayer(R);
 
         player.getView().setEffect(lighting);
 
@@ -102,6 +122,7 @@ public class BaseFactory implements EntityFactory {
 
     @Spawns("localplayer")
     public Entity spawnLocalPlayer(SpawnData data) {
+        playerOrder++;
         AnimatedMovementComponent movementComponent = new AnimatedMovementComponent("player/mage-light.png", 48, 64, 3);
         movementComponent.setIdle(7,8);
         movementComponent.setForward(0,2);
@@ -136,6 +157,8 @@ public class BaseFactory implements EntityFactory {
 
         player.setRenderLayer(RenderLayer.TOP);
 
+        player.setProperty("order", playerOrder);
+
         player.getView().setEffect(lighting);
 
         return player;
@@ -162,12 +185,13 @@ public class BaseFactory implements EntityFactory {
 
 
 
-        npc.setRenderLayer(RenderLayer.TOP);
+        npc.setRenderLayer(RenderLayer.DEFAULT);
 
         npc.addComponent(new IDComponent("entity", data.get("ID")));
         npc.addComponent(movementComponent);
 
         npc.getView().setEffect(lighting);
+
 
         return npc;
     }
@@ -194,7 +218,7 @@ public class BaseFactory implements EntityFactory {
 
 
 
-        npc.setRenderLayer(RenderLayer.TOP);
+        npc.setRenderLayer(RenderLayer.DEFAULT);
 
         if ((boolean)data.get("interactable")) {
             npc.setType(EntityType.INTERACTABLE_NPC);
@@ -217,9 +241,9 @@ public class BaseFactory implements EntityFactory {
                 .viewFromTexture("objects/" + data.get("name") + ".png")
                 .build();
 
-        entity.setRenderLayer(RenderLayer.TOP);
+        entity.setRenderLayer(RenderLayer.BACKGROUND);
 
-        entity.getView().setEffect(lighting);
+        //entity.getView().setEffect(lighting);
 
         return entity;
     }

@@ -73,6 +73,33 @@ public class AlphaCollision {
     }
 
 
+    public static CollisionHandler setTransparentOverlayCollision(EntityType player, EntityType hut) {
+        return new CollisionHandler(player, hut) {
+
+            @Override
+            protected void onCollision(Entity player, Entity hut) {
+                if (player.getType() == EntityType.LOCAL_PLAYER) {
+                    hut.getView().setOpacity(0.7);
+                } else
+                if (player.getInt("order") < hut.getInt("order")) {
+
+                    player.getView().setOpacity(0.7);
+                } else {
+                    hut.getView().setOpacity(0.7);
+                }
+            }
+
+            @Override
+            protected void onCollisionEnd(Entity player, Entity hut) {
+                player.getView().setOpacity(1);
+                hut.getView().setOpacity(1);
+            }
+
+
+        };
+    }
+
+
 
     public static CollisionHandler setDialogueCollision(EntityType player, EntityType hut) {
         return new CollisionHandler(player, hut) {

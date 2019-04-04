@@ -2,10 +2,12 @@ package client.render;
 
 import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import shared.CombatObject;
+
 
 
 
@@ -31,7 +33,7 @@ public class CombatComponent extends Component {
                     getEntity().getView().removeNode(shield);
                 }
                 shieldOn = false;
-                return;
+                break;
             case 0:
                 if (!shieldOn) {
                     shield = new ImageView(FXGL.getAssetLoader().loadImage("spell/gravityshield.png"));
@@ -58,3 +60,4 @@ public class CombatComponent extends Component {
         this.combatObject = combatObject;
     }
 }
+

@@ -325,6 +325,9 @@ public class AlphaClientApp extends GameApplication {
     protected void initPhysics() {
         //getPhysicsWorld().setGravity(1,1);
         getPhysicsWorld().addCollisionHandler(AlphaCollision.setClientCollision(EntityType.LOCAL_PLAYER, EntityType.COLLIDE));
+
+        getPhysicsWorld().addCollisionHandler(AlphaCollision.setTransparentOverlayCollision(EntityType.LOCAL_PLAYER, EntityType.PLAYER));
+        getPhysicsWorld().addCollisionHandler(AlphaCollision.setTransparentOverlayCollision(EntityType.PLAYER, EntityType.PLAYER));
         //getPhysicsWorld().addCollisionHandler(AlphaCollision.setDialogueCollision(EntityType.LOCAL_PLAYER, EntityType.INTERACTABLE_NPC));
         //getPhysicsWorld().addCollisionHandler(AlphaCollision.setImpactCollision(EntityType.ENEMY, EntityType.PROJECTILE));
         //getPhysicsWorld().addCollisionHandler(AlphaCollision.setImpactCollision(EntityType.LOCAL_PLAYER, EntityType.PROJECTILE));

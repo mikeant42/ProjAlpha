@@ -54,8 +54,6 @@ public class GameMap {
 
     private long tick = 0;
 
-    private List<Integer> lockedPlayers = new ArrayList<>();
-
     private Map<Network.NPCPacket, SpawnPoint> spawnPoints = new ConcurrentHashMap<>();
 
 
@@ -174,7 +172,7 @@ public class GameMap {
 //            addGameObject(object);
 //        }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             Fish object = new Fish();
             object.setX(200);
             object.setY(200);
