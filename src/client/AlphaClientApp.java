@@ -13,6 +13,8 @@ import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UI;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -173,7 +175,6 @@ public class AlphaClientApp extends GameApplication {
                 getGameScene().addUINodes(playerStateText);
                 playerStateText.setX(10);
                 playerStateText.setY(10);
-
 
 
 

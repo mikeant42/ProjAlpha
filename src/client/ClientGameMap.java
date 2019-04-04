@@ -12,6 +12,8 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import shared.*;
 
@@ -58,7 +60,6 @@ public class ClientGameMap {
         setMap(clientHandler.getLatestWorldID());
 
         clientHandler.sendReady(true);
-
 
 
     }

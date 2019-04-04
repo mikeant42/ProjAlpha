@@ -97,9 +97,14 @@ public class GameMap {
             public void handleCollision(GameObject object, CharacterPacket player) {
                 if (!object.isProjectile()) {
                     // when player runs over an object, he adds it to his inventory
-                    removeGameObject(object);
-                    addInventory(player, object);
-                    System.out.println("picking up non projectile");
+                    try {
+                        addInventory(player, object);
+                        removeGameObject(object);
+                        System.out.println("picking up non projectile");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     if (projectileHandler.getSourcePlayerID(object.getUniqueGameId()) != player.uid) { // the user cant harm himself with a spell
                         System.out.println("ergergre");
@@ -373,7 +378,7 @@ public class GameMap {
         }
     }
 
-    public void addInventory(CharacterPacket packet, GameObject object) { // throws exception
+    private void addInventory(CharacterPacket packet, GameObject object) throws Exception {
         Network.AddInventoryItem inventoryItem = new Network.AddInventoryItem();
         inventoryItem.object = object;
 
@@ -382,7 +387,7 @@ public class GameMap {
         if (added) {
             queueMessage(new Message(packet.uid, inventoryItem, false));
         } else {
-            System.err.println("Not enough space in inventory");
+            throw new Exception("Not enough space in inventory");
         }
 
 
